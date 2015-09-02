@@ -214,4 +214,4 @@ then
 
 else
 	export PYTHONPATH=$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/djangoinitial.py;
-fi;
+fi
