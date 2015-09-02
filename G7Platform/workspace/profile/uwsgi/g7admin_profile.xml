@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<uwsgi>
+	<master>true</master>
+	<processes>8</processes>
+	<pythonpath>/Users/yuyang/workspace/git/G7Platform/G7Platform/G7Platform</pythonpath>
+	<chdir>/Users/yuyang/workspace/git/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
+	<logdate>true</logdate>
+	<enable-threads>true</enable-threads>
+	<py-programname>python3</py-programname>
+	<listen>80</listen>
+	<pythonpath>/Users/yuyang/workspace/git/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
+	<module>wsgi</module>
+	<socket>127.0.0.1:8882</socket>
+	<plugin>/usr/lib/uwsgi/py34_plugin.so</plugin>
+	<limit-as>300</limit-as>
+	<pidfile>/Users/yuyang/workspace/git/G7Platform/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
+	<memory-report>true</memory-report>
+	<daemonize>/Users/yuyang/workspace/git/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
+	<pythonpath>/Users/yuyang/workspace/git/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
+	<profiler>true</profiler>
+	<pythonpath>/Users/yuyang/workspace/git/G7Platform/G7Platform</pythonpath>
+</uwsgi>
