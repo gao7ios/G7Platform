@@ -1,5 +1,4 @@
 #!/bin/sh
-
 debug=1;
 dirPath=$(cd `dirname $0`; pwd);
 echo "输入软件安装命令如apt-get install,brew install, pacman -s,yum等.\n如果需要sudo，必须在命令前面添加sudo.\n不填写默认为brew install";
@@ -15,9 +14,6 @@ if [ -d "/Library/Caches/Homebrew" ]
 then
 	sudo chmod -R g+w /Library/Caches/Homebrew;
 fi
-
-if [ -d "/usr/local/var/mysql" ]
-then
 
 if [ -d "/usr/local/var/mysql/" ]
 then
@@ -39,7 +35,7 @@ if [ $debug -ne 0 ]
 then
 	if [ x$osinstaller == x"" ]; then
 		osinstaller="brew install";
-	fi;
+	fi
 
 	if [ $sysOS == "Darwin" ]
 	then
@@ -98,12 +94,10 @@ then
 		# sudo ln -sv /usr/local/bin/easy_install-2.7 /usr/bin/easy_install2;
 	}
 
-	defaultPyVersion=`python -V 2>&1|awk '{print $2}'|awk -F '.' '{print $1}'` 1>/dev/null 2>/dev/null;
-	if [[ $defaultPyVersion != *[^0-9]* ]]&&[[ $defaultPyVersion != 0* ]]; then
-		if [ $defaultPyVersion -ne 3 ]; then
-			pythoninitial;
-		fi
-	else
+	# defaultPyVersion=`python -V 2>&1|awk '{print $2}'|awk -F '.' '{print $1}'` 1>/dev/null 2>/dev/null;
+	python3 -V 2>/dev/null 1>/dev/null 0>/dev/null;
+	if [ $? -ne 0 ];
+	then
 		pythoninitial;
 	fi
 
@@ -201,17 +195,16 @@ then
 
 	python3 -c "import pyDes" 2>/dev/null 1>/dev/null;
 	if [ $? -ne 0 ];
-		then
-			wget http://twhiteman.netfirms.com/pyDES/pyDes-2.0.1.zip -P $dirPath;
-			unzip pyDes-2.0.1.zip -d $dirPath;
-			cd pyDes-2.0.1/;
-			sudo python3 setup.py install;
-			cd ..;
-			sudo rm -rf ./pyDes*;
+	then
+		wget http://twhiteman.netfirms.com/pyDES/pyDes-2.0.1.zip -P $dirPath;
+		unzip pyDes-2.0.1.zip -d $dirPath;
+		cd pyDes-2.0.1/;
+		sudo python3 setup.py install;
+		cd ..;
+		sudo rm -rf ./pyDes*;
 	fi
 
 	export PYTHONPATH=$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/djangoinitial.py;
-
 else
 	export PYTHONPATH=$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/djangoinitial.py;
 fi
