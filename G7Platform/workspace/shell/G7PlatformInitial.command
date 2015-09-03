@@ -166,7 +166,7 @@ then
 		wget http://projects.unbit.it/downloads/uwsgi-2.0.10.tar.gz;
 		tar xvf uwsgi-2.0.10.tar.gz;
 		cd uwsgi-2.0.10/
-		python3 CC=gcc ./uwsgiconfig.py --build;
+		sudo CC=gcc python3 ./uwsgiconfig.py --build;
 		sudo CC=gcc python3 uwsgiconfig.py --plugin plugins/python core py34;
 		sudo mkdir /usr/lib/uwsgi;
 		sudo cp -rf ./py34_plugin.so /usr/lib/uwsgi;
