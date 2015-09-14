@@ -417,8 +417,7 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 			ipaFileDir = time.strftime("%Y%m%d",localTime)
 			ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
 				appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
-
-			dsymFile = ContentFile(self.request.files["file"][1]["body"])
+			dsymFile = ContentFile(self.request.files["dSYM_file"][0]["body"])
 			dsymFileDir = time.strftime("%Y%m%d",localTime)
 			dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
 				appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)

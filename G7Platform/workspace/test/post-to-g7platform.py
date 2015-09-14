@@ -63,20 +63,20 @@ if __name__ == "__main__":
         #产品组ID
         product_group_id = str(sys.argv[6])
 
-        ipa_file_path = "test.ipa"
-
+#        ipa_file_path = "test.ipa"
+#python post-to-g7platform.py test 测试 10 ./test.ipa 10293 11
         # dSYM包地址
         dSYM_path = path.splitext(ipa_file_path)[0]+"-dSYM.zip"
 
         params = {
             'file': open(ipa_file_path, 'rb'),
             "product_name":product_name.decode("ISO-8859-1"),
-            "uid":"8a0a7d4a81cb46f8b70abe9c000b975d",
-            "installPassword":"abc",
+            "uid":"7829b10a2ccc4cbd888d52fdf90bfde8",
+            "installPassword":"gao7.com",
             "product_group_id":product_group_id,
-            "dSYM_path": open(dSYM_path, 'rb'),
+            "dSYM_file": open(dSYM_path, 'rb'),
         }
-
+        print(params)
         coded_params, boundary = _encode_multipart(params)
         headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary), 'Connection': 'keep-alive'}
         print("正在提交到搞趣开发平台...")
