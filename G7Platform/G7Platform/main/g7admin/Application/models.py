@@ -133,7 +133,8 @@ class G7Application(models.Model):
     appid = models.CharField(verbose_name=_(u"标识码"),
                                  max_length=100,default="",
                                  blank=True,unique=True)
-    file = models.FileField(upload_to="application/package", verbose_name=_(u"文件"),blank=True,null=True)
+    file = models.FileField(upload_to="application/package", verbose_name=_(u"ipa包文件"),blank=True,null=True)
+    dsymFile = models.FileField(upload_to="application/package", verbose_name=_(u"dsym包文件"),blank=True,null=True)
     version = models.CharField(blank=True, default="0.0", verbose_name=_(u"版本"), max_length=150)
     icon = models.ImageField(verbose_name=_(u"图标"), upload_to="application/icon/", default="application/icon/default_icon.png", blank=True)
     create_at = models.DateTimeField(verbose_name=_(u"创建时间"),  auto_now_add=timezone.now())
