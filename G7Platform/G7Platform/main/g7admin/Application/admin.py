@@ -122,7 +122,7 @@ class G7ApplicationAdmin(admin.ModelAdmin):
     fieldsets = (
         (_(u"简介"), {'fields': ("name", "product_id", "inner_version", "channel", "product_type", "version", "icon", "build_version")}),
         (_(u"说明"), {'fields': ( "description", )}),
-        (_(u"应用包"), {'fields': ("file", "bundleID", "appid" ,)}),
+        (_(u"应用包"), {'fields': ("file", "dsymFile", "bundleID", "appid" ,)}),
         (_(u"使用到的框架"), {"fields":("frameworks",)}),
         (_(u"选择产品"), {'fields': ("projects",)}),
     )
