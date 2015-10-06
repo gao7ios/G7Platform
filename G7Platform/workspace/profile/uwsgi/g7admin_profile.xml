@@ -1,22 +1,22 @@
 <?xml version="1.0" ?>
 <uwsgi>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform</pythonpath>
-	<plugin>/usr/lib/uwsgi/py34_plugin.so</plugin>
-	<listen>80</listen>
-	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
-	<socket>127.0.0.1:8882</socket>
-	<processes>8</processes>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
 	<logdate>true</logdate>
-	<module>wsgi</module>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
-	<py-programname>python3</py-programname>
+	<processes>8</processes>
 	<pidfile>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
-	<limit-as>300</limit-as>
-	<enable-threads>true</enable-threads>
-	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
-	<master>true</master>
 	<profiler>true</profiler>
+	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
+	<py-programname>python3</py-programname>
+	<plugin>/usr/lib/uwsgi/py34_plugin.so</plugin>
+	<module>wsgi</module>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform</pythonpath>
+	<socket>127.0.0.1:8882</socket>
+	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
 	<memory-report>true</memory-report>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
+	<limit-as>300</limit-as>
+	<listen>80</listen>
+	<master>true</master>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
+	<enable-threads>true</enable-threads>
 </uwsgi>
