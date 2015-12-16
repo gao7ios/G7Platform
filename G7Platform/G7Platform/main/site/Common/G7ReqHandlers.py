@@ -5,6 +5,7 @@ from G7Platform.G7Globals import *
 from G7Platform.core.database.G7DBManagers import G7DBManager
 from G7Platform.profile.settings.G7Settings import template_path, static_path
 from G7Platform.core.results.G7ResultAsistances import G7ResultAsistance
+from django.db import connections
 
 class G7ReqHandler(tornado.web.RequestHandler):
     static_path = static_path
@@ -14,6 +15,23 @@ class G7ReqHandler(tornado.web.RequestHandler):
     def __init__(self, application, request, **kwargs):
         super(G7ReqHandler, self).__init__(application, request)
         self.tableName = ""
+
+    def on_finish(self, *args, **kargs):
+        for c in connections.all():
+            try:
+                c._commit()
+            except:
+                pass
+        return
+
+    def prepare(self):
+        for c in connections.all():
+            try:
+                c._commit()
+            except:
+                
+                pass
+        return
 
 #数据库操作
     def dbGet(self, items, condition):
