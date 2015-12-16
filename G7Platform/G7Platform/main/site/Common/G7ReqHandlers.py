@@ -2,7 +2,7 @@
 __author__ = 'helios'
 
 from G7Platform.G7Globals import *
-from G7Platform.core.database.G7DBManagers import G7DBManager
+from G7Platform.core.database.G7DBSession import G7DBSession
 from G7Platform.profile.settings.G7Settings import template_path, static_path
 from G7Platform.core.results.G7ResultAsistances import G7ResultAsistance
 from django.db import connections
