@@ -35,13 +35,13 @@ class G7ReqHandler(tornado.web.RequestHandler):
 
 #数据库操作
     def dbGet(self, items, condition):
-        return G7DBManager().get(self.tableName, items, condition)
+        return G7DBSession().get(self.tableName, items, condition)
 
     def dbInsert(self, params):
-        return G7DBManager().insert(self.tableName, params)
+        return G7DBSession().insert(self.tableName, params)
 
     def dbUpdate(self, params, condition):
-        return G7DBManager().update(self.tableName, params, condition)
+        return G7DBSession().update(self.tableName, params, condition)
 
     @property
     def params(self):
