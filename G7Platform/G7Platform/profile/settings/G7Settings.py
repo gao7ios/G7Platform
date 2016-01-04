@@ -62,7 +62,7 @@ workspace_path = path.join(project_path, "workspace")
 profile_path = path.join(workspace_path, "profile")
 
 # 脚本路径
-shell_path = path.join((workspace_path, "shell"))
+shell_path = path.join(workspace_path, "shell")
 
 # 日志路径
 log_path = path.join(workspace_path, "log")
