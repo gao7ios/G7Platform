@@ -96,7 +96,7 @@ class G7ApplicationPgyerUploader():
 			ver = plist['G7VER']
 			ch  = plist['G7CH']
 			pt  = plist['G7PT']
-		except Exception, e:
+		except:
 			pass
 
 		appName = json_result['data']['appName']
