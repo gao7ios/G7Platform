@@ -93,9 +93,9 @@ class G7ApplicationPgyerUploader():
 
 		try:
 			pid = plist['G7PID']
-	        ver = plist['G7VER']
-	        ch  = plist['G7CH']
-	        pt  = plist['G7PT']
+			ver = plist['G7VER']
+			ch  = plist['G7CH']
+			pt  = plist['G7PT']
 		except Exception, e:
 			pass
 
