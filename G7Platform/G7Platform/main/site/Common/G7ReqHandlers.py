@@ -11,12 +11,14 @@ class G7ReqHandler(tornado.web.RequestHandler):
     static_path = static_path
     template_path = template_path
     tableName = ""
+    session = G7DBSession()
 
     def __init__(self, application, request, **kwargs):
         super(G7ReqHandler, self).__init__(application, request)
         self.tableName = ""
 
     def on_finish(self, *args, **kargs):
+        self.session.close()
         for c in connections.all():
             try:
                 c._commit()
@@ -35,13 +37,13 @@ class G7ReqHandler(tornado.web.RequestHandler):
 
 #数据库操作
     def dbGet(self, items, condition):
-        return G7DBSession().get(self.tableName, items, condition)
+        return self.session.get(self.tableName, items, condition)
 
     def dbInsert(self, params):
-        return G7DBSession().insert(self.tableName, params)
+        return self.session.insert(self.tableName, params)
 
     def dbUpdate(self, params, condition):
-        return G7DBSession().update(self.tableName, params, condition)
+        return self.session.update(self.tableName, params, condition)
 
     @property
     def params(self):
