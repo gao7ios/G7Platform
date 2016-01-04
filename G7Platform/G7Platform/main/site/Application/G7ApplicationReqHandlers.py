@@ -61,22 +61,22 @@ class G7ApplicationPgyerUploader():
 
 	#请求字典编码
 	def _encode_multipart(self, params_dict):
-	    boundary = '----------%s' % hex(int(time.time() * 1000))
-	    data = []
-	    for k, v in params_dict.items():
-	        data.append('--%s' % boundary)
-	        if hasattr(v, 'read'):
-	            filename = getattr(v, 'name', '')
-	            content = v.read()
-	            decoded_content = content.decode('ISO-8859-1')
-	            data.append('Content-Disposition: form-data; name="%s"; filename="kangda.ipa"' % k)
-	            data.append('Content-Type: application/octet-stream\r\n')
-	            data.append(decoded_content)
-	        else:
-	            data.append('Content-Disposition: form-data; name="%s"\r\n' % k)
-	            data.append(v if isinstance(v, str) else v.decode('utf-8'))
-	    data.append('--%s--\r\n' % boundary)
-	    return '\r\n'.join(data), boundary
+		boundary = '----------%s' % hex(int(time.time() * 1000))
+		data = []
+		for k, v in params_dict.items():
+			data.append('--%s' % boundary)
+			if hasattr(v, 'read'):
+				filename = getattr(v, 'name', '')
+				content = v.read()
+				decoded_content = content.decode('ISO-8859-1')
+				data.append('Content-Disposition: form-data; name="%s"; filename="kangda.ipa"' % k)
+				data.append('Content-Type: application/octet-stream\r\n')
+				data.append(decoded_content)
+			else:
+				data.append('Content-Disposition: form-data; name="%s"\r\n' % k)
+				data.append(v if isinstance(v, str) else v.decode('utf-8'))
+		data.append('--%s--\r\n' % boundary)
+		return '\r\n'.join(data), boundary
 
 	#处理 蒲公英 上传结果
 	def handle_result(self, result, mail_receiver):
@@ -136,33 +136,33 @@ class G7ApplicationPgyerUploader():
 		appATOInstallUrl = 'itms-services://?action=download-manifest&url=https://ssl.pgyer.com/app/plist/' + str(appKey)
 
 		appInstallUrl = 'http://www.pgyer.com/' + str(appShortcutUrl)
-	    appIconUrl = 'http://pgy-app-icons.qiniudn.com/image/view/app_icons/' + str(appIconKey)
-	    appQRCodeUrl = 'http://qr.liantu.com/api.php?text=' + str(appInstallUrl)
-	    appATOInstallUrl = 'itms-services://?action=download-manifest&url=https://ssl.pgyer.com/app/plist/' + str(appKey)
+		appIconUrl = 'http://pgy-app-icons.qiniudn.com/image/view/app_icons/' + str(appIconKey)
+		appQRCodeUrl = 'http://qr.liantu.com/api.php?text=' + str(appInstallUrl)
+		appATOInstallUrl = 'itms-services://?action=download-manifest&url=https://ssl.pgyer.com/app/plist/' + str(appKey)
 
-	    environsString = '<table width="700" border="0" cellpadding="0" cellspacing="0" align="center">'
-	    environsString += '<tbody><tr>'
-	    environsString += '     <td width="100%" style="" align="center" bgcolor="#f7f7f7">'
-	    environsString += '         <table border="0" cellpadding="0" cellspacing="0" align="center" style="width:100%;">'
-	    environsString += '             <tbody><tr>'
-	    environsString += '                 <td valign="top" class="ecxleft" style="width:100%;">'
-	    environsString += '                     <table border="0" cellpadding="15" cellspacing="0" width="100%" bgcolor="#F6F6F6">'
-	    environsString += '                         <tbody><tr>'
-	    environsString += '                             <td>'
-	    environsString += '                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">'
-	    environsString += '                                      <tbody><tr>'
-	    environsString += '                                         <td align="left" width="65">'
-	    environsString += '                                             <img src="' + str(appIconUrl) + '" style="width:50px;height:50px;border-radius:10px;border-radius:10px;border:1px solid #ddd;">'
-	    environsString += '                                         </td> '
-	    environsString += '                                         <td align="left">'
-	    environsString += '                                             <font color="#55555" size="3" style="font-size:16px;"><b>' + str(product_name) + '</b></font><br>'
-	    environsString += '                                             <font color="#55555" size="2" style="font-size:14px;">版本 ' + str(appVersion) + ' (build ' + str(build_version) +  ')</font>'
-	    environsString += '                                         </td>'
-	    environsString += '                                         <td width="50">'
-	    environsString += '                                             <font color="#55555" face="Trebuchet MS,Arial" size="3">'
-	    environsString += '                                             <a href="' + str(appATOInstallUrl) + '" target="_blank" style="background-color:#56bc94;display:inline-block;font-size:14px;width:90px;height:32px;text-align:center;line-height:32px;color:white;text-decoration:none;font-weight:bold;">设备直接安装</a>  '
-	    environsString += '                                             </font>'
-	    environsString += '                                         </td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>'
+		environsString = '<table width="700" border="0" cellpadding="0" cellspacing="0" align="center">'
+		environsString += '<tbody><tr>'
+		environsString += '     <td width="100%" style="" align="center" bgcolor="#f7f7f7">'
+		environsString += '         <table border="0" cellpadding="0" cellspacing="0" align="center" style="width:100%;">'
+		environsString += '             <tbody><tr>'
+		environsString += '                 <td valign="top" class="ecxleft" style="width:100%;">'
+		environsString += '                     <table border="0" cellpadding="15" cellspacing="0" width="100%" bgcolor="#F6F6F6">'
+		environsString += '                         <tbody><tr>'
+		environsString += '                             <td>'
+		environsString += '                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">'
+		environsString += '                                      <tbody><tr>'
+		environsString += '                                         <td align="left" width="65">'
+		environsString += '                                             <img src="' + str(appIconUrl) + '" style="width:50px;height:50px;border-radius:10px;border-radius:10px;border:1px solid #ddd;">'
+		environsString += '                                         </td> '
+		environsString += '                                         <td align="left">'
+		environsString += '                                             <font color="#55555" size="3" style="font-size:16px;"><b>' + str(product_name) + '</b></font><br>'
+		environsString += '                                             <font color="#55555" size="2" style="font-size:14px;">版本 ' + str(appVersion) + ' (build ' + str(build_version) +  ')</font>'
+		environsString += '                                         </td>'
+		environsString += '                                         <td width="50">'
+		environsString += '                                             <font color="#55555" face="Trebuchet MS,Arial" size="3">'
+		environsString += '                                             <a href="' + str(appATOInstallUrl) + '" target="_blank" style="background-color:#56bc94;display:inline-block;font-size:14px;width:90px;height:32px;text-align:center;line-height:32px;color:white;text-decoration:none;font-weight:bold;">设备直接安装</a>  '
+		environsString += '                                             </font>'
+		environsString += '                                         </td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>'
 
 	    environsString += '<h3>构建包信息</h3><p>'
 	    # environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\
@@ -175,7 +175,7 @@ class G7ApplicationPgyerUploader():
 	    environsString += '<p>在线安装 : ' + 'http://www.pgyer.com/' + str(appShortcutUrl) + '   密码 : ' + installPassword + '<p>'
 	    environsString += '<p>二维码安装 :'
 	    environsString += '<img src="' + str(appQRCodeUrl) + '" style="width:100px;height:100px;border-radius:10px;border-radius:10px;border:1px solid #ddd;"><p>'
-	    
+
 		message = environsString
 		body = MIMEText(message, _subtype='html', _charset='utf-8')
 		msg.attach(body)
@@ -198,10 +198,10 @@ class G7ApplicationPgyerUploader():
 	#请求参数字典
 	def httpClient(self, method="GET", domain="", path="", data=None, headers={}):
 
-	    conn = HTTPConnection(domain)
-	    # conn.set_debuglevel(1)
-	    conn.request(method, path, body=data, headers=headers)
-	    return conn.getresponse().read().decode('utf-8')
+		conn = HTTPConnection(domain)
+		# conn.set_debuglevel(1)
+		conn.request(method, path, body=data, headers=headers)
+		return conn.getresponse().read().decode('utf-8')
 	
 	def uploadToPgyer(self):
 		params = {
@@ -464,7 +464,7 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 			# buff = io.BufferedReader(ipaFile.file)
 			# # 上传到蒲公英
 			uploader = G7ApplicationPgyerUploader()
-		 #    #蒲公英应用上传地址
+		#    #蒲公英应用上传地址
 
 			uploader.domain = 'www.pgyer.com'
 			uploader.urlPath = "/apiv1/app/upload"
