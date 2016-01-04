@@ -13,9 +13,9 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 if sys.version_info.major == 3:
-    from http.client import HTTPConnection
+	from http.client import HTTPConnection
 else:
-    from httplib import HTTPConnection
+	from httplib import HTTPConnection
 
 import tornado
 import tornado.web
@@ -163,18 +163,17 @@ class G7ApplicationPgyerUploader():
 		environsString += '                                             <a href="' + str(appATOInstallUrl) + '" target="_blank" style="background-color:#56bc94;display:inline-block;font-size:14px;width:90px;height:32px;text-align:center;line-height:32px;color:white;text-decoration:none;font-weight:bold;">设备直接安装</a>  '
 		environsString += '                                             </font>'
 		environsString += '                                         </td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>'
-
-	    environsString += '<h3>构建包信息</h3><p>'
-	    # environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\
-	    environsString += '<p>版本号 : ' + project_version + '<p>'
-	    environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'
-	    environsString += '<p>App名称 : ' + str(product_name) + '<p>'
-	    environsString += '<p>BundleId : ' + str(appIdentifier) + '<p>'
-	    environsString += '<p>App文件大小 : ' + str(size(int(appFileSize))) + '<p>'
-	    environsString += '<p>更新时间 : ' + str(appUpdated) + '<p>'
-	    environsString += '<p>在线安装 : ' + 'http://www.pgyer.com/' + str(appShortcutUrl) + '   密码 : ' + installPassword + '<p>'
-	    environsString += '<p>二维码安装 :'
-	    environsString += '<img src="' + str(appQRCodeUrl) + '" style="width:100px;height:100px;border-radius:10px;border-radius:10px;border:1px solid #ddd;"><p>'
+		environsString += '<h3>构建包信息</h3><p>'
+		# environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\
+		environsString += '<p>版本号 : ' + project_version + '<p>'
+		environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'
+		environsString += '<p>App名称 : ' + str(product_name) + '<p>'
+		environsString += '<p>BundleId : ' + str(appIdentifier) + '<p>'
+		environsString += '<p>App文件大小 : ' + str(size(int(appFileSize))) + '<p>'
+		environsString += '<p>更新时间 : ' + str(appUpdated) + '<p>'
+		environsString += '<p>在线安装 : ' + 'http://www.pgyer.com/' + str(appShortcutUrl) + '   密码 : ' + installPassword + '<p>'
+		environsString += '<p>二维码安装 :'
+		environsString += '<img src="' + str(appQRCodeUrl) + '" style="width:100px;height:100px;border-radius:10px;border-radius:10px;border:1px solid #ddd;"><p>'
 
 		message = environsString
 		body = MIMEText(message, _subtype='html', _charset='utf-8')
