@@ -215,11 +215,11 @@ class G7ApplicationPgyerUploader():
 
 		coded_params, boundary = self._encode_multipart(params)
 		headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary)}
-		try:
-			responseObject = self.httpClient("POST",self.domain, self.urlPath, coded_params.encode('ISO-8859-1'), headers)
-			return self.handle_result(responseObject, self.mail_receiver)
-		except:
-			return G7ReqHandler.responseDataText(10003)
+		# try:
+		responseObject = self.httpClient("POST",self.domain, self.urlPath, coded_params.encode('ISO-8859-1'), headers)
+		return self.handle_result(responseObject, self.mail_receiver)
+		# except:
+		# 	return G7ReqHandler.responseDataText(10003)
 
 class G7ApplicationReqHandler(G7APIReqHandler):
 
@@ -425,70 +425,70 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 				project.icon = "application/icon/default_icon.png"
 			project.save()
 
+		# try:
+		# 创建新的包
+		ipaFile = ContentFile(self.request.files["file"][0]["body"])
+		ipaFileDir = time.strftime("%Y%m%d",localTime)
+		ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
+			appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+		dsymFile = ContentFile(self.request.files["dSYM_file"][0]["body"])
+		dsymFileDir = time.strftime("%Y%m%d",localTime)
+		dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
+			appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+
+		# g7log(ipaFileName)
+		application = G7Application(bundleID=bundleID,
+		product_id=g7PID,
+		product_type=g7PT,
+		name=appName,
+		channel=g7CH,
+		version=appVersion,
+		build_version=buildVersion,
+		inner_version=g7VER,
+		appid=uuid.uuid4().hex)
+		if icon:
+			application.icon.save("application/icon/"+timeNow+".png", icon)
+		else:
+			application.icon = "application/icon/default_icon.png"
+
+		application.save()
+		application.file.save(ipaFileName, ipaFile)
+		application.dsymFile.save(dsymFileName, dsymFile)
+
+		project.applications.add(application)
+		project.latest_build_version=application.build_version
+		project.latest_version = application.version
+		project.latest_inner_version = application.inner_version
+		project.save()
+
+		# buff = io.BufferedReader(ipaFile.file)
+		# # 上传到蒲公英
+		uploader = G7ApplicationPgyerUploader()
+	#    #蒲公英应用上传地址
+
+		uploader.domain = 'www.pgyer.com'
+		uploader.urlPath = "/apiv1/app/upload"
+		uploader.uKey = pgyer_uKey
+		uploader.api_key = pgyer_apiKey
+		uploader.ipaFile = open(application.file.path, "rb")
+		uploader.installPassword = installPassword
+		uploader.product_name = appName
+		uploader.currentG7User = currentG7User
+
+		users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())
+
 		try:
-			# 创建新的包
-			ipaFile = ContentFile(self.request.files["file"][0]["body"])
-			ipaFileDir = time.strftime("%Y%m%d",localTime)
-			ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
-				appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
-			dsymFile = ContentFile(self.request.files["dSYM_file"][0]["body"])
-			dsymFileDir = time.strftime("%Y%m%d",localTime)
-			dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
-				appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
-
-			# g7log(ipaFileName)
-			application = G7Application(bundleID=bundleID,
-			product_id=g7PID,
-			product_type=g7PT,
-			name=appName,
-			channel=g7CH,
-			version=appVersion,
-			build_version=buildVersion,
-			inner_version=g7VER,
-			appid=uuid.uuid4().hex)
-			if icon:
-				application.icon.save("application/icon/"+timeNow+".png", icon)
-			else:
-				application.icon = "application/icon/default_icon.png"
-
-			application.save()
-			application.file.save(ipaFileName, ipaFile)
-			application.dsymFile.save(dsymFileName, dsymFile)
-
-			project.applications.add(application)
-			project.latest_build_version=application.build_version
-			project.latest_version = application.version
-			project.latest_inner_version = application.inner_version
-			project.save()
-
-			# buff = io.BufferedReader(ipaFile.file)
-			# # 上传到蒲公英
-			uploader = G7ApplicationPgyerUploader()
-		#    #蒲公英应用上传地址
-
-			uploader.domain = 'www.pgyer.com'
-			uploader.urlPath = "/apiv1/app/upload"
-			uploader.uKey = pgyer_uKey
-			uploader.api_key = pgyer_apiKey
-			uploader.ipaFile = open(application.file.path, "rb")
-			uploader.installPassword = installPassword
-			uploader.product_name = appName
-			uploader.currentG7User = currentG7User
-
-			users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())
-
-			try:
-				if type(int(product_group_id)) == type(0) and int(product_group_id) > 0:
-					users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())+[user for user in G7User.objects.all() if len([group for group in list(user.groups.all()) if group.id == int(product_group_id)])>0]
-			except:
-				pass
-
-			emails = [user.email for user in users]
-			uploader.mail_receiver = list({}.fromkeys(emails).keys())
-			uploader.build_version = buildVersion
-			uploader.project_version = appVersion
-			uploader.g7CommonSetting = g7CommonSetting
-			return self.write(uploader.uploadToPgyer())
+			if type(int(product_group_id)) == type(0) and int(product_group_id) > 0:
+				users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())+[user for user in G7User.objects.all() if len([group for group in list(user.groups.all()) if group.id == int(product_group_id)])>0]
 		except:
-			# ipa包备份失败, 储存资料失败!!!
-			return self.responseWrite(10002)
+			pass
+
+		emails = [user.email for user in users]
+		uploader.mail_receiver = list({}.fromkeys(emails).keys())
+		uploader.build_version = buildVersion
+		uploader.project_version = appVersion
+		uploader.g7CommonSetting = g7CommonSetting
+		return self.write(uploader.uploadToPgyer())
+		# except:
+		# 	# ipa包备份失败, 储存资料失败!!!
+		# 	return self.responseWrite(10002)
