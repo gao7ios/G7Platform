@@ -12,7 +12,7 @@ from django.db.models.fields.related import ManyToManyRel
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper,FilteredSelectMultiple
 from django.db.models.fields import FieldDoesNotExist
 from G7Platform.profile.G7Profiles import G7Profile
-
+import uuid
 class G7GroupForm(forms.ModelForm):
 
     members = forms.ModelMultipleChoiceField(
@@ -45,6 +45,9 @@ class G7GroupForm(forms.ModelForm):
                     instance.members.remove(member)
             for member in self.cleaned_data['members']:
                 if member not in instance.members.all():
+                    member.userid = uuid.uuid4().hex
+                    member.usignature = uuid.uuid4().hex
+                    member.clientid = uuid.uuid4().hex
                     instance.members.add(member)
             '''{'members': [<G7User: 1.root>], 'creator': <G7User: 1.root>, 'permissions': [], 'name': 'asdfasdfasdfasdf'}'''
         else:

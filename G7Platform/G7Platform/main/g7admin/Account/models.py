@@ -77,16 +77,16 @@ class G7User(AbstractBaseUser):
     is_active = models.BooleanField(default=True,verbose_name=_(u"账户是否激活"))
     is_admin = models.BooleanField(default=False,verbose_name=_(u"是否是管理员"))
 
-    userid = models.CharField(verbose_name=_(u"用户ID"),max_length=100,default=uuid.uuid4().hex,blank=True)
+    userid = models.CharField(verbose_name=_(u"用户ID"),max_length=100,default="",blank=True)
     email = models.EmailField(verbose_name=_(u"邮箱"), max_length=255, unique=True)
     username = models.CharField(verbose_name=_(u"用户名"),max_length=255, default="", blank=False, unique=True)
     sex = models.CharField(verbose_name=_(u"性别") ,default=u"man", choices=sex_choices, blank=True, max_length=15)
     thumb = models.ImageField(verbose_name=_(u"头像") ,upload_to="user/thumbnails",default=settings.MEDIA_URL+"user/thumbnails/default_thumb.png")
     age = models.IntegerField(verbose_name=_(u"年龄") ,default=0)
     expires_time = models.DateTimeField(verbose_name=_(u"登陆过期时间"),auto_now_add=True, blank=True, null=True)
-    usignature = models.CharField(verbose_name=_(u"用户登陆标识"),max_length=100, default=uuid.uuid4().hex, blank=True)
+    usignature = models.CharField(verbose_name=_(u"用户登陆标识"),max_length=100, default="", blank=True)
     nickname = models.CharField(verbose_name=_(u"昵称"),max_length=255, default="", blank=True)
-    clientid = models.CharField(verbose_name=_(u"客户端id"),max_length=100,default=uuid.uuid4().hex, blank=True)
+    clientid = models.CharField(verbose_name=_(u"客户端id"),max_length=100,default="", blank=True)
     realname = models.CharField(verbose_name=_(u"真实姓名"),max_length=255, default="", blank=True, null=True)
     job = models.CharField(verbose_name=_(u"职业"), max_length=100, default="无业游民")
     groups = models.ManyToManyField("Account.G7Group", verbose_name=_('群组'),
@@ -139,4 +139,3 @@ class G7User(AbstractBaseUser):
             return str(self.id)+"."+self.realname
         else:
             return str(self.id)+"."+self.username
-
