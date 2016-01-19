@@ -46,6 +46,7 @@ class G7ApplicationPgyerUploader():
 		self.project_version = ""
 		self.currentG7User = None
 		self.g7CommonSetting = {}
+		self.plist = {}
 
 	def fileSize(self, byteSize):
 
@@ -93,12 +94,15 @@ class G7ApplicationPgyerUploader():
 			return G7ReqHandler.responseDataText(10005)
 
 		try:
-			pid = plist['G7PID']
-			ver = plist['G7VER']
-			ch  = plist['G7CH']
-			pt  = plist['G7PT']
+			pid = self.plist['G7PID']
+			ver = self.plist['G7VER']
+			ch  = self.plist['G7CH']
+			pt  = self.plist['G7PT']
 		except:
-			pass
+			pid = 0
+			ver = 0
+			ch 	= 0
+			pt	= 0
 
 		appName = json_result['data']['appName']
 		appKey = json_result['data']['appKey']
@@ -474,6 +478,13 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 		uploader.installPassword = installPassword
 		uploader.product_name = appName
 		uploader.currentG7User = currentG7User
+
+		pid = self.plist['G7PID']
+		ver = self.plist['G7VER']
+		ch  = self.plist['G7CH']
+		pt  = self.plist['G7PT']
+
+		uploader.plist = {'G7PID':g7PID, 'G7VER':g7VER, 'G7CH':g7CH, 'G7PT':g7PT}
 
 		users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())
 
