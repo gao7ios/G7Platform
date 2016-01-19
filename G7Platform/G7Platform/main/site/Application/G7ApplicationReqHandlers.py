@@ -118,8 +118,7 @@ class G7ApplicationPgyerUploader():
 		#根据不同邮箱配置 host，user，和pwd
 
 		if self.currentG7User != None and self.currentG7User.mail_pwd and self.currentG7User.mail_pwd != "":
-			domain = self.currentG7User.email.split("@")[1]
-			mail_host = "smtp."+self.domain
+			mail_host = "smtp."+self.currentG7User.email.split("@")[1]
 			mail_user = self.currentG7User.email
 			mail_username = self.currentG7User.username
 			mail_pwd = self.currentG7User.mail_pwd
@@ -175,7 +174,7 @@ class G7ApplicationPgyerUploader():
 		environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'
 		environsString += '<p>App名称 : ' + str(self.product_name) + '<p>'
 		environsString += '<p>BundleId : ' + str(appIdentifier) + '<p>'
-		environsString += '<p>App文件大小 : ' + str(int(appFileSize)) + '<p>'
+		environsString += '<p>App文件大小 : ' + str(fileSize(int(appFileSize))) + '<p>'
 		environsString += '<p>更新时间 : ' + str(appUpdated) + '<p>'
 		environsString += '<p>在线安装 : ' + 'http://www.pgyer.com/' + str(appShortcutUrl) + '   密码 : ' + self.installPassword + '<p>'
 		environsString += '<p>二维码安装 :'
