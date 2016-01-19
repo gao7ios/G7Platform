@@ -91,7 +91,7 @@ class G7ApplicationPgyerUploader():
 	#发送邮件
 	def send_Email(self, json_result, mail_receiver):
 		if len(mail_receiver) == 0:
-			return G7ReqHandler.responseDataText(10005)
+			return G7ReqHandler.responseDataText(10009)
 
 		try:
 			pid = self.plist['G7PID']
