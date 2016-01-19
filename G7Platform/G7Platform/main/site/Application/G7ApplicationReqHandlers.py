@@ -175,7 +175,7 @@ class G7ApplicationPgyerUploader():
 		environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'
 		environsString += '<p>App名称 : ' + str(self.product_name) + '<p>'
 		environsString += '<p>BundleId : ' + str(appIdentifier) + '<p>'
-		environsString += '<p>App文件大小 : ' + str(size(int(appFileSize))) + '<p>'
+		environsString += '<p>App文件大小 : ' + str(int(appFileSize)) + '<p>'
 		environsString += '<p>更新时间 : ' + str(appUpdated) + '<p>'
 		environsString += '<p>在线安装 : ' + 'http://www.pgyer.com/' + str(appShortcutUrl) + '   密码 : ' + self.installPassword + '<p>'
 		environsString += '<p>二维码安装 :'
