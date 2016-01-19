@@ -5,12 +5,4 @@
 dirPath=$(cd `dirname $0`; pwd);
 # tornado
 cd $dirPath/../..;
-sudo chown -R $USER $dirPath/../..;
 python3 $dirPath/../../G7Platform/G7Platforms.py;
-
-
-
-
-
-
-
