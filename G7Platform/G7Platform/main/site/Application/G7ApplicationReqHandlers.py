@@ -115,7 +115,7 @@ class G7ApplicationPgyerUploader():
 
 		if self.currentG7User != None and self.currentG7User.mail_pwd and self.currentG7User.mail_pwd != "":
 			domain = self.currentG7User.email.split("@")[1]
-			mail_host = "smtp."+domain
+			mail_host = "smtp."+self.domain
 			mail_user = self.currentG7User.email
 			mail_username = self.currentG7User.username
 			mail_pwd = self.currentG7User.mail_pwd
@@ -157,7 +157,7 @@ class G7ApplicationPgyerUploader():
 		environsString += '                                         </td> '
 		environsString += '                                         <td align="left">'
 		environsString += '                                             <font color="#55555" size="3" style="font-size:16px;"><b>' + str(self.product_name) + '</b></font><br>'
-		environsString += '                                             <font color="#55555" size="2" style="font-size:14px;">版本 ' + str(appVersion) + ' (build ' + str(build_version) +  ')</font>'
+		environsString += '                                             <font color="#55555" size="2" style="font-size:14px;">版本 ' + str(appVersion) + ' (build ' + str(self.build_version) +  ')</font>'
 		environsString += '                                         </td>'
 		environsString += '                                         <td width="50">'
 		environsString += '                                             <font color="#55555" face="Trebuchet MS,Arial" size="3">'
@@ -167,13 +167,13 @@ class G7ApplicationPgyerUploader():
 
 		environsString += '<h3>构建包信息</h3><p>'
 		# environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\
-		environsString += '<p>版本号 : ' + project_version + '<p>'
+		environsString += '<p>版本号 : ' + self.project_version + '<p>'
 		environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'
 		environsString += '<p>App名称 : ' + str(self.product_name) + '<p>'
 		environsString += '<p>BundleId : ' + str(appIdentifier) + '<p>'
 		environsString += '<p>App文件大小 : ' + str(size(int(appFileSize))) + '<p>'
 		environsString += '<p>更新时间 : ' + str(appUpdated) + '<p>'
-		environsString += '<p>在线安装 : ' + 'http://www.pgyer.com/' + str(appShortcutUrl) + '   密码 : ' + installPassword + '<p>'
+		environsString += '<p>在线安装 : ' + 'http://www.pgyer.com/' + str(appShortcutUrl) + '   密码 : ' + self.installPassword + '<p>'
 		environsString += '<p>二维码安装 :'
 		environsString += '<img src="' + str(appQRCodeUrl) + '" style="width:100px;height:100px;border-radius:10px;border-radius:10px;border:1px solid #ddd;"><p>'
 
