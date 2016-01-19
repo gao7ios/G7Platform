@@ -55,6 +55,9 @@ class G7GroupForm(forms.ModelForm):
             self.instance.name = self.cleaned_data["name"]
             self.instance.save()
             for user in self.cleaned_data["members"]:
+                user.userid = uuid.uuid4().hex
+                user.usignature = uuid.uuid4().hex
+                user.clientid = uuid.uuid4().hex
                 user.groups.add(self.instance)
             for permission in self.cleaned_data["permissions"]:
                 self.instance.permissions.add(permission)
@@ -120,10 +123,11 @@ class UserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.userid = uuid.uuid4().hex
+        user.usignature = uuid.uuid4().hex
+        user.clientid = uuid.uuid4().hex
+
         if commit:
-            member.userid = uuid.uuid4().hex
-            member.usignature = uuid.uuid4().hex
-            member.clientid = uuid.uuid4().hex
             user.save()
         return user
 
