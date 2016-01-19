@@ -68,8 +68,8 @@ class G7Project(models.Model):
                                      blank=True,
                                      related_name="projects")
 
-    icon = models.ImageField(verbose_name=_(u"图标"), 
-        upload_to="project/icon/", 
+    icon = models.ImageField(verbose_name=_(u"图标"),
+        upload_to="project/icon/",
         default="project/icon/default_icon.png")
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -78,7 +78,7 @@ class G7Project(models.Model):
                              db_constraint=False,
                              null=True,
                              blank=True)
-    
+
     members = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                     verbose_name=_(u"成员"),
                                     related_name='projects',
@@ -90,11 +90,11 @@ class G7Project(models.Model):
                              default="",
                              blank=True,unique=True)
 
-    bundleID = models.CharField(max_length=200, 
-        default="", 
-        blank=False, 
-        null=False, 
-        verbose_name=_(u"标识符(BundleID)"), 
+    bundleID = models.CharField(max_length=200,
+        default="",
+        blank=False,
+        null=False,
+        verbose_name=_(u"标识符(BundleID)"),
         unique=True)
 
     create_at = models.DateTimeField(verbose_name=_(u"创建时间"), auto_now_add=timezone.now())
