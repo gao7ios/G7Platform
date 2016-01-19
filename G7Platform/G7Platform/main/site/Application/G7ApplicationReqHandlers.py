@@ -188,15 +188,15 @@ class G7ApplicationPgyerUploader():
 		msg['from'] = mail_user
 		msg['subject'] = '[测试]'+ self.product_name + '_v' + appVersion + '_' + self.build_version
 
-		try:
-			s =  smtplib.SMTP_SSL(mail_host, mail_sslPort)
-			s.ehlo()
-			s.login(mail_user, mail_pwd)
-			s.sendmail(mail_user, mail_receiver, msg.as_string())
-			s.quit()
-			return G7ReqHandler.responseDataText(0, "打包成功", {})#self.responseWrite(0, "打包成功", {})
-		except Exception as e:
-			return G7ReqHandler.responseDataText(10004)
+		# try:
+		s =  smtplib.SMTP_SSL(mail_host, mail_sslPort)
+		s.ehlo()
+		s.login(mail_user, mail_pwd)
+		s.sendmail(mail_user, mail_receiver, msg.as_string())
+		s.quit()
+		return G7ReqHandler.responseDataText(0, "打包成功", {})#self.responseWrite(0, "打包成功", {})
+		# except Exception as e:
+		# 	return G7ReqHandler.responseDataText(10004)
 
 
 	#############################################################
