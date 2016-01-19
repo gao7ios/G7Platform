@@ -17,7 +17,6 @@ from django.core.wsgi import get_wsgi_application
 from G7Platform.profile.settings.G7Settings import *
 
 def g7log(log):
-    print(log)
     with open(path.join(log_path,"{log_name}.log".format(log_name=project_name)), "a") as f:
         logStr = "{project_name} Log At {datetime}: {log}\n".format(project_name=project_name,datetime=str(datetime.datetime.now()),log=str(log))
         f.write(logStr)
