@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
         #项目名称，用在 拼接 tomcat 文件地址
         project_name = str(sys.argv[1])
-        
+
         #产品名称
         product_name = str(sys.argv[2])
 
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         coded_params, boundary = _encode_multipart(params)
         headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary), 'Connection': 'keep-alive'}
         print("正在提交到搞趣开发平台...")
-        responseString = httpClient("POST","192.168.205.120", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
+        responseString = httpClient("POST","192.168.3.80", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
         try:
             responseObject = json.loads(responseString.decode("utf-8"))
             if "message" not in list(responseObject.keys()):

@@ -12,6 +12,7 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
 if sys.version_info.major == 3:
 	from http.client import HTTPConnection
 else:
@@ -111,7 +112,7 @@ class G7ApplicationPgyerUploader():
 		appCreated = json_result['data']['appCreated']
 
 		#根据不同邮箱配置 host，user，和pwd
-		
+
 		if self.currentG7User != None and self.currentG7User.mail_pwd and self.currentG7User.mail_pwd != "":
 			domain = self.currentG7User.email.split("@")[1]
 			mail_host = "smtp."+domain
@@ -163,6 +164,7 @@ class G7ApplicationPgyerUploader():
 		environsString += '                                             <a href="' + str(appATOInstallUrl) + '" target="_blank" style="background-color:#56bc94;display:inline-block;font-size:14px;width:90px;height:32px;text-align:center;line-height:32px;color:white;text-decoration:none;font-weight:bold;">设备直接安装</a>  '
 		environsString += '                                             </font>'
 		environsString += '                                         </td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table>'
+
 		environsString += '<h3>构建包信息</h3><p>'
 		# environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\
 		environsString += '<p>版本号 : ' + project_version + '<p>'
@@ -201,7 +203,7 @@ class G7ApplicationPgyerUploader():
 		# conn.set_debuglevel(1)
 		conn.request(method, path, body=data, headers=headers)
 		return conn.getresponse().read().decode('utf-8')
-	
+
 	def uploadToPgyer(self):
 		params = {
 			'uKey': self.uKey,
@@ -223,7 +225,6 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 
 	def infoPlistFrom(self, buffer):
 		info = {}
-
 		try:
 			info = plistlib.readPlistFromBytes(buffer)
 		except:
@@ -260,15 +261,15 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 
 		zipBuffer = io.BytesIO()
 		zipBuffer.write(fileBytes)
-		
+
 		zipBuffer.seek(0)
 		zf = zipfile.ZipFile(zipBuffer, "r")
 		for zipInfo in zf.infolist():
-			
+
 			# 获取名字和bundleid
 			if ".app/Info.plist" in zipInfo.filename:
 				info = self.infoPlistFrom(zf.read(zipInfo.filename))
-			
+
 			# 获取G7CommonSetting.plist
 			if ".app/G7CommonSetting.plist" in zipInfo.filename:
 				g7CommonSetting = self.g7CommonPlistFrom(zf.read(zipInfo.filename))
@@ -310,7 +311,7 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 	@tornado.web.asynchronous
 	@tornado.gen.coroutine
 	def post(self):
-		
+
 		product_name = self.get_argument('product_name')
 		uid = self.get_argument("uid")
 		installPassword = self.get_argument("installPassword")
@@ -390,8 +391,8 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 			else:
 				if "G7PT@iPhone" in list(g7CommonSetting.keys()):
 					g7PT = 1
-		
-		# 获取应用名 
+
+		# 获取应用名
 		appName = product_name
 		if "CFBundleDisplayName" in list(info.keys()) and (appName == None or appName == ""):
 			appName = info["CFBundleDisplayName"]
@@ -436,12 +437,12 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 				appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
 
 			# g7log(ipaFileName)
-			application = G7Application(bundleID=bundleID, 
-			product_id=g7PID, 
+			application = G7Application(bundleID=bundleID,
+			product_id=g7PID,
 			product_type=g7PT,
-			name=appName, 
-			channel=g7CH, 
-			version=appVersion, 
+			name=appName,
+			channel=g7CH,
+			version=appVersion,
 			build_version=buildVersion,
 			inner_version=g7VER,
 			appid=uuid.uuid4().hex)
@@ -467,21 +468,21 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 
 			uploader.domain = 'www.pgyer.com'
 			uploader.urlPath = "/apiv1/app/upload"
-			uploader.uKey = pgyer_uKey 
-			uploader.api_key = pgyer_apiKey 
+			uploader.uKey = pgyer_uKey
+			uploader.api_key = pgyer_apiKey
 			uploader.ipaFile = open(application.file.path, "rb")
 			uploader.installPassword = installPassword
 			uploader.product_name = appName
 			uploader.currentG7User = currentG7User
 
 			users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())
-			
+
 			try:
 				if type(int(product_group_id)) == type(0) and int(product_group_id) > 0:
 					users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())+[user for user in G7User.objects.all() if len([group for group in list(user.groups.all()) if group.id == int(product_group_id)])>0]
 			except:
 				pass
-				
+
 			emails = [user.email for user in users]
 			uploader.mail_receiver = list({}.fromkeys(emails).keys())
 			uploader.build_version = buildVersion
@@ -491,6 +492,3 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 		except:
 			# ipa包备份失败, 储存资料失败!!!
 			return self.responseWrite(10002)
-
-		
-

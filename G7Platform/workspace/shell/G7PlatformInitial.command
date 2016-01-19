@@ -31,6 +31,46 @@ fi
 
 sh $dirPath/G7PlatformStop.command;
 
+function pythoninitial() {
+	wget $pythonurl -P $dirPath;
+	if [ $sysOS == "Darwin" ]
+	then
+		echo "输入用户$USER密码:\n";
+		echo dirPath:$dirPath;
+		sudo installer -pkg $dirPath/python-3.4.3-macosx10.6.pkg -target /;
+	else
+		tar xvf $dirPath/Python-3.4.3.tgz;
+		cd $dirPath/Python-3.4.3/;
+		echo "输入root用户密码：";
+		su;
+		./configure --prefix /usr/local/bin/;
+		make && make install;
+	fi
+
+	cd $dirPath;
+	sudo rm -rf $dirPath/*ython-3.4.3*;
+
+	reallink=/usr/local/bin/python3.4;
+	if [ -L /usr/local/bin/python3.4 ]
+	then
+		reallink=$(readlink /usr/local/bin/python3.4);
+	fi
+
+	# sudo rm -rf /usr/local/bin/python;
+	# sudo rm -rf /usr/bin/python;
+	# sudo ln -sv $reallink /usr/local/bin/python;
+	# sudo ln -sv $reallink /usr/bin/python;
+	sudo ln -sv $reallink /usr/local/bin/python3;
+	sudo ln -sv $reallink /usr/bin/python3;
+	# if 	[ -f /usr/bin/python2.7 ]
+	# then
+	# 	sudo ln -sv /usr/bin/python2.7 /usr/local/bin/python2;
+	# fi
+	# sudo rm -rf /usr/bin/easy_install;
+	sudo ln -sv /usr/local/bin/easy_install-3.4 /usr/bin/easy_install3;
+	# sudo ln -sv /usr/local/bin/easy_install-2.7 /usr/bin/easy_install2;
+}
+
 if [ $debug -ne 0 ]
 then
 	if [ x$osinstaller == x"" ]; then
@@ -54,46 +94,6 @@ then
 		$osinstaller wget;
 	fi
 
-	function pythoninitial() {
-		wget $pythonurl -P $dirPath;
-		if [ $sysOS == "Darwin" ]
-		then
-			echo "输入用户$USER密码:\n";
-			echo dirPath:$dirPath;
-			sudo installer -pkg $dirPath/python-3.4.3-macosx10.6.pkg -target /;
-		else
-			tar xvf $dirPath/Python-3.4.3.tgz;
-			cd $dirPath/Python-3.4.3/;
-			echo "输入root用户密码：";
-			su;
-			./configure --prefix /usr/local/bin/;
-			make && make install;
-		fi
-
-		cd $dirPath;
-		sudo rm -rf $dirPath/*ython-3.4.3*;
-
-		reallink=/usr/local/bin/python3.4;
-		if [ -L /usr/local/bin/python3.4 ]
-		then
-			reallink=$(readlink /usr/local/bin/python3.4);
-		fi
-
-		# sudo rm -rf /usr/local/bin/python;
-		# sudo rm -rf /usr/bin/python;
-		# sudo ln -sv $reallink /usr/local/bin/python;
-		# sudo ln -sv $reallink /usr/bin/python;
-		sudo ln -sv $reallink /usr/local/bin/python3;
-		sudo ln -sv $reallink /usr/bin/python3;
-		# if 	[ -f /usr/bin/python2.7 ]
-		# then
-		# 	sudo ln -sv /usr/bin/python2.7 /usr/local/bin/python2;
-		# fi
-		# sudo rm -rf /usr/bin/easy_install;
-		sudo ln -sv /usr/local/bin/easy_install-3.4 /usr/bin/easy_install3;
-		# sudo ln -sv /usr/local/bin/easy_install-2.7 /usr/bin/easy_install2;
-	}
-
 	# defaultPyVersion=`python -V 2>&1|awk '{print $2}'|awk -F '.' '{print $1}'` 1>/dev/null 2>/dev/null;
 	python3 -V 2>/dev/null 1>/dev/null 0>/dev/null;
 	if [ $? -ne 0 ];
@@ -114,12 +114,12 @@ then
 		sudo chmod -R 755 /usr/local/*/mysql/;
 		unset TMPDIR;
 		mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=/usr/local/var/mysql --tmpdir=/tmp;
-		echo "启动myqsl";	
+		echo "启动myqsl";
 		mysql.server start;
-		
+
 		/usr/local/Cellar/mysql/*/bin/mysql_secure_installation;
 	fi
-	
+
 	nginx -v 2>/dev/null 1>/dev/null;
 	if [ $? -ne 0 ]
 	then
@@ -150,7 +150,7 @@ then
 		sudo ln -sv /usr/local/bin/pip3.4 /usr/local/bin/pip;
 		sudo ln -sv /usr/local/bin/pip2.7 /usr/local/bin/pip2;
 	fi
-	
+
 	$osinstaller gettext 1>/dev/null;
 
 	supervisord -v 1>/dev/null 2>/dev/null;
@@ -176,16 +176,36 @@ then
 	fi
 
 	sudo CC=gcc pip3 install uwsgi==2.0.10 1>/dev/null;
-	sudo pip3 install tornado==4.2 1>/dev/null;
-	sudo pip3 install django==1.8.2 1>/dev/null;
+
+	python3 -c "import tornado" 2>/dev/null 1>/dev/null;
+	if [ $? -ne 0 ];
+	then
+		sudo pip3 install tornado==4.2 1>/dev/null;
+	fi
+
+	python3 -c "import tornado" 2>/dev/null 1>/dev/null;
+	if [ $? -ne 0 ];
+	then
+		sudo pip3 install django==1.9.1 1>/dev/null;
+	fi
+
 	django-admin 2>/dev/null 1>/dev/null;
 	if [ $? -ne 0 ];
 	then
 		sudo sed -e 's/python/python3/' /Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/django/bin/django-admin.py > /usr/local/bin/django-admin;
 	fi
-	sudo pip3 install torndb==0.3 1>/dev/null;
-	sudo pip3 install pillow 1>/dev/null;
 
+	python3 -c "import torndb" 2>/dev/null 1>/dev/null;
+	if [ $? -ne 0 ];
+	then
+		sudo pip3 install torndb==0.3 1>/dev/null;
+	fi
+
+	python3 -c "from PIL import Image" 2>/dev/null 1>/dev/null;
+	if [ $? -ne 0 ];
+	then
+		sudo pip3 install pillow==3.1.0 1>/dev/null;
+	fi
 	sudo mysql.server start;
 	python3 -c "import MySQLdb" 2>/dev/null 1>/dev/null;
 	if [ $? -ne 0 ];
