@@ -335,7 +335,7 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 				currentG7User = uidUsers[0]
 				pgyer_uKey = currentG7User.pgyer_ukey
 				pgyer_apiKey = currentG7User.pgyer_apiKey
-				g7log("pgyer_uKey:{pgyer_uKey}, pgyer_apiKey:{pgyer_apiKey}")
+				g7log("uid:{uid}, username:{username} ,pgyer_uKey:{pgyer_uKey}, pgyer_apiKey:{pgyer_apiKey}".format(uid=uid, username=currentG7User.username, pgyer_uKey=pgyer_uKey, pgyer_apiKey=pgyer_apiKey))
 				if pgyer_uKey == None or pgyer_uKey == "" or pgyer_apiKey == None or pgyer_apiKey == "":
 					# 请填写该用户所拥有的蒲公英uKey和apiKey
 					return self.responseWrite(10008)
