@@ -121,6 +121,9 @@ class UserCreationForm(forms.ModelForm):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
+            member.userid = uuid.uuid4().hex
+            member.usignature = uuid.uuid4().hex
+            member.clientid = uuid.uuid4().hex
             user.save()
         return user
 
