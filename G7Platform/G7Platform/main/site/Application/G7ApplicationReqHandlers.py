@@ -123,10 +123,10 @@ class G7ApplicationPgyerUploader():
 			mail_username = self.currentG7User.username
 			mail_pwd = self.currentG7User.mail_pwd
 		else:
-			mail_host = 'test'
-			mail_user = 'test'
-			mail_username = 'test'
-			mail_pwd = 'test'
+			mail_host = 'smtp.163.com'
+			mail_user = 'g7platform@163.com'
+			mail_username = 'g7platform'
+			mail_pwd = 'epuyvjpmusfwbzwr'
 
 		mail_to = ','.join(mail_receiver)
 		mail_smtpPort = '25'

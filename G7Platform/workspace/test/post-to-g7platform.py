@@ -71,7 +71,7 @@ if __name__ == "__main__":
         params = {
             'file': open(ipa_file_path, 'rb'),
             "product_name":product_name.decode("ISO-8859-1"),
-            "uid":"7829b10a2ccc4cbd888d52fdf90bfde8",
+            "uid":"2744e29900e2422da0eef34072b7ffc3",
             "installPassword":"gao7.com",
             "product_group_id":product_group_id,
             "dSYM_file": open(dSYM_path, 'rb'),
