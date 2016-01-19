@@ -478,12 +478,6 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 		uploader.installPassword = installPassword
 		uploader.product_name = appName
 		uploader.currentG7User = currentG7User
-
-		pid = self.plist['G7PID']
-		ver = self.plist['G7VER']
-		ch  = self.plist['G7CH']
-		pt  = self.plist['G7PT']
-
 		uploader.plist = {'G7PID':g7PID, 'G7VER':g7VER, 'G7CH':g7CH, 'G7PT':g7PT}
 
 		users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())
