@@ -156,7 +156,7 @@ class G7ApplicationPgyerUploader():
 		environsString += '                                             <img src="' + str(appIconUrl) + '" style="width:50px;height:50px;border-radius:10px;border-radius:10px;border:1px solid #ddd;">'
 		environsString += '                                         </td> '
 		environsString += '                                         <td align="left">'
-		environsString += '                                             <font color="#55555" size="3" style="font-size:16px;"><b>' + str(product_name) + '</b></font><br>'
+		environsString += '                                             <font color="#55555" size="3" style="font-size:16px;"><b>' + str(self.product_name) + '</b></font><br>'
 		environsString += '                                             <font color="#55555" size="2" style="font-size:14px;">版本 ' + str(appVersion) + ' (build ' + str(build_version) +  ')</font>'
 		environsString += '                                         </td>'
 		environsString += '                                         <td width="50">'
@@ -169,7 +169,7 @@ class G7ApplicationPgyerUploader():
 		# environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\
 		environsString += '<p>版本号 : ' + project_version + '<p>'
 		environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'
-		environsString += '<p>App名称 : ' + str(product_name) + '<p>'
+		environsString += '<p>App名称 : ' + str(self.product_name) + '<p>'
 		environsString += '<p>BundleId : ' + str(appIdentifier) + '<p>'
 		environsString += '<p>App文件大小 : ' + str(size(int(appFileSize))) + '<p>'
 		environsString += '<p>更新时间 : ' + str(appUpdated) + '<p>'
