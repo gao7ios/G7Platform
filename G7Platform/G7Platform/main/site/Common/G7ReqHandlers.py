@@ -24,6 +24,14 @@ class G7ReqHandler(tornado.web.RequestHandler):
                 c._commit()
             except:
                 pass
+
+        if connection.connection and not connection.is_usable():
+            # destroy the default mysql connection
+            # after this line , when you use ORM methods
+            # django will reconnect to the default mysql
+            
+            del connections._connections.default
+
         return
 
     def prepare(self):
@@ -31,7 +39,6 @@ class G7ReqHandler(tornado.web.RequestHandler):
             try:
                 c._commit()
             except:
-                
                 pass
         return
 
