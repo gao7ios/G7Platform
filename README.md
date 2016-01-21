@@ -5,7 +5,6 @@
 系统环境：Mac OSX 10.10， 阿里云(Red Hat 4.4.7-4)
 
 1.简单介绍
-
 	G7Platform是一个利用nginx转发操作系统中部署的基于python-tornado框架和
 	python-django框架以及一个php的服务。
 	其中的原理是在操作系统中开启4个tornado服务的端口，1个django服务的端口以及
@@ -24,10 +23,10 @@
 
 	1.0 项目主目录 - G7Platform/G7Platform: 项目主目录，包含所有主要业务的代码，
 	其中包含core（核心工具）
-	library（第三方维护的代码） 
-	main(主业务) 
-	profile(项目公共配置与设置) 
-	sql(数据库sql脚本) 
+	library（第三方维护的代码）
+	main(主业务)
+	profile(项目公共配置与设置)
+	sql(数据库sql脚本)
 	test(调试与测试)
 
 	1.1 资源目录 - G7Platform/media: 当前由于部署在单机上，
@@ -47,13 +46,13 @@
 	shell（便捷操作脚本）
 
 	1.5.1 日志 - G7Platform/workspace/log: 日志，
-	django（存放django运行中的日志报告） 
+	django（存放django运行中的日志报告）
 	supervisor(存放supervisor监听的tornado服务的运行日志报告)
 
 	1.5.2 配置 - G7Platform/workspace/profile:
-	nginx（关于nginx的配置，其中nginx/log是nginx服务的日志报告） 
-	php（关于php部署配置） 
-	supervisor（关于supervisor部署的配置） 
+	nginx（关于nginx的配置，其中nginx/log是nginx服务的日志报告）
+	php（关于php部署配置）
+	supervisor（关于supervisor部署的配置）
 	uwsgi（django部署uwsgi环境的配置）
 
 	1.5.3 脚本 - G7Platform/workspace/shell: 存放着G7Platform的操作脚本，
@@ -66,12 +65,12 @@
 	tools是在shell脚本运行中需要的其他脚本工具
 
 3.初始化环境
-	 
+
 	 双击G7Platform/workspace/shell/G7PlatformInitial.command
 
 
 4.运行服务
-	
+
 	双击G7Platform/workspace/shell/G7PlatformRestart.command
 
 	测试模式下：
@@ -89,7 +88,7 @@
 	殊的需求上，我们加入了php的环境。
 
 6.URL说明:
-	
+
 	一些基本的url配置是在nginx的配置是固定的
 
 	当URL的根目录下第一个目录是admin，那么就会访问django服务，类似http://domain.com/admin/
@@ -119,8 +118,3 @@
 	就是为后台创建一个新用户
 
 	注：该对话框环境主要是后台和数据库相关工具。开发中主要利用它来进行对数据的操作以及实时调试写好的代码。
-
-
-
-
-
