@@ -118,9 +118,8 @@ sudo cp $dirPath/../profile/php/php-fpm.conf /etc/php-fpm.conf;
 pip3 -V 1>/dev/null 2>/dev/null;
 if [ $? -ne 0 ]
 then
-	wget https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py;
-	sudo python3 get-pip.py;
-	rm -rf get-pip.py;
+	sudo easy_install pip;
+	sudo easy_install3 pip;
 	sudo ln -sv /usr/local/bin/pip3.4 /usr/local/bin/pip;
 	sudo ln -sv /usr/local/bin/pip2.7 /usr/local/bin/pip2;
 fi
