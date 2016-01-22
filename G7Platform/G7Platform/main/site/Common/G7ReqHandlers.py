@@ -34,12 +34,14 @@ class G7ReqHandler(tornado.web.RequestHandler):
         return
 
     def prepare(self):
-        
+
         if connection.connection and not connection.is_usable():
             # destroy the default mysql connection
+
             # after this line, when you use ORM methods
             # django will reconnect to the default mysql
             del connections._connections.default
+
 
         for c in connections.all():
             try:
