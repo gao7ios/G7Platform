@@ -34,6 +34,7 @@ class G7ReqHandler(tornado.web.RequestHandler):
         return
 
     def prepare(self):
+        
         if connection.connection and not connection.is_usable():
             # destroy the default mysql connection
             # after this line, when you use ORM methods
