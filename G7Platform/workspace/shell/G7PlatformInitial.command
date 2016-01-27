@@ -138,35 +138,6 @@ fi;
 
 sudo cp $dirPath/../profile/php/php-fpm.conf /etc/php-fpm.conf;
 
-pip3 -V 1>/dev/null 2>/dev/null;
-if [ $? -ne 0 ]
-then
-
-	if [ ! -f $dirPath/packages/default.tar.gz ]
-	then
-		wget https://bitbucket.org/pypa/setuptools/get/default.tar.gz#egg=setuptools-dev -P $dirPath/packages;
-	fi
-
-	tar xvf $dirPath/packages/default.tar.gz -C $dirPath/packages/;
-	cd $dirPath/packages/pypa-setuptools*/;
-	sudo python3 setup.py install;
-	cd $dirPath;
-	rm -rf $dirPath/packages/pypa-setuptools*/
-
-	if [ ! -f $dirPath/packages/pip-8.0.2.tar.gz ]
-	then
-		wget https://pypi.python.org/packages/source/p/pip/pip-8.0.2.tar.gz -P $dirPath/packages;
-	fi
-
-	tar xvf $dirPath/packages/pip-8.0.2.tar.gz -C $dirPath/packages;
-	cd $dirPath/packages/pip*/;
-
-	sudo python3 setup.py install;
-
-	cd $dirPath;
-	sudo rm -rf $dirPath/packages/pip*/;
-fi
-
 $osinstaller gettext 1>/dev/null;
 
 supervisord -v 1>/dev/null 2>/dev/null;
