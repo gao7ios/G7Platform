@@ -223,7 +223,7 @@ class G7DatabaseServer(G7Server):
         return cls._inst
 
     def startConfigure(self):
-        os.system("sudo mysql.server start")
+        os.system("mysql.server start")
         manage_path = path.join(G7Profile().django_path, "manage.py")
         os.system("python3 {manage_path} makemigrations 2>/dev/null;".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,manage_path=manage_path))
         migrateid=os.system("python3 {manage_path} migrate 2>/dev/null;".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,manage_path=manage_path))

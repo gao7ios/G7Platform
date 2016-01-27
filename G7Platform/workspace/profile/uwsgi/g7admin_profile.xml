@@ -1,22 +1,22 @@
 <?xml version="1.0" ?>
 <uwsgi>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
-	<plugin>/usr/lib/uwsgi/py34_plugin.so</plugin>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
-	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
-	<py-programname>python3</py-programname>
-	<master>true</master>
-	<logdate>true</logdate>
-	<enable-threads>true</enable-threads>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform</pythonpath>
-	<memory-report>true</memory-report>
-	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
-	<socket>127.0.0.1:8882</socket>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
-	<processes>8</processes>
-	<listen>80</listen>
 	<limit-as>300</limit-as>
+	<enable-threads>true</enable-threads>
+	<plugin>/usr/lib/uwsgi/py34_plugin.so</plugin>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
+	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
+	<listen>80</listen>
+	<processes>8</processes>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
+	<py-programname>python3</py-programname>
 	<pidfile>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
+	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
+	<memory-report>true</memory-report>
+	<master>true</master>
 	<module>wsgi</module>
+	<socket>127.0.0.1:8882</socket>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
 	<profiler>true</profiler>
+	<logdate>true</logdate>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform</pythonpath>
 </uwsgi>

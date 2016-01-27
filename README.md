@@ -83,7 +83,6 @@ Mac OSX 10.10， 阿里云(Red Hat 4.4.7-4)
 
 	 双击G7Platform/workspace/shell/G7PlatformInitial.command
 
-
 #### 运行服务
 
 	双击G7Platform/workspace/shell/G7PlatformRestart.command

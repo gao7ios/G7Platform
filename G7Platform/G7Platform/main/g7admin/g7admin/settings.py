@@ -18,12 +18,10 @@ sys.path.append(path.join(BASE_DIR,"../../../"))
 
 from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
-SECRET_KEY = 'l-6&4%l6gix7w+i6y8wnbsy&c*(mpm=rm(6c0mf%=*weyjcm9e'
+SECRET_KEY = '%(bdlo0$j1nstjq4$s4at)_4)2u*t@6%8=m2ljrhg566r-z*7x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -65,6 +63,9 @@ DATABASES = {
         'PASSWORD': dbpassword,
         'HOST': dbhost,
         'PORT': '3306',
+        'OPTIONS':{
+            "init_command": "SET storage_engine=INNODB;SET foreign_key_checks = 0;",
+        }
     }
 }
 
@@ -96,6 +97,20 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = media_path
 
-TEMPLATE_DIRS = (
-    template_path,
-)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [template_path,],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug':DEBUG,
+        },
+    },
+]

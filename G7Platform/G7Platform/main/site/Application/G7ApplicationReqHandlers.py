@@ -28,7 +28,7 @@ from G7Platform.main.site.Common.G7ReqHandlers import G7ReqHandler
 from G7Platform.G7Globals import *
 from django.core.files.base import ContentFile
 from django.conf import settings
-from biplist import *
+
 
 class G7ApplicationPgyerUploader():
 

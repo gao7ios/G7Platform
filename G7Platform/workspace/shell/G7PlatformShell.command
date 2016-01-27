@@ -8,4 +8,4 @@ cd $dirPath/../..;
 
 sudo chown -R $USER $dirPath/../..;
 
-export PYTHONPATH=$PYTHONPATH:$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/g7platformshell.py $1;
+export PYTHONPATH=$PYTHONPATH:$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/g7platformshell.py $1 $2;

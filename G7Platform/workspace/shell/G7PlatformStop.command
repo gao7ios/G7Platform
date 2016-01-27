@@ -2,7 +2,7 @@
 
 dirPath=$(cd `dirname $0`; pwd);
 
-sudo mysql.server stop 2>/dev/null;
+mysql.server stop 2>/dev/null;
 if [ $? -ne 0 ]
 then
 
@@ -15,5 +15,3 @@ if [ $? -ne 0 ]
 then
 	echo "python3暂未安装或者kill_process.py脚本出错";
 fi
-
-
