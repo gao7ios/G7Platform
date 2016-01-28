@@ -121,7 +121,7 @@ class G7ReleaseServer(G7Server):
                 "master":"true",
                 "pidfile":pidfile,
                 "processes":"8",
-		"plugin":"/usr/lib/uwsgi/py34_plugin.so",
+		        "plugin":"/usr/local/lib/uwsgi/py34_plugin.so",
                 "pythonpath1":pythonpath1,
                 "pythonpath2":pythonpath2,
                 "pythonpath3":pythonpath3,
@@ -182,7 +182,6 @@ class G7ReleaseServer(G7Server):
         self.killServices()
 
         G7DatabaseServer().startServer()
-        print("=====================开启正式服务=====================")
         self.startSupervisorMonitor()
         self.startNginxService()
 
@@ -250,8 +249,8 @@ class G7Service:
 
     def start(self):
         if G7Profile().debug == True:
-            print("====================debug====================")
+            print("\033[31m \nDevelopMode: \033[0m [ \033[31m debug \033[0m \033[36m ]\n \033[0m")
             G7DebugServer().startServer()
         else:
-            print("====================release====================")
+            print("\033[36m \nDevelopMode: [ \033[31m release\033[0m \033[36m ]\n \033[0m")
             G7ReleaseServer().startServer()

@@ -18,6 +18,34 @@ if [ x$osinstaller == x"" ]; then
 	osinstaller="brew install";
 fi
 
+function pip3Install() {
+	pipInstall 3 "$1" "$2" "$3"
+}
+
+function pip2Install() {
+	pipInstall 2 "$1" "$2" "$3"
+}
+
+# pip3安装函数
+function pipInstall() {
+	echo pipInstall $1 $2 $3 $4
+	echo "检测$2..."
+	eval $(echo $3) 2>/dev/null 1>/dev/null;
+	if [ $? -ne 0 ];
+	then
+		echo "$2不存在,开始安装$2"
+		if [ ! $4 ];
+		then
+			sudo pip$1 install $2;
+		else
+			sudo pip$1 install $2==$4;
+		fi
+		echo "$2安装完成"
+	else
+		echo "$2正常,检测完毕"
+	fi
+}
+
 # python初始化
 function pythoninitial() {
 	# wget $pythonurl -P $dirPath;
@@ -140,16 +168,11 @@ sudo cp $dirPath/../profile/php/php-fpm.conf /etc/php-fpm.conf;
 
 $osinstaller gettext 1>/dev/null;
 
-supervisord -v 1>/dev/null 2>/dev/null;
-if [ $? -ne 0 ]
-then
-	sudo pip2 install supervisor==3.1.3;
-fi
+pip2Install supervisor "supervisord -v" "3.1.3"
 
 uwsgi --version 1>/dev/null 2>/dev/null;
 if [ $? -ne 0 ]
 then
-
 	if [ ! -f $dirPath/packages/uwsgi-2.0.12.tar.gz ]
 	then
 		wget http://projects.unbit.it/downloads/uwsgi-2.0.12.tar.gz -P $dirPath/packages;
@@ -159,29 +182,18 @@ then
 	cd $dirPath/packages/uwsgi-2.0.12/
 	sudo CC=gcc python3 ./uwsgiconfig.py --build;
 	sudo CC=gcc python3 uwsgiconfig.py --plugin plugins/python core py34;
-	sudo mkdir /usr/lib/uwsgi 2>/dev/null;
-	sudo cp -rf ./py34_plugin.so /usr/lib/uwsgi;
+	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
+	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
 	sudo cp -rf ./uwsgi /usr/local/bin;
 	cd ../;
 	sudo rm -rf $dirPath/packages/uwsgi*/;
-
 fi
 
-echo "检测tornado..."
-python3 -c "import tornado" 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ];
-then
-	sudo pip3 install tornado==4.2;
-fi
-echo "检测完毕"
+pip3Install bpython "ipython --help-all"
 
-echo "检测django..."
-python3 -c "import django" 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ];
-then
-	sudo pip3 install django==1.9.1;
-fi
-echo "检测完毕"
+pip3Install tornado "python3 -c \"import tornado\"" "4.2"
+
+pip3Install django "python3 -c \"import django\"" "1.9.1"
 
 echo "重置django-admin命令......"
 django-admin 2>/dev/null 1>/dev/null;
@@ -191,19 +203,8 @@ then
 fi
 echo "重置完毕"
 
-echo "检测torndb..."
-python3 -c "import torndb" 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ];
-then
-	sudo pip3 install torndb==0.3;
-fi
-
-echo "检测pillow..."
-python3 -c "from PIL import Image" 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ];
-then
-	sudo pip3 install pillow==3.1.0;
-fi
+pip3Install torndb "python3 -c \"import torndb\"" "0.3"
+pip3Install pillow "python3 -c \"from PIL import Image\"" "3.1.0"
 
 echo "启动数据库..."
 	mysql.server start;
@@ -231,9 +232,11 @@ then
 fi
 echo "检测完毕"
 
-echo "初始化工作完成, 重置服务"
+echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
 
-echo "启动服务";
+echo "初始化服务";
 export PYTHONPATH=$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/djangoinitial.py;
-echo "服务启动成功";
+echo "服务初始化成功";
+
+./G7PlatformStart.command
