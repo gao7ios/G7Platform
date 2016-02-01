@@ -1,22 +1,22 @@
 <?xml version="1.0" ?>
 <uwsgi>
-	<memory-report>true</memory-report>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
-	<master>true</master>
-	<listen>80</listen>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
-	<plugin>/usr/local/lib/uwsgi/py34_plugin.so</plugin>
-	<limit-as>300</limit-as>
-	<logdate>true</logdate>
-	<processes>8</processes>
-	<pidfile>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
-	<module>wsgi</module>
-	<enable-threads>true</enable-threads>
-	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
 	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
-	<py-programname>python3</py-programname>
-	<profiler>true</profiler>
-	<socket>127.0.0.1:8882</socket>
+	<pidfile>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
 	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform</pythonpath>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
+	<memory-report>true</memory-report>
+	<enable-threads>true</enable-threads>
+	<socket>127.0.0.1:8882</socket>
+	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
+	<plugin>/usr/local/lib/uwsgi/py34_plugin.so</plugin>
+	<processes>8</processes>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
+	<logdate>true</logdate>
+	<listen>80</listen>
+	<py-programname>python3</py-programname>
+	<limit-as>300</limit-as>
+	<module>wsgi</module>
+	<profiler>true</profiler>
+	<master>true</master>
 </uwsgi>

@@ -6,7 +6,7 @@ debug=1;
 # 当前路径
 dirPath=$(cd `dirname $0`; pwd);
 
-echo "输入软件安装命令如apt-get install,brew install, pacman -s,yum等.\n如果需要sudo，必须在命令前面添加sudo.\n不填写默认为brew install";
+echo "输入软件安装命令如apt-get install,brew install, pacman -s,yum等.\n如果需要sudo，必须在命令前面添加sudo.\nmac系统下不填写直接换行默认为brew install";
 
 # 获取软件包管理器命令
 read osinstaller;
@@ -14,60 +14,55 @@ read osinstaller;
 # 系统名称
 sysOS=`uname -s`;
 
-if [ $sysOS == "Darwin" ]
-then
-	brew -v 1>/dev/null 2>/dev/null;
+##### 工具  #####
+
+# $1 软件名
+# $2 安装函数
+# $3 检测软件的shell语句
+function g7Install() {
+	echo "\033[36m 检测 [ $1 ]...
+	\033[0m";
+	eval $3 1>/dev/null 2>/dev/null;
 	if [ $? -ne 0 ]
 	then
-		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		echo "\033[31 [ $1 ]不存在, 开始安装...
+		\033[0m";
+		$2;
+		echo "\033[33m [ $1 ] 安装成功
+		\033[0m";
+	else
+		echo "\033[33m [ $1 ] 检测完成
+		\033[0m";
 	fi
-fi;
+}
+
+# brew安装函数
+function brewIns() {
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
+}
+# 安装Brew
+g7Install Brew brewIns "brew -v";
 
 if [ x$osinstaller == x"" ]; then
 	osinstaller="brew install";
 fi
 
-function pip3Install() {
-	pipInstall 3 "$1" "$2" "$3"
-}
 
-function pip2Install() {
-	pipInstall 2 "$1" "$2" "$3"
+# wget安装函数
+function wgetIns() {
+	$osinstaller wget;
 }
+# 安装wget
+g7Install wget wgetIns "wget --help";
 
-# pip3安装函数
-function pipInstall() {
-	echo pipInstall $1 $2 $3 $4
-	echo "检测$2..."
-	eval $(echo $3) 2>/dev/null 1>/dev/null;
-	if [ $? -ne 0 ];
-	then
-		echo "$2不存在,开始安装$2"
-		if [ ! $4 ];
-		then
-			sudo pip$1 install $2;
-		else
-			sudo pip$1 install $2==$4;
-		fi
-		echo "$2安装完成"
-	else
-		echo "$2正常,检测完毕"
-	fi
-}
-
-# python初始化
-function pythoninitial() {
-	# wget $pythonurl -P $dirPath;
+# python安装函数
+function pythonIns() {
 	if [ $sysOS == "Darwin" ]
 	then
-
-		echo "安装Python3.4.3......";
-
 		$osinstaller openssl;
 		$osinstaller readline;
 		export LDFLAGS=-L/usr/local/opt/openssl/lib;
 		export CPPFLAGS=-I/usr/local/opt/openssl/include;
-
 		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
 		if [ $sysOS == "Darwin" ]
 		then
@@ -103,23 +98,11 @@ function pythoninitial() {
 		cd $dirPath;
 	fi
 }
+# 安装Python3.4.3
+g7Install Python3.4.3 pythonIns "python3 -V";
 
-wget -V 1>/dev/null 2>/dev/null;
-if [ $? -ne 0 ]
-then
-	$osinstaller wget;
-fi
-
-python3 -V 2>/dev/null 1>/dev/null 0>/dev/null;
-if [ $? -ne 0 ];
-then
-	pythoninitial;
-fi
-
-mysql --help 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ]
-then
-	echo "开始安装mysql";
+# mysql安装函数
+function mysqlIns() {
 	mysqlUrl="http://cdn.mysql.com//Downloads/MySQL-5.6/mysql-5.6.28-linux-glibc2.5-x86_64.tar.gz";
 	if [ $sysOS == "Darwin" ]
 	then
@@ -142,35 +125,44 @@ then
 	sudo chown -R $USER:admin /usr/local/mysql;
 	cd /usr/local/mysql;
 	./scripts/mysql_install_db --user=$USER --basedir=/usr/local/mysql;
-fi
+}
+# 安装Mysql5.6
+g7Install MySQL5.6 mysqlIns "mysql --help";
 
-nginx -v 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ]
-then
+# nginx安装函数
+function nginxIns() {
+	$osinstaller zlib;
+	$osinstaller openssl;
+	$osinstaller pcre;
 	$osinstaller nginx;
-fi
+}
+# 安装nginx
+g7Install NginX nginxIns "nginx -v";
 
-if [ $sysOS == "Darwin" ]
-then
-	php -v 2>/dev/null 1>/dev/null 0>/dev/null;
-	if [ $? -ne 0 ]
+# php安装函数
+function phpIns() {
+	if [ $sysOS == "Darwin" ]
 	then
-		brew tap homebrew/dupes;
-		brew tap homebrew/versions;
-		brew tap homebrew/home$osinstaller-php;
-		brew install php56;
-	fi
-else
-	$osinstaller php;
-fi;
+		php -v 2>/dev/null 1>/dev/null 0>/dev/null;
+		if [ $? -ne 0 ]
+		then
+			brew tap homebrew/dupes;
+			brew tap homebrew/versions;
+			brew tap homebrew/home$osinstaller-php;
+			brew install php56;
+		fi
+	else
+		$osinstaller php;
+	fi;
+	sudo cp $dirPath/../profile/php/php-fpm.conf /etc/php-fpm.conf;
+	$osinstaller gettext 1>/dev/null;
+}
+# 安装PHP
+g7Install PHP5.6 nginxIns "php -v";
 
-sudo cp $dirPath/../profile/php/php-fpm.conf /etc/php-fpm.conf;
 
-$osinstaller gettext 1>/dev/null;
-
-supervisord -v 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ]
-then
+# supervisor安装函数
+function supervisorIns() {
 	if [ ! -f $dirPath/packages/supervisor-3.2.0.tar.gz ]
 	then
 		wget https://pypi.python.org/packages/source/s/supervisor/supervisor-3.2.0.tar.gz -P $dirPath/packages;
@@ -181,11 +173,12 @@ then
 	sudo python2.7 setup.py install;
 	cd $dirPath;
 	sudo rm -rf $dirPath/packages/supervisor-3.2.0/;
-fi
+}
+# 安装supervisor
+g7Install Supervisor3.2.0 supervisorIns "supervisord -v";
 
-uwsgi --version 1>/dev/null 2>/dev/null;
-if [ $? -ne 0 ]
-then
+# uwsgi安装函数
+function uwsgiIns() {
 	if [ ! -f $dirPath/packages/uwsgi-2.0.12.tar.gz ]
 	then
 		wget http://projects.unbit.it/downloads/uwsgi-2.0.12.tar.gz -P $dirPath/packages;
@@ -200,46 +193,83 @@ then
 	sudo cp -rf ./uwsgi /usr/local/bin;
 	cd ../;
 	sudo rm -rf $dirPath/packages/uwsgi*/;
-fi
+}
+# 安装uwsgi
+g7Install uwsgi uwsgiIns "uwsgi --version";
 
-pip3Install bpython "ipython --help-all"
+# iPython安装函数
+function iPythonIns() {
 
-pip3Install tornado "python3 -c \"import tornado\"" "4.2"
+	sudo pip3 install ipython;
+}
+# 安装iPython
+g7Install iPython iPythonIns "ipython -h";
 
-pip3Install django "python3 -c \"import django\"" "1.9.1"
+# bpython安装函数
+function bPythonIns() {
+
+	sudo pip3 install bpython;
+}
+# 安装bPython
+g7Install bPython bPythonIns "bpython -h";
 
 
-echo "重置django-admin命令......"
-django-admin 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ];
-then
+# tornado安装函数
+function tornadoIns() {
+
+	sudo pip3 install tornado==4.2;
+}
+# 安装tornado
+g7Install tornado tornadoIns "python3 -c \"import tornado\"";
+
+# django安装函数
+function djangoIns() {
+
+	sudo pip3 install django==1.9.1;
+}
+# 安装django
+g7Install django djangoIns "python3 -c \"import django\"";
+
+# django安装函数
+function djangoAdminIns() {
+
 	sudo sed -e 's/python/python3/' /usr/local/lib/python3.4/site-packages/django/bin/django-admin.py > /usr/local/bin/django-admin;
-fi
-echo "重置完毕"
+}
+# 安装django
+g7Install django-admin djangoAdminIns "django-admin";
 
 
-pip3Install torndb "python3 -c \"import torndb\"" "0.3";
-torndbOrg=" use_unicode=True,";
-torndbTgt="";
-sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.4/site-packages/torndb.py;
+# torndb安装函数
+function torndbIns() {
 
-pip3Install pillow "python3 -c \"from PIL import Image\"" "3.1.0"
+	sudo pip3 install torndb==0.3;
+	torndbOrg=" use_unicode=True,";
+	torndbTgt="";
+	sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.4/site-packages/torndb.py;
+}
+# 安装torndb
+g7Install torndb torndbIns "python3 -c \"import torndb\"";
+
+# pillow安装函数
+function pillowIns() {
+
+	sudo pip3 install pillow==3.1.0;
+}
+# 安装pillow
+g7Install pillow pillowIns "python3 -c \"from PIL import Image\"";
 
 echo "启动数据库...";
-
 mysql.server start;
 
-echo "检测MySQLdb..."
-python3 -c "import MySQLdb" 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ];
-then
+# MySQLdb安装函数
+function mySQLdbIns() {
 	sudo easy_install-3.4 $dirPath/packages/MySQL-for-Python-3.zip;
-fi
+}
+# 安装MySQLdb
+g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
 
-echo "检测pyDes..."
-python3 -c "import pyDes" 2>/dev/null 1>/dev/null;
-if [ $? -ne 0 ];
-then
+# pyDes安装函数
+function pyDesIns() {
 	if [ ! -f $dirPath/packages/pyDes-2.0.1.zip ]
 	then
 		wget http://twhiteman.netfirms.com/pyDES/pyDes-2.0.1.zip -P $dirPath/packages;
@@ -249,15 +279,22 @@ then
 	sudo python3 setup.py install;
 	cd $dirPath;
 	sudo rm -rf $dirPath/packages/pyDes*/;
-fi
-echo "检测完毕"
+}
+# 安装pyDes
+g7Install pyDes pyDesIns "python3 -c \"import pyDes\"";
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
 
+echo "试图开启数据库服务";
 mysql.server start;
+if [ $? -ne 0 ]
+then
+	echo "数据库服务打开失败";
+fi
 
 echo "初始化服务";
 export PYTHONPATH=$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/djangoinitial.py;
 echo "服务初始化完成";
+
 sh $dirPath/G7PlatformStart.command;

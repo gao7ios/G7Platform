@@ -18,7 +18,7 @@ sys.path.append(path.join(BASE_DIR,"../../../"))
 
 from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
-SECRET_KEY = '1u&qbl)^k95nqw_eb8^q9pj*pm(us^e5df3il$dcu*3ezi(hv4'
+SECRET_KEY = '2kn#(6s)ns_1g(iwn(jc3yl$6rlm=kwkna*#ud!ygn^_#zmsq2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
