@@ -142,7 +142,6 @@ then
 	sudo chown -R $USER:admin /usr/local/mysql;
 	cd /usr/local/mysql;
 	./scripts/mysql_install_db --user=$USER --basedir=/usr/local/mysql;
-	echo "请重启操作系统完成mysql的安装"
 fi
 
 nginx -v 2>/dev/null 1>/dev/null;
