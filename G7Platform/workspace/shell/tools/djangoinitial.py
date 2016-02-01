@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 __author__ = 'yuyang'
-from G7Platform.G7Globals import *
-djangoload()
-from G7Platform.profile.G7Services import *
-
 import os
 import sys
 from os import path
+from G7Platform.profile.settings.G7Settings import *
 
-def get_secret_key():
-
+def reset_secret_key():
     curdir = str(path.realpath(path.dirname(__file__)))
-    startProject = os.system("cd {curdir};sudo django-admin startproject {django_project_name} 2>/dev/null;".format(curdir=curdir,django_project_name=django_project_name))
+    startProject = os.system("cd {curdir};django-admin startproject {django_project_name};".format(curdir=curdir,django_project_name=django_project_name))
     if startProject == 0:
         settingsStr = ""
         secretKey = ""
@@ -35,9 +31,10 @@ def get_secret_key():
         with open("{django_path}/{project_name}/settings.py".format(django_path=django_path,project_name=django_project_name),"w") as f:
             f.write(new_settingsStr)
         os.system("sudo rm -rf {curdir}/{django_project_name}".format(curdir=curdir,django_project_name=django_project_name))
+
+
     else:
         print("目录{curdir}已存在{django_project_name}或者当前计算机未安装Django".format(curdir=curdir,django_project_name=django_project_name))
-
 
 def create_superuser():
     G7DatabaseServer().startServer()
@@ -48,5 +45,9 @@ def create_superuser():
         os.system("python3 {django_path}/manage.py createsuperuser;".format(django_path=django_path))
 
 if  __name__ == "__main__":
-    get_secret_key()
+
+    reset_secret_key()
+    from G7Platform.G7Globals import *
+    djangoload()
+    from G7Platform.profile.G7Services import *
     create_superuser()

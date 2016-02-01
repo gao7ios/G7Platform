@@ -2,15 +2,18 @@
 __author__ = 'yuyang'
 
 from G7Platform.G7Globals import *
-def start_g7platformshell(command="shell"):
-	shellString = "cd "+django_path+";"+"python3 ./manage.py {command}".format(command=command)
-	os.system(shellString)
+import os
+def start_g7platformshell(filename, command="shell"):
+	shellString = "cd "+django_path+";"+"python3 ./manage.py {command} 2>/dev/null;".format(command=command)
+	signal = os.system(shellString)
+	if signal != 0:
+		print("请输入\'./{filename} help\'查看如何使用".format(filename=filename))
 
 if __name__ == '__main__':
-	if len(sys.argv) > 2:
-		commandString=sys.argv[1]
-		if sys.argv[2] != None:
-			commandString += " "+sys.argv[2]
-		start_g7platformshell(commandString)
+	if len(sys.argv) >= 3:
+		commandString=sys.argv[2]
+		if len(sys.argv) > 3:
+			commandString += " "+sys.argv[3]
+		start_g7platformshell(os.path.basename(sys.argv[1]), commandString)
 	else:
-		start_g7platformshell()
+		start_g7platformshell(os.path.basename(sys.argv[1]))

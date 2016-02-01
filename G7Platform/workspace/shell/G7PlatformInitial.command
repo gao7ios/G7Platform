@@ -14,6 +14,15 @@ read osinstaller;
 # 系统名称
 sysOS=`uname -s`;
 
+if [ $sysOS == "Darwin" ]
+then
+	brew -v 1>/dev/null 2>/dev/null;
+	if [ $? -ne 0 ]
+	then
+		/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	fi
+fi;
+
 if [ x$osinstaller == x"" ]; then
 	osinstaller="brew install";
 fi
@@ -95,15 +104,6 @@ function pythoninitial() {
 	fi
 }
 
-if [ $sysOS == "Darwin" ]
-then
-	brew -v 1>/dev/null 2>/dev/null;
-	if [ $? -ne 0 ]
-	then
-		sudo ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
-	fi
-fi;
-
 wget -V 1>/dev/null 2>/dev/null;
 if [ $? -ne 0 ]
 then
@@ -132,16 +132,17 @@ then
 	fi
 
 	sudo rm -rf /usr/local/mysql*;
-	sudo rm -rf /usr/local/lib/libmysql*;
+	sudo rm -rf /usr/local/lib/lig7ysql*;
 	sudo rm -rf /usr/local/bin/mysql*;
-	tar xvf $dirPath/packages/mysql-5.6.28-osx10.10-x86_64.tar.gz -C /usr/local/;
- 	mv /usr/local/mysql-5.6.28-osx10.10-x86_64/ /usr/local/mysql;
-	ln -sv /usr/local/mysql/bin/mysql* /usr/local/bin;
-	ln -sv /usr/local/mysql/lib/libmysql* /usr/local/lib;
-	ln -sv /usr/local/mysql/support-files/mysql.server /usr/local/bin/;
+
+	sudo tar xvf $dirPath/packages/mysql-5.6.28-osx10.10-x86_64.tar.gz -C /usr/local/;
+ 	sudo mv /usr/local/mysql-5.6.28-osx10.10-x86_64/ /usr/local/mysql;
+	sudo ln -sv /usr/local/mysql/bin/mysql* /usr/local/bin;
+	sudo ln -sv /usr/local/mysql/lib/libmysql* /usr/local/lib;
+	sudo ln -sv /usr/local/mysql/support-files/mysql.server /usr/local/bin/;
+	sudo chown -R $USER:admin /usr/local/mysql;
 	cd /usr/local/mysql;
 	./scripts/mysql_install_db --user=$USER --basedir=/usr/local/mysql;
-	echo "请重启操作系统完成mysql的安装"
 fi
 
 nginx -v 2>/dev/null 1>/dev/null;
@@ -168,7 +169,20 @@ sudo cp $dirPath/../profile/php/php-fpm.conf /etc/php-fpm.conf;
 
 $osinstaller gettext 1>/dev/null;
 
-pip2Install supervisor "supervisord -v" "3.1.3"
+supervisord -v 2>/dev/null 1>/dev/null;
+if [ $? -ne 0 ]
+then
+	if [ ! -f $dirPath/packages/supervisor-3.2.0.tar.gz ]
+	then
+		wget https://pypi.python.org/packages/source/s/supervisor/supervisor-3.2.0.tar.gz -P $dirPath/packages;
+	fi
+
+	tar xvf $dirPath/packages/supervisor-3.2.0.tar.gz -C $dirPath/packages;
+	cd $dirPath/packages/supervisor-3.2.0;
+	sudo python2.7 setup.py install;
+	cd $dirPath;
+	sudo rm -rf $dirPath/packages/supervisor-3.2.0/;
+fi
 
 uwsgi --version 1>/dev/null 2>/dev/null;
 if [ $? -ne 0 ]
@@ -195,6 +209,7 @@ pip3Install tornado "python3 -c \"import tornado\"" "4.2"
 
 pip3Install django "python3 -c \"import django\"" "1.9.1"
 
+
 echo "重置django-admin命令......"
 django-admin 2>/dev/null 1>/dev/null;
 if [ $? -ne 0 ];
@@ -203,11 +218,17 @@ then
 fi
 echo "重置完毕"
 
-pip3Install torndb "python3 -c \"import torndb\"" "0.3"
+
+pip3Install torndb "python3 -c \"import torndb\"" "0.3";
+torndbOrg=" use_unicode=True,";
+torndbTgt="";
+sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.4/site-packages/torndb.py;
+
 pip3Install pillow "python3 -c \"from PIL import Image\"" "3.1.0"
 
-echo "启动数据库..."
-	mysql.server start;
+echo "启动数据库...";
+
+mysql.server start;
 
 echo "检测MySQLdb..."
 python3 -c "import MySQLdb" 2>/dev/null 1>/dev/null;
@@ -235,8 +256,9 @@ echo "检测完毕"
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
 
+mysql.server start;
+
 echo "初始化服务";
 export PYTHONPATH=$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/djangoinitial.py;
-echo "服务初始化成功";
-
-./G7PlatformStart.command
+echo "服务初始化完成";
+sh $dirPath/G7PlatformStart.command;

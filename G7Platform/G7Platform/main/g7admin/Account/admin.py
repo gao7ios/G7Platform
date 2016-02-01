@@ -11,7 +11,6 @@ from Account.models import G7User,G7Group
 from django.db.models.fields.related import ManyToManyRel
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper,FilteredSelectMultiple
 from django.db.models.fields import FieldDoesNotExist
-from G7Platform.profile.G7Profiles import G7Profile
 import uuid
 class G7GroupForm(forms.ModelForm):
 

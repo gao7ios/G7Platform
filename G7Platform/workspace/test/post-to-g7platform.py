@@ -34,7 +34,7 @@ def _encode_multipart(params_dict):
     data.append('--{boundary}--\r\n'.format(boundary=boundary))
     return '\r\n'.join(data), boundary
 
-def httpClient(method="GET", domain="127.0.0.1", path="/api/1.0/application/upload", data=None, headers={}):
+def httpClient(method="GET", domain="192.168.3.80", path="/api/1.0/application/upload", data=None, headers={}):
 
     conn = HTTPConnection(domain)
     # conn.set_debuglevel(1)
@@ -80,7 +80,8 @@ if __name__ == "__main__":
         coded_params, boundary = _encode_multipart(params)
         headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary), 'Connection': 'keep-alive'}
         print("正在提交到搞趣开发平台...")
-        responseString = httpClient("POST","192.168.3.80", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
+
+        responseString = httpClient("POST","127.0.0.1", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
         try:
             responseObject = json.loads(responseString.decode("utf-8"))
             if "message" not in list(responseObject.keys()):

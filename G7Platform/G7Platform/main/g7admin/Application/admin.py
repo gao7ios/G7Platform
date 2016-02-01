@@ -5,7 +5,6 @@ from Application.models import G7Application,G7Project
 from django import forms
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper,FilteredSelectMultiple
 from django.utils.translation import ugettext_lazy as _
-from G7Platform.profile.G7Profiles import G7Profile
 from django.db.models.fields import FieldDoesNotExist
 from django.utils import timezone
 import uuid,time
@@ -15,7 +14,6 @@ class G7ProjectForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(G7ProjectForm, self).__init__(*args, **kwargs)
-        # G7Profile().log("initial:{instance},*args:{args},kwargs:{kwargs}".format(instance=self.instance,args=args,kwargs=kwargs))
         self.instance.identifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
 
 class G7ProjectAdmin(admin.ModelAdmin):
@@ -133,7 +131,6 @@ class G7ApplicationAdmin(admin.ModelAdmin):
 
 
     # exclude = ("applications",)
-    # G7Profile().log("fieldsets:{fieldsets},add_fieldsets:{add_fieldsets}".format(fieldsets=fieldsets,add_fieldsets=add_fieldsets))
 
 admin.site.register(G7Project, G7ProjectAdmin)
 admin.site.register(G7Application, G7ApplicationAdmin)

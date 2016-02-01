@@ -5,8 +5,7 @@ import os
 from os import path
 import tornado
 from xml.dom.minidom import Document
-
-from G7Platform.profile.G7Profiles import G7Profile
+from G7Platform.profile.settings.G7Settings import *
 from G7Platform.profile.settings.web.G7URLs import urlList
 from G7Platform.profile.settings.nginx.G7NginxSettings import G7NginxSetting
 from G7Platform.profile.settings.nginx.G7PHPNginxSettings import G7PHPNginxSetting
@@ -23,15 +22,10 @@ class G7Server:
 
 class G7ReleaseServer(G7Server):
 
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls,'_inst'):
-            cls._inst=super(G7ReleaseServer,cls).__new__(cls,*args,**kwargs)
-        return cls._inst
-
     def __init__(self):
-        self.nginxConfPath = G7Profile().nginx_conf_path
-        self.nginxG7ConfPath = G7Profile().nginx_g7_conf_path
-        self.superG7VisorG7ConfPath = path.join(G7Profile().profile_path,"supervisor")
+        self.nginxConfPath = nginx_conf_path
+        self.nginxG7ConfPath = nginx_g7_conf_path
+        self.superG7VisorG7ConfPath = path.join(profile_path,"supervisor")
 
         # 配置文件生成
         self.startConfigure()
@@ -44,8 +38,8 @@ class G7ReleaseServer(G7Server):
 
     def supervisorSettingsConfugre(self, ports, groupname):
         if len(ports) == 0:
-            ports = [G7Profile().debug_tornado_port]
-        confHeaderString = "[supervisord]\nlogfile_maxbytes=50MB\nlogfile_backups=10\nlogfile={supervisor_log}\n \n\n[group:{groupname}]\nprograms={tornadoes}\n\n".format(supervisor_log=path.join(G7Profile().log_path,"supervisor/tornado.log"),groupname=groupname,tornadoes=",".join(["tornado-"+str(port) for port in ports]))
+            ports = [debug_tornado_port]
+        confHeaderString = "[supervisord]\nlogfile_maxbytes=50MB\nlogfile_backups=10\nlogfile={supervisor_log}\n \n\n[group:{groupname}]\nprograms={tornadoes}\n\n".format(supervisor_log=path.join(log_path,"supervisor/tornado.log"),groupname=groupname,tornadoes=",".join(["tornado-"+str(port) for port in ports]))
 
         programsList = [["tornado-{port}".format(port=port),self.supervisorProgramDict(port)] for port in ports]
         programsString = "\n\n".join([self.supervisorProgramSyntax(programName=programes[0],programsDict=programes[1]) for programes in programsList])
@@ -55,15 +49,15 @@ class G7ReleaseServer(G7Server):
     def supervisorProgramDict(self,port):
 
         return {
-            "command":"python3 ".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path)+path.join(G7Profile().subproject_path,"main/main.py")+" --port="+str(port)+" --log_file_prefix="+G7Profile().tornado_log_path,
-            "directory":G7Profile().project_name,
-            "user":"root",
+            "command":"python3 ".format(project_path=project_path,django_path=django_path)+path.join(subproject_path,"main/main.py")+" --port="+str(port)+" --log_file_prefix="+tornado_log_path,
+            "directory":project_path,
+            "user":os.environ["USER"],
             "autorestart":"true",
             "redirect_stderr":"true",
-            "stdout_logfile":path.join(G7Profile().log_path,"supervisor/out.log"),
-            "stderr_logfile":path.join(G7Profile().log_path,"supervisor/error.log"),
+            "stdout_logfile":path.join(log_path,"supervisor/out.log"),
+            "stderr_logfile":path.join(log_path,"supervisor/error.log"),
             "loglevel":"info",
-            "environment":"PYTHONPATH={project_path}:{django_path},DJANGO_SETTINGS_MODULE={django_project_name}.settings".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,django_project_name=G7Profile().django_project_name),
+            "environment":"PYTHONPATH={project_path}:{django_path},DJANGO_SETTINGS_MODULE={django_project_name}.settings".format(project_path=project_path,django_path=django_path,django_project_name=django_project_name),
         }
 
     def supervisorProgramSyntax(self, programName,programsDict):
@@ -84,11 +78,11 @@ class G7ReleaseServer(G7Server):
             settingsString = "".join([self.nginxSettingsConfigure(setting) for setting in settings])
 
             tornadoConfDefaultString = ""
-            with open(path.join(G7Profile().nginx_g7_conf_path,G7Profile().project_name.lower()+".conf.template"),"r") as f:
+            with open(path.join(nginx_g7_conf_path,project_name.lower()+".conf.template"),"r") as f:
                 f.seek(0)
                 tornadoConfDefaultString = f.read()
 
-            with open(path.join(G7Profile().nginx_g7_conf_path, G7Profile().project_name.lower()+".conf"),"w") as f:
+            with open(path.join(nginx_g7_conf_path, project_name.lower()+".conf"),"w") as f:
                 tornadoConfString = tornadoConfDefaultString + tornadoUpStreamString
                 f.write(tornadoConfString)
 
@@ -98,24 +92,24 @@ class G7ReleaseServer(G7Server):
         # 配置supervisor
         def supervisorConfigure():
             with open(path.join(self.superG7VisorG7ConfPath,"supervisor.conf"),"w") as f:
-                f.write(self.supervisorSettingsConfugre(G7Profile().tornado_ports,tornadoUpStreamName))
+                f.write(self.supervisorSettingsConfugre(tornado_ports,tornadoUpStreamName))
 
         def adminConfigure():
-            g7AdmingXmlPath = os.path.join(G7Profile().project_path,"workspace/profile/uwsgi/"+G7Profile().django_project_name+"_profile.xml")
+            g7AdmingXmlPath = os.path.join(project_path,"workspace/profile/uwsgi/"+django_project_name+"_profile.xml")
             host = "127.0.0.1"
-            port = G7Profile().release_django_port
+            port = release_django_port
             listen = 80
-            pythonpath1 = G7Profile().project_path  # G7Platform
-            pythonpath2 = G7Profile().subproject_path
-            pythonpath3 = G7Profile().subproject_path+"/main/"+G7Profile().django_project_name+"/"+G7Profile().django_project_name+"/"
-            pythonpath4 = G7Profile().subproject_path+"/main/"+G7Profile().django_project_name+"/"
-            pidfile = path.join(G7Profile().nginx_path,"pid/nginx.pid")
+            pythonpath1 = project_path  # G7Platform
+            pythonpath2 = subproject_path
+            pythonpath3 = subproject_path+"/main/"+django_project_name+"/"+django_project_name+"/"
+            pythonpath4 = subproject_path+"/main/"+django_project_name+"/"
+            pidfile = path.join(nginx_path,"pid/nginx.pid")
             limit_as = 300
-            daemonize = G7Profile().log_path + "/django/django.log"   # logpath
+            daemonize = log_path + "/django/django.log"   # logpath
 
             childrenNodes = {
                 "py-programname":"python3",
-                "chdir":G7Profile().django_path,
+                "chdir":django_path,
                 "socket":host+":"+str(port),
                 "listen":str(listen),
                 "master":"true",
@@ -165,13 +159,13 @@ class G7ReleaseServer(G7Server):
         adminConfigure()
 
     def startSupervisorMonitor(self):
-        os.system("sudo supervisord -c {conf_path};".format(conf_path=path.join(self.superG7VisorG7ConfPath,"supervisor.conf")))
+        os.system("supervisord -c {conf_path};".format(conf_path=path.join(self.superG7VisorG7ConfPath,"supervisor.conf")))
         # os.system("sudo supervisorctl reload")
 
     def startNginxService(self):
         os.system("sudo php-fpm;")
-        os.system("uwsgi -x {uwsgi_conf_path};".format(uwsgi_conf_path=path.join(G7Profile().profile_path,"uwsgi/{project_name}_profile.xml".format(project_name=G7Profile().django_project_name))))
-        os.system("sudo nginx -c {conf_path} -p {nginx_path}".format(conf_path=self.nginxConfPath, nginx_path=G7Profile().nginx_path))
+        os.system("uwsgi -x {uwsgi_conf_path};".format(uwsgi_conf_path=path.join(profile_path,"uwsgi/{project_name}_profile.xml".format(project_name=django_project_name))))
+        os.system("sudo nginx -c {conf_path} -p {nginx_path}".format(conf_path=self.nginxConfPath, nginx_path=nginx_path))
 
 
     def killServices(self):
@@ -188,52 +182,42 @@ class G7ReleaseServer(G7Server):
 
 class G7DebugServer(G7Server):
 
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls,'_inst'):
-            cls._inst=super(G7DebugServer,cls).__new__(cls,*args,**kwargs)
-        return cls._inst
-
     def tornadoServerStart(self,port):
-        application = tornado.web.Application(urlList, static_path = G7Profile().static_path, template_path=G7Profile().template_path, debug=G7Profile().debug)
+        application = tornado.web.Application(urlList, static_path = static_path, template_path=template_path, debug=debug)
         application.listen(port)
         tornado.ioloop.IOLoop.current().start()
 
     def djangoServerStart(self,port):
-        manage_path = path.join(G7Profile().django_path, "manage.py")
-        os.system("python3 {manage_path} runserver 0.0.0.0:{debug_django_port} &".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,manage_path=manage_path,debug_django_port=port))
+        manage_path = path.join(django_path, "manage.py")
+        os.system("python3 {manage_path} runserver 0.0.0.0:{debug_django_port} &".format(project_path=project_path,django_path=django_path,manage_path=manage_path,debug_django_port=port))
 
     def startServer(self):
         #启动配置，
         G7DatabaseServer().startServer()
         print("============开启django测试服务============\n")
-        self.djangoServerStart(G7Profile().debug_django_port)
-        print("========http://127.0.0.1:{port}=========\n".format(port=G7Profile().debug_django_port))
+        self.djangoServerStart(debug_django_port)
+        print("========http://127.0.0.1:{port}=========\n".format(port=debug_django_port))
 
         print("============开启tornado测试服务============\n")
-        print("========http://127.0.0.1:{port}=========\n".format(port=G7Profile().debug_tornado_port))
-        self.tornadoServerStart(G7Profile().debug_tornado_port)
+        print("========http://127.0.0.1:{port}=========\n".format(port=debug_tornado_port))
+        self.tornadoServerStart(debug_tornado_port)
 
 
 class G7DatabaseServer(G7Server):
 
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls,'_inst'):
-            cls._inst=super(G7DatabaseServer,cls).__new__(cls,*args,**kwargs)
-        return cls._inst
-
     def startConfigure(self):
         os.system("mysql.server start")
-        manage_path = path.join(G7Profile().django_path, "manage.py")
-        os.system("python3 {manage_path} makemigrations 2>/dev/null;".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,manage_path=manage_path))
-        migrateid=os.system("python3 {manage_path} migrate 2>/dev/null;".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,manage_path=manage_path))
+        manage_path = path.join(django_path, "manage.py")
+        os.system("python3 {manage_path} makemigrations 2>/dev/null;".format(project_path=project_path,django_path=django_path,manage_path=manage_path))
+        migrateid=os.system("python3 {manage_path} migrate 2>/dev/null;".format(project_path=project_path,django_path=django_path,manage_path=manage_path))
         if migrateid != 0:
             print("输入mysql中root用户密码:")
-            script = "sudo mysql -h {dbhost} -u root -Bse \"insert into mysql.user(Host,User,Password) values('{dbhost}','{dbuser}',password('{dbpassword}'));grant all on *.* to {dbuser}@{dbhost};flush privileges;\" -p 2>/dev/null".format(dbhost=G7Profile().dbhost,dbname=G7Profile().dbname,dbuser=G7Profile().dbuser,dbpassword=G7Profile().dbpassword)
+            script = "mysql -h {dbhost} -u root -Bse \"insert into mysql.user(Host,User,Password) values('{dbhost}','{dbuser}',password('{dbpassword}'));grant all on *.* to {dbuser}@{dbhost};flush privileges;\" -p 2>/dev/null".format(dbhost=dbhost,dbname=dbname,dbuser=dbuser,dbpassword=dbpassword)
             userexist = os.system(script)
-            createDBSQL = "sudo mysql -h {dbhost} -u root -Bse \"create database if not exists {dbname} default character set utf8;grant all privileges on {dbname}.* to {dbuser}@{dbhost} identified by '{dbpassword}';flush privileges;\" -p".format(dbhost=G7Profile().dbhost,dbname=G7Profile().dbname,dbuser=G7Profile().dbuser,dbpassword=G7Profile().dbpassword)
+            createDBSQL = "mysql -h {dbhost} -u root -Bse \"create database if not exists {dbname} default character set utf8;grant all privileges on {dbname}.* to {dbuser}@{dbhost} identified by '{dbpassword}';flush privileges;\" -p".format(dbhost=dbhost,dbname=dbname,dbuser=dbuser,dbpassword=dbpassword)
             dbCreate = os.system(createDBSQL)
-            os.system("python3 {manage_path} makemigrations;".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,manage_path=manage_path))
-            makemigrateid=os.system("python3 {manage_path} migrate;".format(project_path=G7Profile().project_path,django_path=G7Profile().django_path,manage_path=manage_path))
+            os.system("python3 {manage_path} makemigrations;".format(project_path=project_path,django_path=django_path,manage_path=manage_path))
+            makemigrateid=os.system("python3 {manage_path} migrate;".format(project_path=project_path,django_path=django_path,manage_path=manage_path))
 
 
     def startServer(self):
@@ -242,13 +226,8 @@ class G7DatabaseServer(G7Server):
 
 class G7Service:
 
-    def __new__(cls, *args, **kwargs):
-        if not hasattr(cls,'_inst'):
-            cls._inst=super(G7Service,cls).__new__(cls,*args,**kwargs)
-        return cls._inst
-
     def start(self):
-        if G7Profile().debug == True:
+        if debug == True:
             print("\033[31m \nDevelopMode: \033[0m [ \033[31m debug \033[0m \033[36m ]\n \033[0m")
             G7DebugServer().startServer()
         else:
