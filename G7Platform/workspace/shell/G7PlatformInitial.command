@@ -134,7 +134,6 @@ then
 	sudo rm -rf /usr/local/mysql*;
 	sudo rm -rf /usr/local/lib/lig7ysql*;
 	sudo rm -rf /usr/local/bin/mysql*;
-
 	sudo tar xvf $dirPath/packages/mysql-5.6.28-osx10.10-x86_64.tar.gz -C /usr/local/;
  	sudo mv /usr/local/mysql-5.6.28-osx10.10-x86_64/ /usr/local/mysql;
 	sudo ln -sv /usr/local/mysql/bin/mysql* /usr/local/bin;
