@@ -139,7 +139,7 @@ then
 	sudo ln -sv /usr/local/mysql/bin/mysql* /usr/local/bin;
 	sudo ln -sv /usr/local/mysql/lib/libmysql* /usr/local/lib;
 	sudo ln -sv /usr/local/mysql/support-files/mysql.server /usr/local/bin/;
-	sudo chown -R $USER:admin /usr/local/mysql
+	sudo chown -R $USER:admin /usr/local/mysql;
 	cd /usr/local/mysql;
 	./scripts/mysql_install_db --user=$USER --basedir=/usr/local/mysql;
 	echo "请重启操作系统完成mysql的安装"
