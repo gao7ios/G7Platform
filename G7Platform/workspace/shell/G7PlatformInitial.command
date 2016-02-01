@@ -134,11 +134,12 @@ then
 	sudo rm -rf /usr/local/mysql*;
 	sudo rm -rf /usr/local/lib/libmysql*;
 	sudo rm -rf /usr/local/bin/mysql*;
-	tar xvf $dirPath/packages/mysql-5.6.28-osx10.10-x86_64.tar.gz -C /usr/local/;
- 	mv /usr/local/mysql-5.6.28-osx10.10-x86_64/ /usr/local/mysql;
-	ln -sv /usr/local/mysql/bin/mysql* /usr/local/bin;
-	ln -sv /usr/local/mysql/lib/libmysql* /usr/local/lib;
-	ln -sv /usr/local/mysql/support-files/mysql.server /usr/local/bin/;
+	sudo tar xvf $dirPath/packages/mysql-5.6.28-osx10.10-x86_64.tar.gz -C /usr/local/;
+ 	sudo mv /usr/local/mysql-5.6.28-osx10.10-x86_64/ /usr/local/mysql;
+	sudo ln -sv /usr/local/mysql/bin/mysql* /usr/local/bin;
+	sudo ln -sv /usr/local/mysql/lib/libmysql* /usr/local/lib;
+	sudo ln -sv /usr/local/mysql/support-files/mysql.server /usr/local/bin/;
+	sudo chown -R $USER:admin /usr/local/mysql
 	cd /usr/local/mysql;
 	./scripts/mysql_install_db --user=$USER --basedir=/usr/local/mysql;
 	echo "请重启操作系统完成mysql的安装"
