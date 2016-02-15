@@ -27,7 +27,7 @@ tornado_ports = [
 ######################## 项目 ###########################
 
 # 项目名
-project_name = "BMPlatform";
+project_name = "G7Platform";
 
 # 后台名
 django_project_name="g7admin"
@@ -75,7 +75,7 @@ nginx_conf_path = path.join(nginx_path, "nginx.conf")
 if osname == "Darwin":
 	nginx_conf_path = path.join(nginx_path, "nginx_bsd.conf")
 
-# nginx BM配置文件路径
+# nginx G7配置文件路径
 nginx_g7_conf_path = path.join(nginx_path, project_name.lower())
 
 tornado_log_path = path.join(log_path,"tornado/tornado.log")
