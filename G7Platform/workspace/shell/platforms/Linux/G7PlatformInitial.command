@@ -63,6 +63,13 @@ function g7Install() {
 
 sh $dirPath/G7PlatformStop.command;
 
+# gcc 安装函数
+function gccIns() {
+  $osinstaller gcc;
+}
+# 安装gcc
+g7Install gcc gccIns "gcc -v";
+
 # wget安装函数
 function wgetIns() {
   $osinstaller wget;
