@@ -26,12 +26,29 @@ class G7ReleaseServer(G7Server):
         self.nginxConfPath = nginx_conf_path
         self.nginxG7ConfPath = nginx_g7_conf_path
         self.superG7VisorG7ConfPath = path.join(profile_path,"supervisor")
+        g7MakeDirs(self.superG7VisorG7ConfPath)
+        g7MakeDirs(os.path.join(nginx_path, "log/error.log"), touch_file=True)
+        g7MakeDirs(os.path.join(nginx_path, "log/access.log"), touch_file=True)
+        import platform
+        if "Ubuntu" in platform.platform():
+            g7MakeDirs(os.path.join(nginx_path, "logs/error.log"), touch_file=True)
+            g7MakeDirs(os.path.join(nginx_path, "logs/access.log"), touch_file=True)
+
+        if "centos" in platform.platform():
+            replacedText = ""
+            with open(nginx_conf_path, "r") as f:
+                import getpass
+                replacedText = f.read().replace("#user  www-data;", "user  {user};".format(user=getpass.getuser()))
+
+            with open(nginx_conf_path, "w") as f:
+                f.write(replacedText)
 
         # 配置文件生成
         self.startConfigure()
 
+
     def nginxSetSyntax(self, key,value):
-        return "geo {key} {{ default {value}; }}\n".format(key=key ,value=value)
+        return "map $args {key} {{ default {value}; }}\n".format(key=key ,value=value)
 
     def nginxSettingsConfigure(self, setting):
         return "".join([self.nginxSetSyntax(key, setting[key]) for key in setting.keys()])
@@ -47,6 +64,8 @@ class G7ReleaseServer(G7Server):
         return confHeaderString+programsString
 
     def supervisorProgramDict(self,port):
+        g7MakeDirs(path.join(log_path,"supervisor/error.log"), touch_file=True)
+        g7MakeDirs(path.join(log_path,"supervisor/out.log"), touch_file=True)
 
         return {
             "command":"python3 ".format(project_path=project_path,django_path=django_path)+path.join(subproject_path,"main/main.py")+" --port="+str(port)+" --log_file_prefix="+tornado_log_path,
@@ -104,9 +123,9 @@ class G7ReleaseServer(G7Server):
             pythonpath3 = subproject_path+"/main/"+django_project_name+"/"+django_project_name+"/"
             pythonpath4 = subproject_path+"/main/"+django_project_name+"/"
             pidfile = path.join(nginx_path,"pid/nginx.pid")
-            limit_as = 300
+            limit_as = 512
             daemonize = log_path + "/django/django.log"   # logpath
-
+            g7MakeDirs(daemonize, touch_file=True)
             childrenNodes = {
                 "py-programname":"python3",
                 "chdir":django_path,
@@ -163,7 +182,12 @@ class G7ReleaseServer(G7Server):
         # os.system("sudo supervisorctl reload")
 
     def startNginxService(self):
-        os.system("sudo php-fpm;")
+
+
+        phpFpmResult = os.system("sudo php-fpm 2>/dev/null 1>/dev/null;")
+        if phpFpmResult > 0:
+            os.system("sudo service php5-fpm start;")
+
         os.system("uwsgi -x {uwsgi_conf_path};".format(uwsgi_conf_path=path.join(profile_path,"uwsgi/{project_name}_profile.xml".format(project_name=django_project_name))))
         os.system("sudo nginx -c {conf_path} -p {nginx_path}".format(conf_path=self.nginxConfPath, nginx_path=nginx_path))
 
@@ -206,7 +230,6 @@ class G7DebugServer(G7Server):
 class G7DatabaseServer(G7Server):
 
     def startConfigure(self):
-        os.system("mysql.server start")
         manage_path = path.join(django_path, "manage.py")
         os.system("python3 {manage_path} makemigrations 2>/dev/null;".format(project_path=project_path,django_path=django_path,manage_path=manage_path))
         migrateid=os.system("python3 {manage_path} migrate 2>/dev/null;".format(project_path=project_path,django_path=django_path,manage_path=manage_path))
@@ -228,8 +251,8 @@ class G7Service:
 
     def start(self):
         if debug == True:
-            print("\033[31m \nDevelopMode: \033[0m [ \033[31m debug \033[0m \033[36m ]\n \033[0m")
+            print(" DevelopMode:  [  debug   ] ")
             G7DebugServer().startServer()
         else:
-            print("\033[36m \nDevelopMode: [ \033[31m release\033[0m \033[36m ]\n \033[0m")
+            print(" DevelopMode: [  release  ] ")
             G7ReleaseServer().startServer()
