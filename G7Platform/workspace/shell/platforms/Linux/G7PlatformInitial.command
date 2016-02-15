@@ -77,6 +77,13 @@ function wgetIns() {
 # 安装wget
 g7Install wget wgetIns "wget --help";
 
+# unzip安装函数
+function wgetIns() {
+  $osinstaller unzip;
+}
+# 安装wget
+g7Install unzip wgetIns "unzip --help";
+
 # python2安装函数
 function pythonIns() {
   $osinstaller python;
