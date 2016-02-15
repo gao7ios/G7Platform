@@ -182,11 +182,9 @@ class G7ReleaseServer(G7Server):
         # os.system("sudo supervisorctl reload")
 
     def startNginxService(self):
-
-
-        phpFpmResult = os.system("sudo php-fpm 2>/dev/null 1>/dev/null;")
-        if phpFpmResult > 0:
-            os.system("sudo service php5-fpm start;")
+        # phpFpmResult = os.system("sudo php-fpm 2>/dev/null 1>/dev/null;")
+        # if phpFpmResult > 0:
+        #     os.system("sudo service php5-fpm start;")
 
         os.system("uwsgi -x {uwsgi_conf_path};".format(uwsgi_conf_path=path.join(profile_path,"uwsgi/{project_name}_profile.xml".format(project_name=django_project_name))))
         os.system("sudo nginx -c {conf_path} -p {nginx_path}".format(conf_path=self.nginxConfPath, nginx_path=nginx_path))
