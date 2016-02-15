@@ -113,11 +113,11 @@ g7Install Python3.4.3 pythonIns "python3 -V";
 
 # mysql安装函数
 function mysqlIns() {
-  if [ $osinstaller == "sudo yum install" ];
+  if [ "$osinstaller" == "sudo yum install" ];
   then
     $osinstaller mariadb mariadb-server lig7ariadbclient*;
     sudo systemctl enable mariadb.service;
-  elif [ $osinstaller == "sudo apt-get install" ];
+  elif [ "$osinstaller" == "sudo apt-get install" ];
   then
     $osinstaller mariadb mariadb-server lig7ariadbclient*;
     $osinstaller mysql mysql-server lig7ysqlclient*;
