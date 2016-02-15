@@ -1,11 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
-# 数据调试命令行
 
+# 系统名称
+sysOS=`uname -s`;
+
+# 当前路径
 dirPath=$(cd `dirname $0`; pwd);
 
-cd $dirPath/../..;
-
-sudo chown -R $USER $dirPath/../..;
-
-export PYTHONPATH=$PYTHONPATH:$(cd $dirPath/../../..; pwd)/G7Platform;python3 $dirPath/tools/g7platformshell.py $0 $1 $2;
+$dirPath/platforms/$sysOS/G7PlatformShell.command $1 $2;
