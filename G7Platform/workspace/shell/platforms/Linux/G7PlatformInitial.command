@@ -122,7 +122,7 @@ g7Install Python3.4.3 pythonIns "python3 -V";
 function mysqlIns() {
   if [ "$osinstaller" == "sudo yum install" ];
   then
-    $osinstaller mariadb mariadb-server lig7ariadbclient*;
+    $osinstaller mariadb mariadb-server lig7ariadbclient* mysql-devel mariadb-devel;
     sudo systemctl enable mariadb.service;
   elif [ "$osinstaller" == "sudo apt-get install" ];
   then
