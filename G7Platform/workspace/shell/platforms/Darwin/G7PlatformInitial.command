@@ -179,7 +179,7 @@ function uwsgiIns() {
 	sudo CC=gcc python3 uwsgiconfig.py --plugin plugins/python core py34;
 	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
 	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
-	sudo cp -rf ./uwsgi /usr/local/bin;
+	sudo cp -rf uwsgi /usr/local/bin;
 	cd ../;
 	sudo rm -rf $dirPath/packages/uwsgi*/;
 }
