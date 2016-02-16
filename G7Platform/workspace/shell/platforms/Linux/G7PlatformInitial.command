@@ -187,7 +187,7 @@ function uwsgiIns() {
   then
     wget http://projects.unbit.it/downloads/uwsgi-2.0.12.tar.gz -P $dirPath/packages;
   fi
-
+  $osinstaller libxml*;
   tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
   cd $dirPath/packages/uwsgi-2.0.12/
   sudo CC=gcc /usr/local/bin/python3 ./uwsgiconfig.py --build;
