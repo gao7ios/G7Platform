@@ -109,7 +109,7 @@ function pythonIns() {
     fi
     tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
     cd $dirPath/packages/Python-3.4.3;
-    ./configure;
+    CFLAGS="$CFLAGS -O3 -fPIC" CXXFLAGS="$CXXFLAGS -fPIC" ./configure;
     sudo make && sudo make install;
     cd $dirPath;
     sudo rm -rf $dirPath/packages/Python-3.4.3;
@@ -192,7 +192,7 @@ function uwsgiIns() {
   cd $dirPath/packages/uwsgi-2.0.12/
   sudo CFLAGS="-O3 -fPIC" CC=gcc /usr/local/bin/python3 ./uwsgiconfig.py --build;
   sudo CFLAGS="-O3 -fPIC" CC=gcc /usr/local/bin/python3 ./uwsgiconfig.py --plugin plugins/python core py34;
-  sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
+  sudo mkdir -p /usr/local/lib/uwsgi 2>/dev/null;
   sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
   sudo cp -rf ./uwsgi /usr/local/bin;
   cd ../;
