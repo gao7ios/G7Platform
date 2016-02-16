@@ -7,7 +7,7 @@ echo "  [ 服务启动中 ]  ";
 
 . $dirPath/G7PlatformProfile.command
 $mysqlCommand start;
-python3 $dirPath/../../../../G7Platform/G7Platforms.py;
+/usr/local/bin/python3 $dirPath/../../../../G7Platform/G7Platforms.py;
 if [ $? -ne 0 ]
 then
   echo "   [ 服务启动失败 ]   ";

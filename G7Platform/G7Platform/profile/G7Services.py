@@ -68,7 +68,7 @@ class G7ReleaseServer(G7Server):
         g7MakeDirs(path.join(log_path,"supervisor/out.log"), touch_file=True)
 
         return {
-            "command":"python3 ".format(project_path=project_path,django_path=django_path)+path.join(subproject_path,"main/main.py")+" --port="+str(port)+" --log_file_prefix="+tornado_log_path,
+            "command":"/usr/local/bin/python3 ".format(project_path=project_path,django_path=django_path)+path.join(subproject_path,"main/main.py")+" --port="+str(port)+" --log_file_prefix="+tornado_log_path,
             "directory":project_path,
             "user":os.environ["USER"],
             "autorestart":"true",

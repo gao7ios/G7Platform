@@ -265,7 +265,7 @@ function pyDesIns() {
 	fi
 	unzip $dirPath/packages/pyDes-2.0.1.zip -d $dirPath/packages;
 	cd $dirPath/packages/pyDes-2.0.1/;
-	sudo python3 setup.py install;
+	sudo /usr/local/bin/python3 setup.py install;
 	cd $dirPath;
 	sudo rm -rf $dirPath/packages/pyDes*/;
 }
