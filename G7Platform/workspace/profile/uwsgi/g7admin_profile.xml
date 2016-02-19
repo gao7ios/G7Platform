@@ -1,22 +1,22 @@
 <?xml version="1.0" ?>
 <uwsgi>
-	<enable-threads>true</enable-threads>
-	<logdate>true</logdate>
-	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
-	<limit-as>512</limit-as>
-	<listen>80</listen>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
-	<module>wsgi</module>
-	<profiler>true</profiler>
 	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform</pythonpath>
-	<plugin>/usr/local/lib/uwsgi/py34_plugin.so</plugin>
-	<py-programname>python3</py-programname>
-	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
 	<pidfile>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
-	<memory-report>true</memory-report>
-	<processes>8</processes>
-	<master>true</master>
-	<socket>127.0.0.1:8882</socket>
+	<plugin>/usr/local/lib/uwsgi/py34_plugin.so</plugin>
+	<limit-as>512</limit-as>
 	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
+	<memory-report>true</memory-report>
+	<py-programname>python3</py-programname>
+	<master>true</master>
+	<processes>8</processes>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
+	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
+	<logdate>true</logdate>
+	<socket>127.0.0.1:8882</socket>
+	<module>wsgi</module>
+	<listen>80</listen>
+	<enable-threads>true</enable-threads>
+	<profiler>true</profiler>
+	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
 </uwsgi>

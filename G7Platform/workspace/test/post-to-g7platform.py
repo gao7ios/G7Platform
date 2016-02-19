@@ -81,7 +81,7 @@ if __name__ == "__main__":
         headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary), 'Connection': 'keep-alive'}
         print("正在提交到搞趣开发平台...")
 
-        responseString = httpClient("POST","127.0.0.1", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
+        responseString = httpClient("POST","marsplat.com", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
         try:
             responseObject = json.loads(responseString.decode("utf-8"))
             if "message" not in list(responseObject.keys()):

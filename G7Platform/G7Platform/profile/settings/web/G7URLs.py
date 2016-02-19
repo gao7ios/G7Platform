@@ -12,11 +12,12 @@ def G7ApiPathURL(channel, path, className):
 
 # url配置信息
 
-apiURLList = [
+webURLList = [
 	    (r"/", G7IndexReqHandler),
+        (r"/app/", G7AppIndexReqHandler),
 ]
 
-webURLList = [
+apiURLList = [
     G7ApiPathURL("application","upload",G7ApplicationReqHandler),
 ]
 
