@@ -1,22 +1,22 @@
 <?xml version="1.0" ?>
 <uwsgi>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform</pythonpath>
-	<pidfile>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
-	<plugin>/usr/local/lib/uwsgi/py34_plugin.so</plugin>
-	<limit-as>512</limit-as>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform</pythonpath>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
-	<memory-report>true</memory-report>
-	<py-programname>python3</py-programname>
-	<master>true</master>
-	<processes>8</processes>
-	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin/</pythonpath>
-	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/G7Platform/main/g7admin</chdir>
-	<logdate>true</logdate>
-	<socket>127.0.0.1:8882</socket>
-	<module>wsgi</module>
-	<listen>80</listen>
-	<enable-threads>true</enable-threads>
 	<profiler>true</profiler>
-	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/G7Platform/workspace/log/django/django.log</daemonize>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/Web/G7Platform</pythonpath>
+	<listen>80</listen>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
+	<module>wsgi</module>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/Web/G7Platform/G7Platform/main/g7admin/</pythonpath>
+	<master>true</master>
+	<socket>127.0.0.1:8882</socket>
+	<memory-report>true</memory-report>
+	<processes>8</processes>
+	<py-programname>python3</py-programname>
+	<chdir>/Users/yuyang/workspace/git/gao7ios/G7Platform/Web/G7Platform/G7Platform/main/g7admin</chdir>
+	<pidfile>/Users/yuyang/workspace/git/gao7ios/G7Platform/Web/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
+	<enable-threads>true</enable-threads>
+	<limit-as>512</limit-as>
+	<plugin>/usr/local/lib/uwsgi/py34_plugin.so</plugin>
+	<pythonpath>/Users/yuyang/workspace/git/gao7ios/G7Platform/Web/G7Platform/G7Platform</pythonpath>
+	<daemonize>/Users/yuyang/workspace/git/gao7ios/G7Platform/Web/G7Platform/workspace/log/django/django.log</daemonize>
+	<logdate>true</logdate>
 </uwsgi>
