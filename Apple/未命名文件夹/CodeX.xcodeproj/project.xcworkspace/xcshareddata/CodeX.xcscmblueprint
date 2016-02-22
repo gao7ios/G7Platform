@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "d53025af-aa37-2a4d-9166-fffb2ddc8635++505",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "d53025af-aa37-2a4d-9166-fffb2ddc8635++505" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "d53025af-aa37-2a4d-9166-fffb2ddc8635++505" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8F897950-9E28-496F-B286-68DCA3C66B14",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "d53025af-aa37-2a4d-9166-fffb2ddc8635++505" : "Gao7DDBrowser\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CodeX",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CodeX\/CodeX.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/192.168.0.111:8080\/svn\/Gao7DDBrowser",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "d53025af-aa37-2a4d-9166-fffb2ddc8635++505"
+    }
+  ]
+}

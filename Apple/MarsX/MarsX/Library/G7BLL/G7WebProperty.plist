@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>version</key>
+	<integer>1</integer>
+	<key>default</key>
+	<dict>
+		<key>mediaPlaybackAllowsAirPlay</key>
+		<true/>
+		<key>scalesPageToFit</key>
+		<true/>
+		<key>mediaPlaybackRequiresUserAction</key>
+		<false/>
+		<key>allowsInlineMediaPlayback</key>
+		<true/>
+	</dict>
+	<key>allProperty</key>
+	<dict>
+		<key>mediaPlaybackAllowsAirPlay</key>
+		<true/>
+		<key>scalesPageToFit</key>
+		<true/>
+		<key>detectsPhoneNumbers</key>
+		<true/>
+		<key>allowsInlineMediaPlayback</key>
+		<false/>
+		<key>suppressesIncrementalRendering</key>
+		<false/>
+		<key>keyboardDisplayRequiresUserAction</key>
+		<true/>
+		<key>allowsPictureInPictureMediaPlayback</key>
+		<false/>
+		<key>allowsLinkPreview</key>
+		<false/>
+		<key>mediaPlaybackRequiresUserAction</key>
+		<false/>
+	</dict>
+</dict>
+</plist>

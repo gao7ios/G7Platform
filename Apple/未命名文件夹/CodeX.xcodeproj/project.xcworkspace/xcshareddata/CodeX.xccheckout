@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>8F897950-9E28-496F-B286-68DCA3C66B14</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CodeX</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>d53025af-aa37-2a4d-9166-fffb2ddc8635</key>
+		<string>https://192.168.15.111:8080/svn/Gao7DDBrowser</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>trunk/CodeX/CodeX.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>d53025af-aa37-2a4d-9166-fffb2ddc8635</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>d53025af-aa37-2a4d-9166-fffb2ddc8635</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>d53025af-aa37-2a4d-9166-fffb2ddc8635</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CodeX</string>
+		</dict>
+	</array>
+</dict>
+</plist>

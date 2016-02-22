@@ -1,0 +1,45 @@
+/* 
+  Localizable.strings
+  udk
+
+  Created by yuyang on 15/2/6.
+  Copyright (c) 2015年 Tandy. All rights reserved.
+*/
+"Failed" = "失敗";
+"Completed" = "実施する";
+"Loading" = "荷重";
+"Cancel" = "キャンセル";
+"UsernameOrEmail" = "ユーザー名または電子メール";
+"Password" = "パスワード";
+"Login" = "ログイン";
+"Register Now" = "今すぐ登録";
+"Forget Password" = "パスワードをお忘れですか";
+"Partner Account Login" = "パートナーアカウントへのログイン";
+"Sina Weibo" = "新浪微博";
+"Tencent QQ" = "テンセントQQ";
+"Tencent WeChat" = "マイクロチャネル";
+"Register" = "登録";
+"Back" = "リターン";
+"UserName" = "ユーザー名";
+"NickName" = "ニックネーム";
+"Email" = "メールボックス";
+"Comfirm Password" = "パスワードを認証する";
+"Verification Code" = "検証コード";
+"Notice" = "プロンプト";
+"Each Option Must Be Filled" = "各オプションは、完了する必要があります";
+"Ok" = "各オプションは、完了する必要があります";
+"Confirm Your Password" = "同じパスワードを繰り返して、パスワードではありません";
+"Submit" = "提出する";
+"Submiting" = "提出されて...";
+"Submit Complete" = "正常に送信";
+"Submit Failed" = "提出を怠る";
+"Logoutting" = "掲載されている...";
+"Logout Success" = "ログアウトに成功";
+"Authorize Success" = "認証に成功";
+"Authorizing" = "オーソライズ...";
+"Authorize Canceled" = "キャンセルする承認";
+"Authorize Failed" = "承認に失敗しました";
+"Logining" = "署名...";
+"Login Success" = "ログインに成功";
+"Registering" = "登録...";
+"Register Success" = "正常に登録";

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>G7CH</key>
+	<string>9</string>
+	<key>G7PID</key>
+	<string>16</string>
+	<key>G7VER</key>
+	<string>28</string>
+	<key>G7PT@iPad</key>
+	<string>2</string>
+	<key>G7PT@iPhone</key>
+	<string>1</string>
+	<key>G7SinaRedirectURL</key>
+	<string>http://ins.gao7.com/loginweibo2.aspx</string>
+	<key>G7TencentWeiboKey</key>
+	<string>qM4TDLm7rPPYWLwkeK/M3A==</string>
+	<key>G7TencentWeiboSecret</key>
+	<string>njjz8745cGvbKHy+2jhu9QizFxI2B77w0eUAjAtTgs3UjwHBxHHCTcQKjbofZpAh</string>
+	<key>G7TencentRedirectURL</key>
+	<string>www.qq.com</string>
+	<key>G7WeixinAppID</key>
+	<string>6+vXihS0XeYeee8zfAMrtde7undgOkeGxUz/yqQv/Lo=</string>
+	<key>G7UmengKey</key>
+	<string>51b17dbb56240b739c045e5f</string>
+	<key>G7UmtrackKey</key>
+	<string>51b17dbb56240b739c045e5f</string>
+	<key>G7UmengChannelName</key>
+	<string>果粉助手CH9</string>
+	<key>G7UpdateTrollerRunCount</key>
+	<string>3</string>
+	<key>G7UpdateTrollerTitle</key>
+	<string></string>
+	<key>G7UpdateTrollerButtonTitles</key>
+	<string>Cancel,upgrade now</string>
+	<key>G7DeviceKey</key>
+	<string>eZ4Op6YGAQeQEFFkCf+ucK8jzGhoGZ8YHzap2OMzK0VibKfyCAwHQv7FPx+K4YjJ</string>
+</dict>
+</plist>
