@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e;
 dirPath=$(cd `dirname $0`; pwd);
 
 echo "[ 正在关闭服务 ]"

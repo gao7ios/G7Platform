@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e;
 # 进行tornado配置初始化后 根据tornado配置初始化django配置，最后获得2者配置后开启nginx
 
 dirPath=$(cd `dirname $0`; pwd);
@@ -13,9 +13,9 @@ then
 else
 	echo "  \n [ 服务启动成功 ] \n  ";
   echo "请打开浏览器输入
-    http://localhost/admin 
+    http://localhost/admin
     或者
-    http://127.0.0.1/admin 
+    http://127.0.0.1/admin
     进入后台
     "
 fi

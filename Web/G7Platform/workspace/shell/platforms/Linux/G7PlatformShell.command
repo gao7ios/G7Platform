@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e;
 # 数据调试命令行
 
 dirPath=$(cd `dirname $0`; pwd);
