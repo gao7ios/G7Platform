@@ -69,16 +69,20 @@ function pythonIns() {
 		org1='#_ssl _ssl.c'
 		org2='#-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
 		org3='#-L$(SSL)/lib -lssl -lcrypto'
+		org4='#zlib zlibmodule.c'
+
 
 		tgt0='SSL=\/usr\/local\/ssl'
 		tgt1='_ssl _ssl.c'
 		tgt2='-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
 		tgt3='-L$(SSL)/lib -lssl -lcrypto'
+		tgt4='zlib zlibmodule.c'
 
 		sed -i -e "s/"$org0"/"$tgt0"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
 		sed -i -e "s/"$org1"/"$tgt1"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
 		sed -i -e "s/"$org2"/"$tgt2"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
 		sed -i -e "s/"$org3"/"$tgt3"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
+		sed -i -e "s/"$org4"/"$tgt4"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
 
 		./configure;
 		make;
