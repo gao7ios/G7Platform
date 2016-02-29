@@ -74,15 +74,15 @@ function pythonIns() {
 
 		tgt0='SSL=\/usr\/local\/ssl'
 		tgt1='_ssl'
-		tgt2='-DUSE_SSL'
-		tgt3='-L\$(SSL)'
+		tgt2='	-DUSE_SSL'
+		tgt3='	-L\$(SSL)'
 		tgt4='zlib'
 
-		sed -i -e "s/"$org0"/"$tgt0"/" Modules/Setup.dist;
-		sed -i -e "s/"$org1"/"$tgt1"/" Modules/Setup.dist;
-		sed -i -e "s/"$org2"/"$tgt2"/" Modules/Setup.dist;
-		sed -i -e "s/"$org3"/"$tgt3"/" Modules/Setup.dist;
-		sed -i -e "s/"$org4"/"$tgt4"/" Modules/Setup.dist;
+		sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
+		sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
+		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
+		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
+		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
 		pwd;
 		./configure;
 		make;
