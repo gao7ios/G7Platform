@@ -68,8 +68,8 @@ function pythonIns() {
 
 		org0='#SSL=\/usr\/local\/ssl'
 		org1='#_ssl _ssl.c'
-		org2='#-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
-		org3='#-L$(SSL)/lib -lssl -lcrypto'
+		org2='#	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
+		org3='#	-L$(SSL)/lib -lssl -lcrypto'
 		org4='#zlib zlibmodule.c'
 
 
