@@ -65,6 +65,7 @@ function pythonIns() {
 
 		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
 		cd $dirPath/packages/Python-3.4.3;
+		
 		org0='#SSL=\/usr\/local\/ssl'
 		org1='#_ssl _ssl.c'
 		org2='#-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
@@ -89,6 +90,7 @@ function pythonIns() {
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
 		cd $dirPath;
+		exit;
 	fi
 }
 # 安装Python3.4.3
