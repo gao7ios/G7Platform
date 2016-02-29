@@ -72,7 +72,7 @@ function pythonIns() {
 		org3='#.*L\$(SSL)'
 		org4='#zlib'
 
-		tgt0='SSL=\/usr\/local\/ssl'
+		tgt0='SSL=\/usr\/local\/opt\/openssl'
 		tgt1='_ssl'
 		tgt2='	-DUSE_SSL'
 		tgt3='	-L\$(SSL)'
