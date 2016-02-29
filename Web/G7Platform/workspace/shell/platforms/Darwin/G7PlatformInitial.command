@@ -89,7 +89,7 @@ function pythonIns() {
 	fi
 }
 # 安装Python3.4.3
-g7Install Python3.4.3 pythonIns "python3 -V" || exit 1;
+g7Install Python3.4.3 pythonIns "python3 -V";
 
 # mysql安装函数
 function mysqlIns() {
@@ -117,17 +117,18 @@ function mysqlIns() {
 	./scripts/mysql_install_db --user=$USER --basedir=/usr/local/mysql;
 }
 # 安装Mysql5.6
-g7Install MySQL5.6 mysqlIns "mysql --help" || exit 1;
+g7Install MySQL5.6 mysqlIns "mysql --help";
 
 # nginx安装函数
 function nginxIns() {
 	$osinstaller zlib;
 	$osinstaller openssl;
 	$osinstaller pcre;
+	brew tap homebrew/nginx;
 	$osinstaller nginx;
 }
 # 安装nginx
-g7Install NginX nginxIns "nginx -v" || exit 1;
+g7Install NginX nginxIns "nginx -v";
 
 # php安装函数
 function phpIns() {
@@ -148,7 +149,7 @@ function phpIns() {
 	$osinstaller gettext 1>/dev/null;
 }
 # 安装PHP
-g7Install PHP5.6 nginxIns "php -v" || exit 1;
+g7Install PHP5.6 nginxIns "php -v";
 
 # supervisor安装函数
 function supervisorIns() {
