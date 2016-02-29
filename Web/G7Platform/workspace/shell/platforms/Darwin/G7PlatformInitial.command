@@ -105,12 +105,12 @@ function mysqlIns() {
 	fi
 
 	sudo rm -rf /usr/local/mysql*;
-	sudo rm -rf /usr/local/lib/lig7ysql*;
+	sudo rm -rf /usr/local/lib/libmysql*;
 	sudo rm -rf /usr/local/bin/mysql*;
 	sudo tar xvf $dirPath/packages/mysql-5.6.28-osx10.10-x86_64.tar.gz -C /usr/local/;
  	sudo mv /usr/local/mysql-5.6.28-osx10.10-x86_64/ /usr/local/mysql;
 	sudo ln -sv /usr/local/mysql/bin/mysql* /usr/local/bin;
-	sudo ln -sv /usr/local/mysql/lib/lig7ysql* /usr/local/lib;
+	sudo ln -sv /usr/local/mysql/lib/libmysql* /usr/local/lib;
 	sudo ln -sv /usr/local/mysql/support-files/mysql.server /usr/local/bin/;
 	sudo chown -R $USER:admin /usr/local/mysql;
 	cd /usr/local/mysql;
