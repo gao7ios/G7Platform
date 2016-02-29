@@ -83,7 +83,6 @@ function pythonIns() {
 		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
 		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
 		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
-		pwd;
 		./configure;
 		make;
 		sudo make install;
