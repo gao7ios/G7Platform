@@ -31,7 +31,7 @@ function g7Install() {
 
 # brew安装函数
 function brewIns() {
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
 }
 # 安装Brew
 g7Install Brew brewIns "brew -v";
@@ -47,21 +47,9 @@ g7Install wget wgetIns "wget --help";
 function pythonIns() {
 	if [ $sysOS == "Darwin" ]
 	then
-		opensslUrl = "https://www.openssl.org/source/openssl-1.0.1r.tar.gz";
-		if [ ! -f $dirPath/packages/openssl-1.0.1r.tar.gz ]
-		then
-			wget -P $dirPath/packages $opensslUrl;
-		fi
-		tar xvf $dirPath/packages/openssl-1.0.1r.tar.gz -C $dirPath/packages;
-		cd $dirPath/packages/openssl*/;
-		./configure;
-		make;
-		sudo make install;
-		cd $dirPath;
-
+		$osinstaller openssl;
 		$osinstaller readline;
 		$osinstaller homebrew/dupes/zlib;
-
 		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
 		if [ $sysOS == "Darwin" ]
 		then
@@ -75,7 +63,25 @@ function pythonIns() {
 
 		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
 		cd $dirPath/packages/Python-3.4.3;
-		./configure;
+
+		org0='#SSL=\/usr\/local\/ssl'
+		org1='#_ssl'
+		org2='#.*DUSE_SSL'
+		org3='#.*L\$(SSL)'
+		org4='#zlib'
+
+		tgt0='SSL=\/usr\/local\/opt\/openssl'
+		tgt1='_ssl'
+		tgt2='	-DUSE_SSL'
+		tgt3='	-L\$(SSL)'
+		tgt4='zlib'
+
+		sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
+		sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
+		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
+		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
+		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
+		CPPFLAGS="-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/opt/openssl/lib" ./configure;
 		make;
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
