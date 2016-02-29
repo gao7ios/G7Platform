@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e;
 # debug模式
 debug=1;
 

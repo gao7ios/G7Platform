@@ -35,14 +35,14 @@ function brewIns() {
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
 }
 # 安装Brew
-g7Install Brew brewIns "brew -v";
+g7Install Brew brewIns "brew -v" || exit 1;
 
 # wget安装函数
 function wgetIns() {
 	$osinstaller wget;
 }
 # 安装wget
-g7Install wget wgetIns "wget --help";
+g7Install wget wgetIns "wget --help" || exit 1;
 
 # python安装函数
 function pythonIns() {
@@ -88,7 +88,7 @@ function pythonIns() {
 	fi
 }
 # 安装Python3.4.3
-g7Install Python3.4.3 pythonIns "python3 -V";
+g7Install Python3.4.3 pythonIns "python3 -V" || exit 1;
 
 # mysql安装函数
 function mysqlIns() {
@@ -116,7 +116,7 @@ function mysqlIns() {
 	./scripts/mysql_install_db --user=$USER --basedir=/usr/local/mysql;
 }
 # 安装Mysql5.6
-g7Install MySQL5.6 mysqlIns "mysql --help";
+g7Install MySQL5.6 mysqlIns "mysql --help" || exit 1;
 
 # nginx安装函数
 function nginxIns() {
@@ -126,7 +126,7 @@ function nginxIns() {
 	$osinstaller nginx;
 }
 # 安装nginx
-g7Install NginX nginxIns "nginx -v";
+g7Install NginX nginxIns "nginx -v" || exit 1;
 
 # php安装函数
 function phpIns() {
@@ -147,8 +147,7 @@ function phpIns() {
 	$osinstaller gettext 1>/dev/null;
 }
 # 安装PHP
-g7Install PHP5.6 nginxIns "php -v";
-
+g7Install PHP5.6 nginxIns "php -v" || exit 1;
 
 # supervisor安装函数
 function supervisorIns() {
