@@ -62,8 +62,8 @@ function pythonIns() {
 			wget -P $dirPath/packages $pythonUrl;
 		fi
 
-		tar xvf packages/Python-3.4.3.tgz -C packages;
-		cd packages/Python-3.4.3;
+		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
+		cd $dirPath/packages/Python-3.4.3;
 		org0='#SSL=\/usr\/local\/ssl'
 		org1='#_ssl _ssl.c'
 		org2='#-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
@@ -74,15 +74,15 @@ function pythonIns() {
 		tgt2='-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
 		tgt3='-L$(SSL)/lib -lssl -lcrypto'
 
-		sed -i -e "s/"$org0"/"$tgt0"/g" Modules/Setup.dist;
-		sed -i -e "s/"$org1"/"$tgt1"/g" Modules/Setup.dist;
-		sed -i -e "s/"$org2"/"$tgt2"/g" Modules/Setup.dist;
-		sed -i -e "s/"$org3"/"$tgt3"/g" Modules/Setup.dist;
+		sed -i -e "s/"$org0"/"$tgt0"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
+		sed -i -e "s/"$org1"/"$tgt1"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
+		sed -i -e "s/"$org2"/"$tgt2"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
+		sed -i -e "s/"$org3"/"$tgt3"/g" $dirPath/packages/Python-3.4.3/Modules/Setup.dist;
 
 		./configure;
 		make;
 		sudo make install;
-		sudo rm -rf packages/Python-3.4.3/;
+		sudo rm -rf $dirPath/packages/Python-3.4.3/;
 		cd $dirPath;
 	fi
 }
