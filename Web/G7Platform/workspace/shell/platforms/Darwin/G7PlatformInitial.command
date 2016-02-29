@@ -67,23 +67,22 @@ function pythonIns() {
 		cd $dirPath/packages/Python-3.4.3;
 
 		org0='#SSL=\/usr\/local\/ssl'
-		org1='#_ssl _ssl.c'
-		org2='#	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
-		org3='#	-L$(SSL)/lib -lssl -lcrypto'
-		org4='#zlib zlibmodule.c'
-
+		org1='#_ssl'
+		org2='#.*DUSE_SSL'
+		org3='#.*L\$(SSL)'
+		org4='#zlib'
 
 		tgt0='SSL=\/usr\/local\/ssl'
-		tgt1='_ssl _ssl.c'
-		tgt2='-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl'
-		tgt3='-L$(SSL)/lib -lssl -lcrypto'
-		tgt4='zlib zlibmodule.c'
+		tgt1='_ssl'
+		tgt2='-DUSE_SSL'
+		tgt3='-L\$(SSL)'
+		tgt4='zlib'
 
-		sed -i -e "s/^./"$tgt0"/g" Modules/Setup.dist;
-		sed -i -e "s/^./"$tgt1"/g" Modules/Setup.dist;
-		sed -i -e "s/^./"$tgt2"/g" Modules/Setup.dist;
-		sed -i -e "s/^./"$tgt3"/g" Modules/Setup.dist;
-		sed -i -e "s/^./"$tgt4"/g" Modules/Setup.dist;
+		sed -i -e "s/"$org0"/"$tgt0"/" Modules/Setup.dist;
+		sed -i -e "s/"$org1"/"$tgt1"/" Modules/Setup.dist;
+		sed -i -e "s/"$org2"/"$tgt2"/" Modules/Setup.dist;
+		sed -i -e "s/"$org3"/"$tgt3"/" Modules/Setup.dist;
+		sed -i -e "s/"$org4"/"$tgt4"/" Modules/Setup.dist;
 		pwd;
 		./configure;
 		make;
