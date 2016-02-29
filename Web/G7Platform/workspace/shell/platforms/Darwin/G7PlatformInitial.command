@@ -79,11 +79,11 @@ function pythonIns() {
 		tgt3='-L$(SSL)/lib -lssl -lcrypto'
 		tgt4='zlib zlibmodule.c'
 
-		sed -i -e "s/"$org0"/"$tgt0"/g" Modules/Setup.dist;
-		sed -i -e "s/"$org1"/"$tgt1"/g" Modules/Setup.dist;
-		sed -i -e "s/"$org2"/"$tgt2"/g" Modules/Setup.dist;
-		sed -i -e "s/"$org3"/"$tgt3"/g" Modules/Setup.dist;
-		sed -i -e "s/"$org4"/"$tgt4"/g" Modules/Setup.dist;
+		sed -i -e "s/^./"$tgt0"/g" Modules/Setup.dist;
+		sed -i -e "s/^./"$tgt1"/g" Modules/Setup.dist;
+		sed -i -e "s/^./"$tgt2"/g" Modules/Setup.dist;
+		sed -i -e "s/^./"$tgt3"/g" Modules/Setup.dist;
+		sed -i -e "s/^./"$tgt4"/g" Modules/Setup.dist;
 		pwd;
 		./configure;
 		make;
