@@ -253,7 +253,7 @@ mysql.server start;
 
 # MySQLdb安装函数
 function mySQLdbIns() {
-	sudo easy_install-3.4 $dirPath/packages/MySQL-for-Python-3.zip;
+	DYLD_LIBRARY_PATH="/usr/local/mysql/lib:-L/usr/local/mysql/lib/" sudo easy_install-3.4 $dirPath/packages/MySQL-for-Python-3.zip;
 }
 # 安装MySQLdb
 g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
