@@ -88,7 +88,6 @@ function pythonIns() {
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
 		cd $dirPath;
-		exit;
 	fi
 }
 # 安装Python3.4.3
