@@ -50,8 +50,8 @@ function pythonIns() {
 		$osinstaller openssl;
 		$osinstaller readline;
 		$osinstaller homebrew/dupes/zlib
-		export LDFLAGS=-L/usr/local/opt/openssl/lib;
-		export CPPFLAGS=-I/usr/local/opt/openssl/include;
+		export LDFLAGS="$LDFLAGS:-L/usr/local/opt/openssl/lib:-L/usr/local/opt/zlib/lib";
+		export CPPFLAGS="$CPPFLAGS:-I/usr/local/opt/openssl/include:-I/usr/local/opt/zlib/include";
 		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
 		if [ $sysOS == "Darwin" ]
 		then
