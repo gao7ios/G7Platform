@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e;
 # debug模式
 debug=1;
 
@@ -35,14 +34,14 @@ function brewIns() {
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
 }
 # 安装Brew
-g7Install Brew brewIns "brew -v" || exit 1;
+g7Install Brew brewIns "brew -v";
 
 # wget安装函数
 function wgetIns() {
 	$osinstaller wget;
 }
 # 安装wget
-g7Install wget wgetIns "wget --help" || exit 1;
+g7Install wget wgetIns "wget --help";
 
 # python安装函数
 function pythonIns() {
