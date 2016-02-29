@@ -81,7 +81,7 @@ function pythonIns() {
 		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
 		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
 		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
-		CPPFLAGS="-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/opt/openssl/lib" ./configure;
+		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" ./configure;
 		CPPFLAGS="-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/opt/openssl/lib" make;
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
