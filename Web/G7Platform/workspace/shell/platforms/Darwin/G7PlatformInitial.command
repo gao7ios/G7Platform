@@ -49,7 +49,7 @@ function pythonIns() {
 	then
 		$osinstaller openssl;
 		$osinstaller readline;
-		$osinstaller install homebrew/dupes/zlib
+		$osinstaller homebrew/dupes/zlib
 		export LDFLAGS=-L/usr/local/opt/openssl/lib;
 		export CPPFLAGS=-I/usr/local/opt/openssl/include;
 		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
