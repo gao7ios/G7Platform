@@ -47,7 +47,7 @@ g7Install wget wgetIns "wget --help";
 function pythonIns() {
 	if [ $sysOS == "Darwin" ]
 	then
-		sslUrl = "ftp://ftp.openssl.org/source/openssl-1.0.2f.tar.gz";
+		sslUrl="ftp://ftp.openssl.org/source/openssl-1.0.2f.tar.gz";
 		if [ ! -f $dirPath/packages/openssl-1.0.2f.tar.gz ]
 		then
 			wget -P $dirPath/packages $sslUrl;
