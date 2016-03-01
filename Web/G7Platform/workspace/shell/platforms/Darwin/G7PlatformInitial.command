@@ -65,23 +65,23 @@ function pythonIns() {
 		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
 		cd $dirPath/packages/Python-3.4.3;
 
-		# org0='#SSL=\/usr\/local\/ssl'
-		# org1='#_ssl'
-		# org2='#.*DUSE_SSL'
-		# org3='#.*L\$(SSL)'
-		# org4='#zlib'
-		#
-		# tgt0='SSL=\/usr\/local\/opt\/openssl'
-		# tgt1='_ssl'
-		# tgt2='	-DUSE_SSL'
-		# tgt3='	-L\$(SSL)'
-		# tgt4='zlib'
-		#
-		# sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
-		# sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
-		# sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
-		# sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
-		# sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
+		org0='#SSL=\/usr\/local\/ssl'
+		org1='#_ssl'
+		org2='#.*DUSE_SSL'
+		org3='#.*L\$(SSL)'
+		org4='#zlib'
+
+		tgt0='SSL=\/usr\/local\/ssl'
+		tgt1='_ssl'
+		tgt2='	-DUSE_SSL'
+		tgt3='	-L\$(SSL)'
+		tgt4='zlib'
+
+		sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
+		sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
+		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
+		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
+		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
 		# CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" ./configure;
 		# CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" make;
 		./configure;
