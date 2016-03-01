@@ -47,15 +47,7 @@ g7Install wget wgetIns "wget --help";
 function pythonIns() {
 	if [ $sysOS == "Darwin" ]
 	then
-		sslUrl="ftp://ftp.openssl.org/source/openssl-1.0.2f.tar.gz";
-		if [ ! -f $dirPath/packages/openssl-1.0.2f.tar.gz ]
-		then
-			wget -P $dirPath/packages $sslUrl;
-		fi
-		tar xvf $dirPath/packages/openssl-1.0.2f.tar.gz -C $dirPath/packages;
-		cd $dirPath/packages/openssl-1.0.2f;
-
-		sudo mv /usr/local/opt/openssl /usr/local/ssl;
+		$osinstaller openssl;
 		$osinstaller readline;
 		$osinstaller homebrew/dupes/zlib;
 		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
@@ -68,7 +60,7 @@ function pythonIns() {
 		then
 			wget -P $dirPath/packages $pythonUrl;
 		fi
-
+		
 		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
 		cd $dirPath/packages/Python-3.4.3;
 
@@ -78,7 +70,7 @@ function pythonIns() {
 		org3='#.*L\$(SSL)'
 		org4='#zlib'
 
-		tgt0='SSL=\/usr\/local\/ssl'
+		tgt0='SSL=\/usr\/local\/opt\/openssl'
 		tgt1='_ssl'
 		tgt2='	-DUSE_SSL'
 		tgt3='	-L\$(SSL)'
@@ -89,10 +81,8 @@ function pythonIns() {
 		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
 		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
 		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
-		# CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" ./configure;
-		# CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" make;
-		./configure;
-		make;
+		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/opt/openssl/lib" ./configure;
+		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/opt/openssl/lib" make;
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
 		cd $dirPath;
