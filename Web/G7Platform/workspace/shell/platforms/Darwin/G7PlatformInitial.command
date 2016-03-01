@@ -60,7 +60,7 @@ function pythonIns() {
 		then
 			wget -P $dirPath/packages $pythonUrl;
 		fi
-		
+
 		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
 		cd $dirPath/packages/Python-3.4.3;
 
@@ -176,8 +176,8 @@ function uwsgiIns() {
 
 	tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
 	cd $dirPath/packages/uwsgi-2.0.12/
-	sudo CC=gcc python3 ./uwsgiconfig.py --build;
-	sudo CC=gcc python3 uwsgiconfig.py --plugin plugins/python core py34;
+	sudo CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/opt/openssl/lib" CC=gcc python3 ./uwsgiconfig.py --build;
+	sudo CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/opt/openssl/lib" CC=gcc python3 uwsgiconfig.py --plugin plugins/python core py34;
 	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
 	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
 	sudo cp -rf ./uwsgi /usr/local/bin;
