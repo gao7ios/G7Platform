@@ -48,7 +48,6 @@ function pythonIns() {
 	if [ $sysOS == "Darwin" ]
 	then
 		$osinstaller openssl;
-		sudo mv /usr/local/opt/openssl /usr/local/ssl;
 		$osinstaller readline;
 		$osinstaller homebrew/dupes/zlib;
 		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
@@ -71,7 +70,7 @@ function pythonIns() {
 		org3='#.*L\$(SSL)'
 		org4='#zlib'
 
-		tgt0='SSL=\/usr\/local\/ssl'
+		tgt0='SSL=\/usr\/local\/opt\/openssl'
 		tgt1='_ssl'
 		tgt2='	-DUSE_SSL'
 		tgt3='	-L\$(SSL)'
@@ -82,10 +81,8 @@ function pythonIns() {
 		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
 		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
 		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
-		# CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" ./configure;
-		# CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" make;
-		./configure;
-		make;
+		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" ./configure;
+		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/include:-I/usr/local/opt/openssl/include" LDFLAGS="-L/usr/local/lib:-L/usr/local/opt/openssl/lib -pthread" make;
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
 		cd $dirPath;
