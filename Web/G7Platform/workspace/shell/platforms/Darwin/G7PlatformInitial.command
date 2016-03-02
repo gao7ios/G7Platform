@@ -48,7 +48,7 @@ function pythonIns() {
 	if [ $sysOS == "Darwin" ]
 	then
 
-		if [ ! -f /usr/local/ssl ]
+		if [ ! -d /usr/local/ssl ]
 		then
 			sslUrl="https://www.openssl.org/source/openssl-1.0.2g.tar.gz"
 			if [ ! -f $dirPath/packages/openssl-1.0.2g.tar.gz ]
