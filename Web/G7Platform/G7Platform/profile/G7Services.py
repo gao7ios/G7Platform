@@ -127,7 +127,7 @@ class G7ReleaseServer(G7Server):
             daemonize = log_path + "/django/django.log"   # logpath
             g7MakeDirs(daemonize, touch_file=True)
             childrenNodes = {
-                "py-programname":"python3",
+                "py-programname":"/usr/local/bin/python3",
                 "chdir":django_path,
                 "socket":host+":"+str(port),
                 "listen":str(listen),
