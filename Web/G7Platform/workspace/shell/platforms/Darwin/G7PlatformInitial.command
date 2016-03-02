@@ -63,52 +63,59 @@ function pythonIns() {
 		# 	cd $dirPath;
 		# 	sudo rm -rf $dirPath/packages/openssl*/;
 		# fi
-
-		$osinstaller openssl;
-		$osinstaller readline;
-		$osinstaller homebrew/dupes/zlib;
-		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
-		if [ $sysOS == "Darwin" ]
-		then
-			pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
-		fi
-
-		if [ ! -f $dirPath/packages/Python-3.4.3.tgz ]
-		then
-			wget -P $dirPath/packages $pythonUrl;
-		fi
-
-		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
-		cd $dirPath/packages/Python-3.4.3;
-
-		org0='#SSL=\/usr\/local\/ssl'
-		org1='#_ssl'
-		org2='#.*DUSE_SSL'
-		org3='#.*L\$(SSL)'
-		org4='#zlib'
-
-		tgt0='SSL=\/usr\/local\/opt\/openssl\/'
-		tgt1='_ssl'
-		tgt2='	-DUSE_SSL'
-		tgt3='	-L\$(SSL)'
-		tgt4='zlib'
-
-		sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
-		sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
-		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
-		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
-		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
-
-		CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
-		CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
-
-		sudo make install;
-		sudo rm -rf $dirPath/packages/Python-3.4.3/;
-		cd $dirPath;
+		sudo rm -rf /usr/local/bin/pip3*;
+		sudo rm -rf /usr/local/bin/easy_install3*
+		sudo rm -rf /usr/local/bin/pyvenv*;
+		sudo rm -rf /usr/local/lib/python*;
+		brew unlink python3;
+		brew uninstall python3 --force;
+		brew install python3;
+		brew unlink python3;
+		brew link python3;
+		# $osinstaller readline;
+		# $osinstaller homebrew/dupes/zlib;
+		# pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
+		# if [ $sysOS == "Darwin" ]
+		# then
+		# 	pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
+		# fi
+		#
+		# if [ ! -f $dirPath/packages/Python-3.4.3.tgz ]
+		# then
+		# 	wget -P $dirPath/packages $pythonUrl;
+		# fi
+		#
+		# tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
+		# cd $dirPath/packages/Python-3.4.3;
+		#
+		# org0='#SSL=\/usr\/local\/ssl'
+		# org1='#_ssl'
+		# org2='#.*DUSE_SSL'
+		# org3='#.*L\$(SSL)'
+		# org4='#zlib'
+		#
+		# tgt0='SSL=\/usr\/local\/opt\/openssl\/'
+		# tgt1='_ssl'
+		# tgt2='	-DUSE_SSL'
+		# tgt3='	-L\$(SSL)'
+		# tgt4='zlib'
+		#
+		# sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
+		# sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
+		# sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
+		# sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
+		# sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
+		#
+		# CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
+		# CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
+		#
+		# sudo make install;
+		# sudo rm -rf $dirPath/packages/Python-3.4.3/;
+		# cd $dirPath;
 	fi
 }
 # 安装Python3.4.3
-g7Install Python3.4.3 pythonIns "python3 -V";
+g7Install Python3 pythonIns "python3 -V";
 
 # mysql安装函数
 function mysqlIns() {
@@ -195,8 +202,8 @@ function uwsgiIns() {
 
 	tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
 	cd $dirPath/packages/uwsgi-2.0.12/;
-	CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" make;
-	CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" python3 uwsgiconfig.py --plugin plugins/python core py34;
+	CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" make;
+	CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" python3 uwsgiconfig.py --plugin plugins/python core py34;
 	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
 	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
 	sudo cp -rf ./uwsgi /usr/local/bin;
@@ -242,7 +249,7 @@ g7Install django djangoIns "python3 -c \"import django\"";
 # django安装函数
 function djangoAdminIns() {
 
-	sudo sed -e 's/python/python3/' /usr/local/lib/python3.4/site-packages/django/bin/django-admin.py > /usr/local/bin/django-admin;
+	sudo sed -e 's/python/python3/' /usr/local/lib/python*/site-packages/django/bin/django-admin.py > /usr/local/bin/django-admin;
 }
 # 安装django
 g7Install django-admin djangoAdminIns "django-admin";
@@ -252,9 +259,9 @@ g7Install django-admin djangoAdminIns "django-admin";
 function torndbIns() {
 
 	sudo pip3 install torndb==0.3;
-	torndbOrg=" use_unicode=True,";
-	torndbTgt="";
-	sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.4/site-packages/torndb.py;
+torndbOrg=" use_unicode=True,";
+torndbTgt="";
+sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3*/site-packages/torndb.py;
 }
 # 安装torndb
 g7Install torndb torndbIns "python3 -c \"import torndb\"";
@@ -272,7 +279,7 @@ mysql.server start;
 
 # MySQLdb安装函数
 function mySQLdbIns() {
-	DYLD_LIBRARY_PATH="/usr/local/mysql/lib:-L/usr/local/mysql/lib/" sudo easy_install-3.4 $dirPath/packages/MySQL-for-Python-3.zip;
+	DYLD_LIBRARY_PATH="/usr/local/mysql/lib:-L/usr/local/mysql/lib/" sudo pip3 install $dirPath/packages/MySQL-for-Python-3.zip;
 }
 # 安装MySQLdb
 g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
