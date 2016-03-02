@@ -99,8 +99,8 @@ function pythonIns() {
 		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
 		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
 
-		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
-		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
+		CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
+		CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
 
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
