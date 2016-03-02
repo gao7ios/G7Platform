@@ -202,7 +202,7 @@ function uwsgiIns() {
 
 	tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
 	cd $dirPath/packages/uwsgi-2.0.12/;
-	CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" make;
+	CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" python3 uwsgiconfig.py --build;
 	CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" python3 uwsgiconfig.py --plugin plugins/python core py34;
 	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
 	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
