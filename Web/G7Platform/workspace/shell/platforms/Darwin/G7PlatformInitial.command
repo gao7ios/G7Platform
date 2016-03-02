@@ -195,7 +195,7 @@ function uwsgiIns() {
 
 	tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
 	cd $dirPath/packages/uwsgi-2.0.12/;
-	python3 uwsgiconfig.py --build;
+	make;
 	python3 uwsgiconfig.py --plugin plugins/python core py34;
 	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
 	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
