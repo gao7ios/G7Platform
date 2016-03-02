@@ -50,13 +50,13 @@ function pythonIns() {
 
 		if [ ! -d /usr/local/ssl ]
 		then
-			sslUrl="https://www.openssl.org/source/openssl-1.0.2g.tar.gz"
-			if [ ! -f $dirPath/packages/openssl-1.0.2g.tar.gz ]
+			sslUrl="https://www.openssl.org/source/old/1.0.2/openssl-1.0.2e.tar.gz"
+			if [ ! -f $dirPath/packages/openssl-1.0.2e.tar.gz ]
 			then
 				wget -P $dirPath/packages $sslUrl;
 			fi
-			tar xvf $dirPath/packages/openssl-1.0.2g.tar.gz -C $dirPath/packages;
-			cd $dirPath/packages/openssl-1.0.2g/;
+			tar xvf $dirPath/packages/openssl-1.0.2e.tar.gz -C $dirPath/packages;
+			cd $dirPath/packages/openssl-1.0.2e/;
 			CC=clang CXX=/usr/bin/clang++ ./Configure darwin64-x86_64-cc;
 			CC=clang CXX=/usr/bin/clang++ make depend;
 			sudo make install;
@@ -195,7 +195,7 @@ function uwsgiIns() {
 
 	tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
 	cd $dirPath/packages/uwsgi-2.0.12/;
-	make;
+	python3 uwsgiconfig.py --build;
 	python3 uwsgiconfig.py --plugin plugins/python core py34;
 	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
 	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
