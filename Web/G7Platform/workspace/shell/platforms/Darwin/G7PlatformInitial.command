@@ -48,23 +48,23 @@ function pythonIns() {
 	if [ $sysOS == "Darwin" ]
 	then
 
-		if [ ! -d /usr/local/ssl ]
-		then
-			sslUrl="https://www.openssl.org/source/old/1.0.2/openssl-1.0.2e.tar.gz"
-			if [ ! -f $dirPath/packages/openssl-1.0.2e.tar.gz ]
-			then
-				wget -P $dirPath/packages $sslUrl;
-			fi
-			tar xvf $dirPath/packages/openssl-1.0.2e.tar.gz -C $dirPath/packages;
-			cd $dirPath/packages/openssl-1.0.2e/;
-			CC=clang CXX=/usr/bin/clang++ ./Configure darwin64-x86_64-cc;
-			CC=clang CXX=/usr/bin/clang++ make depend;
-			sudo make install;
-			cd $dirPath;
-			sudo rm -rf $dirPath/packages/openssl*/;
-		fi
+		# if [ ! -d /usr/local/ssl ]
+		# then
+		# 	sslUrl="https://www.openssl.org/source/old/1.0.2/openssl-1.0.2e.tar.gz"
+		# 	if [ ! -f $dirPath/packages/openssl-1.0.2e.tar.gz ]
+		# 	then
+		# 		wget -P $dirPath/packages $sslUrl;
+		# 	fi
+		# 	tar xvf $dirPath/packages/openssl-1.0.2e.tar.gz -C $dirPath/packages;
+		# 	cd $dirPath/packages/openssl-1.0.2e/;
+		# 	CC=clang CXX=/usr/bin/clang++ ./Configure darwin64-x86_64-cc;
+		# 	CC=clang CXX=/usr/bin/clang++ make depend;
+		# 	sudo make install;
+		# 	cd $dirPath;
+		# 	sudo rm -rf $dirPath/packages/openssl*/;
+		# fi
 
-
+		$osinstaller openssl;
 		$osinstaller readline;
 		$osinstaller homebrew/dupes/zlib;
 		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
@@ -87,7 +87,7 @@ function pythonIns() {
 		org3='#.*L\$(SSL)'
 		org4='#zlib'
 
-		tgt0='SSL=\/usr\/local\/ssl'
+		tgt0='SSL=\/usr\/local\/opt\/openssl\/'
 		tgt1='_ssl'
 		tgt2='	-DUSE_SSL'
 		tgt3='	-L\$(SSL)'
@@ -99,8 +99,8 @@ function pythonIns() {
 		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
 		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
 
-		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
-		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/ssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/ssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
+		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
+		CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
 
 		sudo make install;
 		sudo rm -rf $dirPath/packages/Python-3.4.3/;
@@ -195,8 +195,8 @@ function uwsgiIns() {
 
 	tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
 	cd $dirPath/packages/uwsgi-2.0.12/;
-	make;
-	python3 uwsgiconfig.py --plugin plugins/python core py34;
+	CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" make;
+	CFLAGS='-fPIC' CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" python3 uwsgiconfig.py --plugin plugins/python core py34;
 	sudo mkdir /usr/local/lib/uwsgi 2>/dev/null;
 	sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
 	sudo cp -rf ./uwsgi /usr/local/bin;
