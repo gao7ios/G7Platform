@@ -13,6 +13,10 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 
 #ifdef __OBJC__
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
 #import <G7Core/G7.h>
 #import <G7Core/NSDate+G7Extension.h>
 #import <G7Core/NSObject+G7Notification.h>
@@ -31,6 +35,8 @@
 #import <G7Network/G7NetworkOperation.h>
 #import <G7Network/G7NetworkManager.h>
 
+
+#import "CodeX.h"
 
 #endif
 

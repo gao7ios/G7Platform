@@ -9,7 +9,6 @@
 #import "CXHistoryModel.h"
 #import "CXHistoryView.h"
 #import "CXWebViewController.h"
-#import "CXAppDelegate.h"
 #import "CXHistoryType.h"
 #import "CXURLHandler.h"
 

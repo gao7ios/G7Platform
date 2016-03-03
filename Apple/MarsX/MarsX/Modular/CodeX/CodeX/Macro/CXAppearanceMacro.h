@@ -9,13 +9,6 @@
 #ifndef CodeX_AppearanceMacro_h
 #define CodeX_AppearanceMacro_h
 
-// devices
-
-#define IS_IPHONE4 ([UIScreen mainScreen].bounds.size.height == 480)
-#define IS_IPHONE5 ([UIScreen instancesRespondToSelector:@selector(currentMode)]?CGSizeEqualToSize(CGSizeMake(640, 1136),[[UIScreen mainScreen] currentMode].size):NO)
-#define IS_IPHONE6 ([UIScreen mainScreen].bounds.size.height == 667)
-#define IS_IPHONE6_PLUS ([UIScreen mainScreen].bounds.size.height == 736)
-
 // ios
 
 #define IS_IOS7_OR_LATER    ([[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending)
