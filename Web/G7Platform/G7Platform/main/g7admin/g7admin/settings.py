@@ -12,26 +12,13 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 from os import path
 import sys
-# import MySQLdb as DB
 from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
-# mysqlVersion = 5.6
-# con = None
-# try:
-#     con = DB.connect("127.0.0.1","root","","mysql")
-#     cur = con.cursor()
-#     cur.execute('SELECT VERSION()')
-#     version = cur.fetchone()
-#     mysqlVersion = float(".".join(version[0].split(".")[:2]))
-#     con.close()
-# finally:
-#     if con:
-#         con.close()
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(path.join(BASE_DIR,"../../../"))
 
 
-SECRET_KEY = '6d!tzmqbr5=*236_9jwim^j5-df*x)u*%o03=(z(+rm!0$y($*'
+SECRET_KEY = 'y&9b=s0w!uw0d79&=a*k0e(6%7kw60&atr9xz2m+we(*c9grl4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
