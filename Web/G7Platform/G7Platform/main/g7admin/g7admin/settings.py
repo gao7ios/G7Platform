@@ -15,6 +15,7 @@ import sys
 import MySQLdb as DB
 
 mysqlVersion = 5.6
+con = None
 try:
     con = DB.connect(dbhost,dbuser,dbpassword,dbname)
     cur = con.cursor()
