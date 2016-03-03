@@ -13,6 +13,7 @@ import os
 from os import path
 import sys
 import MySQLdb as DB
+from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
 mysqlVersion = 5.6
 con = None
@@ -29,7 +30,6 @@ finally:
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(path.join(BASE_DIR,"../../../"))
 
-from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
 SECRET_KEY = '6d!tzmqbr5=*236_9jwim^j5-df*x)u*%o03=(z(+rm!0$y($*'
 
