@@ -12,21 +12,21 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 from os import path
 import sys
-import MySQLdb as DB
+# import MySQLdb as DB
 from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
-mysqlVersion = 5.6
-con = None
-try:
-    con = DB.connect(dbhost,dbuser,dbpassword,dbname)
-    cur = con.cursor()
-    cur.execute('SELECT VERSION()')
-    version = cur.fetchone()
-    mysqlVersion = float(".".join(version[0].split(".")[:2]))
-    con.close()
-finally:
-    if con:
-        con.close()
+# mysqlVersion = 5.6
+# con = None
+# try:
+#     con = DB.connect("127.0.0.1","root","","mysql")
+#     cur = con.cursor()
+#     cur.execute('SELECT VERSION()')
+#     version = cur.fetchone()
+#     mysqlVersion = float(".".join(version[0].split(".")[:2]))
+#     con.close()
+# finally:
+#     if con:
+#         con.close()
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(path.join(BASE_DIR,"../../../"))
 
@@ -68,34 +68,19 @@ WSGI_APPLICATION = 'g7admin.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-if mysqlVersion > 5.6:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': dbname,
-    		'USER': dbuser,
-            'PASSWORD': dbpassword,
-            'HOST': dbhost,
-            'PORT': '3306',
-            'OPTIONS':{
-                "init_command": "SET foreign_key_checks = 0;",
-            }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': dbname,
+        'USER': dbuser,
+        'PASSWORD': dbpassword,
+        'HOST': dbhost,
+        'PORT': '3306',
+        'OPTIONS':{
+            "init_command": "SET foreign_key_checks = 0;",
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': dbname,
-    		'USER': dbuser,
-            'PASSWORD': dbpassword,
-            'HOST': dbhost,
-            'PORT': '3306',
-            'OPTIONS':{
-                "init_command": "SET storage_engine=INNODB;SET foreign_key_checks = 0;",
-            }
-        }
-    }
+}
 
 
 AUTH_USER_MODEL = 'Account.G7User'
