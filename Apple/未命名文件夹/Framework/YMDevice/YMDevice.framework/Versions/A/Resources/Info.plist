@@ -1,9 +1,0 @@
-{
-	"CFBundleDevelopmentRegion" = English;
-	CFBundleExecutable = YMDevice;
-	CFBundleIdentifier = "com.yumo.ymdevice";
-	"CFBundleInfoDictionaryVersion" = "1.0";
-	CFBundlePackageType = YM;
-	CFBundleSignature = "????";
-	CFBundleVersion = 20141010;
-}

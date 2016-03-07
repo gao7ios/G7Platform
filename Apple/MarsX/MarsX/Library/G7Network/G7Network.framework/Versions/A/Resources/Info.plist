@@ -1,9 +1,0 @@
-{
-	"CFBundleDevelopmentRegion" = English;
-	CFBundleExecutable = Gao7Network;
-	CFBundleIdentifier = "com.gao7.network";
-	"CFBundleInfoDictionaryVersion" = "6.0";
-	CFBundlePackageType = FMWK;
-	CFBundleSignature = "????";
-	CFBundleVersion = 1000;
-}

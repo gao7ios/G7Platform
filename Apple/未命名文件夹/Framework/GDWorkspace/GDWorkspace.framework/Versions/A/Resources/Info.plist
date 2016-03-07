@@ -1,9 +1,0 @@
-{
-	"CFBundleDevelopmentRegion" = English;
-	CFBundleExecutable = GDDevice;
-	CFBundleIdentifier = "com.yumo.GDDevice";
-	"CFBundleInfoDictionaryVersion" = "1.0";
-	CFBundlePackageType = YM;
-	CFBundleSignature = "????";
-	CFBundleVersion = 20141010;
-}

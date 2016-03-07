@@ -1,9 +1,0 @@
-{
-	"CFBundleDevelopmentRegion" = English;
-	CFBundleExecutable = G7BLL;
-	CFBundleIdentifier = "com.gao7.bll";
-	"CFBundleInfoDictionaryVersion" = "6.0";
-	CFBundlePackageType = FMWK;
-	CFBundleSignature = "????";
-	CFBundleVersion = 1000;
-}
