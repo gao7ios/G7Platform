@@ -61,32 +61,4 @@ class G7ReqHandler(tornado.web.RequestHandler):
     def dbUpdate(self, params, condition):
         return self.session.update(self.tableName, params, condition)
 
-    @property
-    def params(self):
-        if self.get_argument('params') == None:
-            return ""
-        return self.get_argument('params')
-
-    @property
-    def paramsJson(self):
-
-        try:
-            if desText.__len__() == 0:
-                return {}
-            else:
-                return json.loads(self.params)
-
-        except:
-            return {}
-
-    def responseWrite(self,code=0, message="", data={}):
-        self.write(G7ReqHandler.responseDataText(code, message, data))
-
-    def responseDataText(code=0, message="", data={}):
-
-        responseData = G7ResultAsistance.resultErrorDataWrapperToJson(code,data)
-        if code == 0:
-            responseData = G7ResultAsistance.resultSuccessDataWrapperToJson(message, data)
-
-        responseDataText = json.dumps(responseData)
-        return responseDataText
+    

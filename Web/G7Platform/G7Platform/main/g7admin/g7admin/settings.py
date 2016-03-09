@@ -12,13 +12,13 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 from os import path
 import sys
-from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(path.join(BASE_DIR,"../../../"))
 
+from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
-SECRET_KEY = 'y&9b=s0w!uw0d79&=a*k0e(6%7kw60&atr9xz2m+we(*c9grl4'
+SECRET_KEY = 'ydgk-d1iid32pk8^twm!6ra16j&u6ck#e+7glb@p4)3e6&z4v('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

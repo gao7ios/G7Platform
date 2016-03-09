@@ -4,6 +4,7 @@ __author__ = 'yuyang'
 from G7Platform.main.site.Account.G7AccountReqHandlers import *
 from G7Platform.main.site.Index.G7IndexReqHandlers import *
 from G7Platform.main.site.Application.G7ApplicationReqHandlers import *
+from G7Platform.main.site.G7Test.G7TestReqHandlers import *
 
 # 接口url配置方法
 def G7ApiPathURL(channel, path, className, version=None):
@@ -27,6 +28,7 @@ webURLList = [
 # 配置接口列表
 apiURLList = [
     G7ApiPathURL("application","upload",G7ApplicationReqHandler, version="1.0"),
+    (r"/test", G7TestReqHandler),
 ]
 
 urlList = apiURLList+webURLList
