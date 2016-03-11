@@ -275,20 +275,13 @@ function mySQLdbIns() {
 # 安装MySQLdb
 g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
 
-# pyDes安装函数
-function pyDesIns() {
-  if [ ! -f $dirPath/packages/pyDes-2.0.1.zip ]
-  then
-    wget http://twhiteman.netfirms.com/pyDES/pyDes-2.0.1.zip -P $dirPath/packages;
-  fi
-  unzip $dirPath/packages/pyDes-2.0.1.zip -d $dirPath/packages;
-  cd $dirPath/packages/pyDes-2.0.1/;
-  sudo /usr/local/bin/python3 setup.py install;
-  cd $dirPath;
-  sudo rm -rf $dirPath/packages/pyDes*/;
+# pycrypto 安装函数
+function pycryptoIns() {
+	sudo /usr/local/bin/pip3* install pycrypto;
 }
-# 安装pyDes
-g7Install pyDes pyDesIns "python3 -c \"import pyDes\"";
+
+# 安装pycrypto
+bmInstall pycrypto pycryptoIns "python3 -c \"import Crypto\""
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;

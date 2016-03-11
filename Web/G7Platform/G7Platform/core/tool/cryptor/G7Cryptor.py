@@ -5,34 +5,56 @@ import hashlib
 import random
 import string
 import time
-from urllib.request import unquote, urlparse
-
-from pyDes import *
+from urllib.parse import unquote, urlencode
+from G7Platform.G7Globals import *
+from Crypto.Cipher import DES
+from Crypto import Random
 
 class G7Cryptor(object):
     """docstring for G7Cryptor"""
-    
+
     def desEncode(text, key):
+
         if len(text) > 0:
-            desCryptor = des(key, ECB, key,pad=None, padmode=PAD_PKCS5)
-            desEncodeText = desCryptor.encrypt(text)
+            iv = Random.get_random_bytes(8)
+            desCryptor = DES.new(key, DES.MODE_CFB, iv)
+            try:
+                if type(text) == type(""):
+                    desEncodeText = desCryptor.encrypt(text.encode("utf-8"))
+                elif type(text) == type(b""):
+                    desEncodeText = desCryptor.encrypt(text)
+                else:
+                    desEncodeText = b''
+
+            except:
+                desEncodeText = b''
             return desEncodeText
         else:
-            return ""
+            return b''
 
     def desDecode(text, key):
+
         if len(text) > 0:
-            desCryptor = des(key, ECB, key, padmode=PAD_PKCS5)
-            desEncodeText = desCryptor.decrypt(text)
+            iv = Random.get_random_bytes(8)
+            desCryptor = DES.new(key, DES.MODE_CFB, iv)
+            try:
+                if type(text) == type(""):
+                    desEncodeText = desCryptor.decrypt(text.encode("utf-8"))
+                elif type(text) == type(b""):
+                    desEncodeText = desCryptor.decrypt(text)
+                else:
+                    desEncodeText = b''
+            except:
+                desEncodeText = b''
             return desEncodeText
         else:
-            return ""
+            return b''
 
     def base64Encode(text):
         if len(text) > 0:
             return base64.b64encode(text)
         else:
-            return ""
+            return b''
 
     def base64Decode(text):
         if len(text) > 0:
@@ -43,7 +65,7 @@ class G7Cryptor(object):
 
     def urlEncode(text):
         if len(text) > 0:
-            return urlparse(text)
+            return urlencode(text)
         else:
             return ""
 

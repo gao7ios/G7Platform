@@ -15,9 +15,9 @@ class G7ResultAsistance:
                 return retDic
         if code in list(G7ResultDic.keys()):
             retDic = {
-                "ResultCode":code,
-                "ResultMessage":G7ResultDic[code],
-                "ResultData":data
+                "resultCode":code,
+                "resultMessage":G7ResultDic.get(code),
+                "data":data
             }
 
         return retDic
@@ -33,9 +33,9 @@ class G7ResultAsistance:
 
         if code in G7ResultDic.keys():
             retDic = {
-                "ResultCode":code,
-                "ResultMessage":G7ResultDic[code],
-                "ResultData":data
+                "resultCode":code,
+                "resultMessage":G7ResultDic.get(code),
+                "data":data
             }
 
         return json.dumps(retDic)
@@ -45,9 +45,9 @@ class G7ResultAsistance:
 
         retData = {}
         retDic = {
-                "ResultCode":0,
-                "ResultMessage":message,
-                "ResultData":data
+                "resultCode":0,
+                "resultMessage":message,
+                "data":data
             }
 
         return retDic

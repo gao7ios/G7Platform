@@ -6,12 +6,12 @@ from G7Platform.profile.settings.G7Settings import *
 from G7Platform.core.tool.cryptor.G7Cryptor import *
 
 cryptor_types = {
-    "base64":"00",
-    "des":"01",
-    "xxtea":"02",
-    "aes":"03",
-    "rsa":"04",
-    "md5":"05",
+    "base64":"0",
+    "des":"2",
+    "xxtea":"1",
+    "aes":"3",
+    "rsa":"4",
+    "md5":"5",
 }
 
 class G7CryptorType:
@@ -35,7 +35,7 @@ class G7CryptorTool:
 
         if len(b64Text) > 0:
             desEncodeText = G7Cryptor.desEncode(G7Cryptor.base64Decode(b64Text), desPassword)
-            return G7Cryptor.desEncodeText
+            return desEncodeText
         else:
             return ""
 
@@ -43,14 +43,16 @@ class G7CryptorTool:
 
         if len(b64Text) > 0:
             desDecodeText = G7Cryptor.desDecode(G7Cryptor.base64Decode(b64Text), desPassword)
-            return G7Cryptor.desDecodeText
+            return desDecodeText
         else:
             return ""
 
     def desBase64_TextEncodeB64(text):
 
         if len(text) > 0:
+            g7log("desBase64_TextEncodeB64:"+str(text))
             desEncodeText = G7Cryptor.desEncode(text, desPassword)
+            g7log("desEncodeText:"+str(desEncodeText))
             return G7Cryptor.base64Encode(desEncodeText)
         else:
             return ""
@@ -111,7 +113,6 @@ class G7CryptorTool:
             return ""
 
         prefix = cryptor_types[cryptror_type]
-        g7log(prefix)
         encryptBytes = b''
         if cryptror_type == G7CryptorType.base64:
             encryptBytes = bytes(prefix,"utf-8")+G7Cryptor.base64Encode(text)
@@ -127,8 +128,12 @@ class G7CryptorTool:
             encryptBytes = bytes(prefix,"utf-8")+G7CryptorTool.desBase64_TextEncodeB64(text)
         else:
             encryptBytes = b''
-
+        g7log("finally:"+str(encryptBytes))
+        g7log("G7CryptorTool.desBase64_TextEncodeB64(text):"+str(G7CryptorTool.desBase64_TextEncodeB64(text)))
         return G7CryptorTool.bytesToString(encryptBytes)
 
     def bytesToString(bytesString):
-        return bytesString.decode("utf-8")
+        if type(bytesString) == type(b''):
+            return bytesString.decode("utf-8")
+        else:
+            return ""
