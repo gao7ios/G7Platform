@@ -83,6 +83,6 @@ class G7APIReqHandler(G7ReqHandler):
         if code == 0:
             responseData = G7ResultAsistance.resultSuccessDataWrapperToJson(message, data)
 
-        responseDataText = json.dumps(responseData, ensure_ascii=False).encode("utf-8")
+        responseDataText = json.dumps(responseData)
         g7log("responseDataText:"+str(responseDataText))
         return G7CryptorTool.getTextEncryptB64(responseDataText, G7CryptorType.des)

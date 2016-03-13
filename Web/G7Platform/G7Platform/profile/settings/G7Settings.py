@@ -123,4 +123,4 @@ else:
 
 ######################## 其他 ###############################
 
-desPassword = "bfae43b0"
+desPassword = "asdfasdf"

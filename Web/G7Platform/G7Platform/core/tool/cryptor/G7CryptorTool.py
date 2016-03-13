@@ -37,7 +37,7 @@ class G7CryptorTool:
             desEncodeText = G7Cryptor.desEncode(G7Cryptor.base64Decode(b64Text), desPassword)
             return desEncodeText
         else:
-            return ""
+            return b''
 
     def desBase64_B64DecodeText(b64Text):
 
@@ -45,7 +45,7 @@ class G7CryptorTool:
             desDecodeText = G7Cryptor.desDecode(G7Cryptor.base64Decode(b64Text), desPassword)
             return desDecodeText
         else:
-            return ""
+            return b''
 
     def desBase64_TextEncodeB64(text):
 
@@ -55,7 +55,7 @@ class G7CryptorTool:
             g7log("desEncodeText:"+str(desEncodeText))
             return G7Cryptor.base64Encode(desEncodeText)
         else:
-            return ""
+            return b''
 
     def desBase64_TextDecodeB64(text):
 
@@ -63,7 +63,7 @@ class G7CryptorTool:
             desDecodeText = G7Cryptor.desDecode(text, desPassword)
             return G7Cryptor.base64Encode(desDecodeText)
         else:
-            return ""
+            return b''
 
     def desBase64_B64EncodeB64(b64Text):
 
@@ -71,7 +71,7 @@ class G7CryptorTool:
             desEncodeText = G7Cryptor.desEncode(G7Cryptor.base64Decode(b64Text), desPassword)
             return G7Cryptor.base64Encode(desEncodeText)
         else:
-            return ""
+            return b''
 
     def desBase64_B64DecodeB64(b64Text):
 
@@ -79,7 +79,7 @@ class G7CryptorTool:
             desDecodeText = G7Cryptor.desDecode(G7Cryptor.base64Decode(b64Text), desPassword)
             return G7Cryptor.base64Encode(desDecodeText)
         else:
-            return ""
+            return b''
 
     def getB64DecryptText(text):
 
@@ -110,13 +110,16 @@ class G7CryptorTool:
     def getTextEncryptB64(text, cryptror_type):
 
         if cryptror_type not in cryptor_types.keys():
-            return ""
+            return b''
 
         prefix = cryptor_types[cryptror_type]
         encryptBytes = b''
         if cryptror_type == G7CryptorType.base64:
             encryptBytes = bytes(prefix,"utf-8")+G7Cryptor.base64Encode(text)
         elif cryptror_type == G7CryptorType.des:
+            g7log("orgtext:"+str(text))
+            if type(text) == type(""):
+                text = text.encode("utf-8")
             encryptBytes = bytes(prefix,"utf-8")+G7CryptorTool.desBase64_TextEncodeB64(text)
         elif cryptror_type == G7CryptorType.xxtea:
             encryptBytes = bytes(prefix,"utf-8")+G7CryptorTool.desBase64_TextEncodeB64(text)
@@ -136,4 +139,4 @@ class G7CryptorTool:
         if type(bytesString) == type(b''):
             return bytesString.decode("utf-8")
         else:
-            return ""
+            return b''
