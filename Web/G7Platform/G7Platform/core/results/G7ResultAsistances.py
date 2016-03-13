@@ -5,37 +5,43 @@ from G7Platform.profile.settings.web.G7Results import G7ResultDic
 
 class G7ResultAsistance:
 
-    def resultErrorDataWrapperToJson(code, data={}):
+    def resultErrorDataWrapperToJson(code="0", message="",data={}):
 
         retDic = {}
-        if type(code) == type(""):
-            try:
-                code = int(code)
-            except:
-                return retDic
+        if type(code) != type(""):
+            code = str(code)
         if code in list(G7ResultDic.keys()):
             retDic = {
-                "resultCode":code,
-                "resultMessage":G7ResultDic.get(code),
-                "data":data
+                "ResultCode":str(code),
+                "ResultMessage":G7ResultDic.get(code),
+                "Data":data
+            }
+        else:
+            retDic = {
+                "ResultCode":str(code),
+                "ResultMessage":"",
+                "Data":data
             }
 
         return retDic
 
-    def resultErrorDataWrapperToJsonString(code, data={}):
+    def resultErrorDataWrapperToJsonString(code="0", message="", data={}):
 
         retDic = {}
-        if type(code) == type(""):
-            try:
-                code = int(code)
-            except:
-                return json.dumps(retDic)
+        if type(code) != type(""):
+            code = str(code)
 
         if code in G7ResultDic.keys():
             retDic = {
-                "resultCode":code,
-                "resultMessage":G7ResultDic.get(code),
-                "data":data
+                "ResultCode":str(code),
+                "ResultMessage":G7ResultDic.get(code),
+                "Data":data
+            }
+        else:
+            retDic = {
+                "ResultCode":str(code),
+                "ResultMessage":"",
+                "Data":data
             }
 
         return json.dumps(retDic)
@@ -45,9 +51,9 @@ class G7ResultAsistance:
 
         retData = {}
         retDic = {
-                "resultCode":0,
-                "resultMessage":message,
-                "data":data
+                "ResultCode":"0",
+                "ResultMessage":message,
+                "Data":data
             }
 
         return retDic

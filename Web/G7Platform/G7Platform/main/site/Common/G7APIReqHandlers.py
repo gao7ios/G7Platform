@@ -75,12 +75,13 @@ class G7APIReqHandler(G7ReqHandler):
         except:
             return {}
 
-    def responseWrite(self, code=0, message="", data={}):
+    def responseWrite(self, code="0", message="", data={}):
         self.write(G7APIReqHandler.responseDataText(code, message, data))
 
-    def responseDataText(code=0, message="", data={}):
-        responseData = G7ResultAsistance.resultErrorDataWrapperToJson(code,data)
-        if code == 0:
+    def responseDataText(code="0", message="", data={}):
+        code = str(code)
+        responseData = G7ResultAsistance.resultErrorDataWrapperToJson(code, message,data)
+        if code == "0":
             responseData = G7ResultAsistance.resultSuccessDataWrapperToJson(message, data)
 
         responseDataText = json.dumps(responseData)
