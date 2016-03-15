@@ -13,7 +13,6 @@ debug = True
 debug_tornado_port = 8884
 debug_django_port = 8881
 
-release_tornado_port = 8883
 release_django_port = 8882
 
 # tornado进程端口
