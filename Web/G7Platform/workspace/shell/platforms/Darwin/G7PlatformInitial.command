@@ -286,11 +286,11 @@ g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
 
 # pycrypto 安装函数
 function pycryptoIns() {
-	sudo /usr/local/bin/pip3* install pycrypto;
+	sudo pip3 install pycrypto;
 }
 
 # 安装pycrypto
-bmInstall pycrypto pycryptoIns "python3 -c \"import Crypto\""
+g7Install pycrypto pycryptoIns "python3 -c \"import Crypto\""
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
