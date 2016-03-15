@@ -6,7 +6,7 @@ from os import path
 import sys
 
 # 是否使用测试模式
-debug = False
+debug = True
 
 # 端口
 
@@ -116,9 +116,9 @@ if debug == False:
 	dbpassword = "g7platform_password"
 else:
 	dbhost = "localhost"
-	dbname = "dg7platform"
-	dbuser = "dg7platform_user"
-	dbpassword = "dg7platform_password"
+	dbname = "g7platform"
+	dbuser = "g7platform_user"
+	dbpassword = "g7platform_password"
 
 
 ######################## 其他 ###############################
