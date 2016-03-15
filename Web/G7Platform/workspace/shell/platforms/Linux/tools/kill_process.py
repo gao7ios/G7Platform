@@ -15,3 +15,4 @@ if __name__ == "__main__":
     check_kill_process("php-fpm")
     check_kill_process("php5-fpm")
     check_kill_process("mysql")
+    check_kill_process("manage.py")
