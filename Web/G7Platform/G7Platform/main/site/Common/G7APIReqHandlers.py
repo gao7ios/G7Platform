@@ -7,6 +7,7 @@ __author__ = 'helios'
 from G7Platform.main.site.Common.G7ReqHandlers import *
 from G7Platform.core.tool.cryptor.G7CryptorTool import *
 from G7Platform.core.tool.cryptor.G7Cryptor import *
+from urllib.parse import *
 
 class G7APIReqHandler(G7ReqHandler):
     """api请求基类"""
@@ -29,10 +30,14 @@ class G7APIReqHandler(G7ReqHandler):
         jsonDic = {}
         if len(self.request.headers.get_list("User-Agent1")) > 0:
             try:
-                http_headers = G7CryptorTool.desBase64_B64DecodeText(self.request.headers.get_list('User-Agent1')[0])
+                http_headers = G7CryptorTool.getB64DecryptText(self.request.headers.get_list('User-Agent1')[0])
                 jsonDic = json.loads(http_headers)
             except:
-                pass
+                try:
+                    jsonDic = dict(parse_qsl(http_headers))
+                except:
+                    jsonDic = {}
+
         return jsonDic
 
     @property
@@ -51,26 +56,29 @@ class G7APIReqHandler(G7ReqHandler):
 
     @property
     def params(self):
-        g7log("p:"+str(self.get_argument('p')))
         if self.get_argument('p') == None:
             return ""
         else:
             try:
-                return G7CryptorTool.desBase64_B64DecodeText(self.get_argument("p"))
+                return G7CryptorTool.getB64DecryptText(self.get_argument("p"))
             except:
                 return self.get_argument("p")
 
     @property
     def paramsJson(self):
         try:
-            g7log(self.params)
+            print(self.params)
             if len(self.params) == 0:
                 return {}
             else:
                 try:
                     return json.loads(self.params)
                 except:
-                    return {}
+                    try:
+                        dic = dict(parse_qsl(self.params))
+                        return dic
+                    except:
+                        return {}
 
         except:
             return {}

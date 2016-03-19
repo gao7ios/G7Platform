@@ -12,7 +12,7 @@ class G7TestReqHandler(G7APIReqHandler):
     def get(self):
         resultData = {"requestData":self.paramsJson, "User-Agent1":self.httpHeadersJson}
         g7log(resultData)
-        self.responseWrite(0, "asdfasdf1", data={"test1":"test2"})
+        self.responseWrite(0, "asdfasdf1", data=resultData)
 
     def post(self):
         resultData = {"requestData":self.paramsJson, "User-Agent1":self.httpHeadersJson}

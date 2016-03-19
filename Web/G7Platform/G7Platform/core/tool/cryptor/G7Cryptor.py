@@ -60,7 +60,7 @@ class G7Cryptor:
         # try:
         desCryptor = DES.new(key, DES.MODE_CBC, key)
         desEncodeText = desCryptor.decrypt(text)
-        return desEncodeText
+        return "".join([x for x in G7Cryptor.convertToString(desEncodeText) if ord(x) > 8])
         # except:
         #     return b''
 
