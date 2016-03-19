@@ -17,7 +17,6 @@ class G7AppInstallReqHandler(G7WebReqHandler):
 	"""
 	应用包
 	"""
-
 	
 	def get(self, app_id=""):
 		''' 应用安装主页 '''
