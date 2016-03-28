@@ -18,6 +18,6 @@ class G7FeedbackModel(models.Model):
 
     def __str__(self):
 
-        return str(self.username)+"."+self.context
+        return str(self.username)
 
 
