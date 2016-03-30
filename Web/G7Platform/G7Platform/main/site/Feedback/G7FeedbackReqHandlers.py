@@ -16,8 +16,6 @@ class G7FeedbackReqHandler(G7APIReqHandler):
                 self.responseWrite(0, "提交成功", data={})
         except:
                 self.responseWrite(1, "提交失败", data={})
-		
-
         
 
         	
