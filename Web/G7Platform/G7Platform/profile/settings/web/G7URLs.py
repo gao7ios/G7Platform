@@ -8,6 +8,7 @@ from G7Platform.main.site.Application.G7AppInstallReqHandlers import *
 from G7Platform.main.site.G7Test.G7TestReqHandlers import *
 from G7Platform.main.site.Feedback.G7FeedbackReqHandlers import *
 from G7Platform.main.site.Account.G7AccountReqHandlers import *
+from G7Platform.main.site.AppDetail.G7AppDetailReqHandlers import *
 
 # 接口url配置方法
 def G7ApiPathURL(channel, path, className, version=None):
@@ -37,6 +38,7 @@ apiURLList = [
 
     (r"/application/install/(?P<app_id>.*?).html", G7AppInstallReqHandler),
     (r"/application/install/(?P<plist_app_id>.*?).plist", G7AppPlistReqHandler),
+    (r"/appDetail", G7AppDetailReqHandlers),
 
 
 ]
