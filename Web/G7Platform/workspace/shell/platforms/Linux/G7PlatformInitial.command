@@ -17,7 +17,7 @@ then
   请输入安装命令："
   read osinstaller;
 fi
-
+echo $osinstaller;
 $mysqlCommand status 2>/dev/null 1>/dev/null;
 if [ $? -ne 0 ]
 then
@@ -30,7 +30,7 @@ then
   请输入数据库命令："
   read mysqlCommand;
 fi
-
+echo $mysqlCommand;
 echo "
 #! /bin/bash
 osinstaller=\"$osinstaller\"
@@ -277,11 +277,11 @@ g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
 
 # pycrypto 安装函数
 function pycryptoIns() {
-	sudo /usr/local/bin/pip3* install pycrypto;
+	sudo /usr/local/bin/pip3 install pycrypto;
 }
 
 # 安装pycrypto
-bmInstall pycrypto pycryptoIns "python3 -c \"import Crypto\""
+g7Install pycrypto pycryptoIns "python3 -c \"import Crypto\""
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
