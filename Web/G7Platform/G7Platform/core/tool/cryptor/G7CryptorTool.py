@@ -88,7 +88,6 @@ class G7CryptorTool:
         else:
             cryptor_type = text[:1]
         cryptor_text = G7Cryptor.convertToByte(text)[1:]
-        decryptBytes = G7Cryptor.base64Decode(cryptor_text)
         if cryptor_type == cryptor_types[G7CryptorType.base64]:
             decryptBytes = G7Cryptor.base64Decode(cryptor_text)
         elif cryptor_type == cryptor_types[G7CryptorType.des]:

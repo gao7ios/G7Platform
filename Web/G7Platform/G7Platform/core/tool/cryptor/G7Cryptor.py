@@ -11,6 +11,8 @@ from Crypto.Cipher import *
 from Crypto import Random
 from binascii import b2a_hex, a2b_hex
 
+from pyDes import *
+
 class G7Cryptor:
     """docstring for G7Cryptor"""
 
@@ -41,8 +43,11 @@ class G7Cryptor:
 
     def desEncode(text, key):
         # try:
-        if len(text) > 0 and type(text) == type(b''):
-            desCryptor = DES.new(key, DES.MODE_CBC, key)
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
+            desCryptor = des(key, CBC, '\0\0\0\0\0\0\0\0', pad=None, padmode=PAD_PKCS5)
             length = 8
             g7log("textdesEncode:"+str(text))
             count = len(text) % 8
@@ -58,14 +63,18 @@ class G7Cryptor:
 
     def desDecode(text, key):
         # try:
-        desCryptor = DES.new(key, DES.MODE_CBC, key)
+        desCryptor = des(key, CBC, '\0\0\0\0\0\0\0\0', pad=None, padmode=PAD_PKCS5)
         desEncodeText = desCryptor.decrypt(text)
         return "".join([x for x in G7Cryptor.convertToString(desEncodeText) if ord(x) > 8])
         # except:
         #     return b''
 
     def base64Encode(text):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             try:
                 outputText = base64.b64encode(text)
                 return outputText
@@ -79,7 +88,11 @@ class G7Cryptor:
             return b''
 
     def base64Decode(text):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             try:
                 outputText = base64.b64decode(text)
                 return outputText
@@ -93,33 +106,45 @@ class G7Cryptor:
             return b''
 
     def urlEncode(text):
-        if len(text) > 0 and type(text) == type(b''):
+        if len(text) > 0:
             return urlparse(text)
         else:
             return ""
 
     def urlDecode(text):
-        if len(text) > 0 and type(text) == type(b''):
+        if len(text) > 0:
             return unquote(text)
         else:
             return ""
 
     def desBase64_B64EncodeText(text, key):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             outputText = G7Cryptor.desEncode(G7Cryptor.base64Decode(G7Cryptor.convertToByte(text)), key)
             return outputText
         else:
             return b''
 
     def desBase64_B64DecodeText(text, key):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             outputText = G7Cryptor.desDecode(G7Cryptor.base64Decode(text), key)
             return outputText
         else:
             return b''
 
     def desBase64_TextEncodeB64(text, key):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             desEncodeText = G7Cryptor.desEncode(G7Cryptor.convertToByte(text), key)
             outputText = G7Cryptor.base64Encode(desEncodeText)
             return outputText
@@ -127,7 +152,11 @@ class G7Cryptor:
             return b''
 
     def desBase64_TextDecodeB64(text, key):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             desDecodeText = G7Cryptor.desDecode(G7Cryptor.convertToByte(text), key)
             outputText = G7Cryptor.base64Encode(desDecodeText)
             return outputText
@@ -135,7 +164,11 @@ class G7Cryptor:
             return b''
 
     def desBase64_B64EncodeB64(text, key):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             desEncodeText = G7Cryptor.desEncode(G7Cryptor.base64Decode(G7Cryptor.convertToByte(text)), key)
             outputText = G7Cryptor.base64Encode(desEncodeText)
             return outputText
@@ -143,7 +176,11 @@ class G7Cryptor:
             return b''
 
     def desBase64_B64DecodeB64(text, key):
-        if len(text) > 0 and type(text) == type(b''):
+
+        if type(text) == type(''):
+            text = text.encode('utf-8')
+
+        if len(text) > 0:
             desDecodeText = G7Cryptor.desDecode(G7Cryptor.base64Decode(G7Cryptor.convertToByte(text)), key)
             outputText = G7Cryptor.base64Encode(desDecodeText)
             return outputText

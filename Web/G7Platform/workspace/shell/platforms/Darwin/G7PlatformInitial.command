@@ -64,54 +64,57 @@ function pythonIns() {
 		# 	sudo rm -rf $dirPath/packages/openssl*/;
 		# fi
 		sudo rm -rf /usr/local/bin/pip3*;
-		sudo rm -rf /usr/local/bin/easy_install3*
+		sudo rm -rf /usr/local/bin/easy_install3*;
 		sudo rm -rf /usr/local/bin/pyvenv*;
 		sudo rm -rf /usr/local/lib/python*;
-		brew unlink python3;
-		brew uninstall python3 --force;
-		brew install python3;
-		brew unlink python3;
-		brew link python3;
+		# brew unlink python3;
+		# brew uninstall python3 --force;
+		# brew install readline;
+		# brew install homebrew/dupes/zlib;
+
+		# brew install python3;
+		# brew unlink python3;
+		# brew link python3;
 		# $osinstaller readline;
 		# $osinstaller homebrew/dupes/zlib;
-		# pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
-		# if [ $sysOS == "Darwin" ]
-		# then
-		# 	pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
-		# fi
-		#
-		# if [ ! -f $dirPath/packages/Python-3.4.3.tgz ]
-		# then
-		# 	wget -P $dirPath/packages $pythonUrl;
-		# fi
-		#
-		# tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
-		# cd $dirPath/packages/Python-3.4.3;
-		#
-		# org0='#SSL=\/usr\/local\/ssl'
-		# org1='#_ssl'
-		# org2='#.*DUSE_SSL'
-		# org3='#.*L\$(SSL)'
-		# org4='#zlib'
-		#
-		# tgt0='SSL=\/usr\/local\/opt\/openssl\/'
-		# tgt1='_ssl'
-		# tgt2='	-DUSE_SSL'
-		# tgt3='	-L\$(SSL)'
-		# tgt4='zlib'
-		#
-		# sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
-		# sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
-		# sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
-		# sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
-		# sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
-		#
-		# CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
-		# CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
-		#
-		# sudo make install;
-		# sudo rm -rf $dirPath/packages/Python-3.4.3/;
-		# cd $dirPath;
+		pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
+		if [ $sysOS == "Darwin" ]
+		then
+			pythonUrl="https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz";
+		fi
+		
+		if [ ! -f $dirPath/packages/Python-3.4.3.tgz ]
+		then
+			wget -P $dirPath/packages $pythonUrl;
+		fi
+		
+		tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
+		cd $dirPath/packages/Python-3.4.3;
+		
+		org0='#SSL=\/usr\/local\/ssl'
+		org1='#_ssl'
+		org2='#.*DUSE_SSL'
+		org3='#.*L\$(SSL)'
+		org4='#zlib'
+		
+		tgt0='SSL=\/usr\/local\/opt\/openssl\/'
+		tgt1='_ssl'
+		tgt2='	-DUSE_SSL'
+		tgt3='	-L\$(SSL)'
+		tgt4='zlib'
+		
+		sed -i '' "s/$org0/$tgt0/g" Modules/Setup.dist;
+		sed -i '' "s/$org1/$tgt1/g" Modules/Setup.dist;
+		sed -i '' "s/$org2/$tgt2/g" Modules/Setup.dist;
+		sed -i '' "s/$org3/$tgt3/g" Modules/Setup.dist;
+		sed -i '' "s/$org4/$tgt4/g" Modules/Setup.dist;
+		
+		CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ ./configure;
+		CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include" LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib" CC=clang CXX=/usr/bin/clang++ make;
+		
+		sudo make install;
+		sudo rm -rf $dirPath/packages/Python-3.4.3/;
+		cd $dirPath;
 	fi
 }
 # 安装Python3.4.3
@@ -291,6 +294,15 @@ function pycryptoIns() {
 
 # 安装pycrypto
 g7Install pycrypto pycryptoIns "python3 -c \"import Crypto\""
+
+
+# pyDes 安装函数
+function pyDesIns() {
+  sudo pip3 install pyDes;
+}
+
+# 安装pyDes
+g7Install pyDesIns pyDesIns "python3 -c \"import pyDes\""
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;

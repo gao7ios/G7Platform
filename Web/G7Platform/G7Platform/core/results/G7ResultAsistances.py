@@ -49,7 +49,6 @@ class G7ResultAsistance:
 
     def resultSuccessDataWrapperToJson(message, data={}):
 
-        retData = {}
         retDic = {
                 "ResultCode":"0",
                 "ResultMessage":message,

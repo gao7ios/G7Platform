@@ -277,11 +277,19 @@ g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
 
 # pycrypto 安装函数
 function pycryptoIns() {
-	sudo /usr/local/bin/pip3 install pycrypto;
+	sudo pip3 install pycrypto;
 }
 
 # 安装pycrypto
 g7Install pycrypto pycryptoIns "python3 -c \"import Crypto\""
+
+# pyDes 安装函数
+function pyDesIns() {
+  sudo pip3 install pyDes;
+}
+
+# 安装pyDes
+g7Install pyDesIns pyDesIns "python3 -c \"import pyDes\""
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;

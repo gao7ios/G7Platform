@@ -1,22 +1,22 @@
 <?xml version="1.0" ?>
 <uwsgi>
-	<enable-threads>true</enable-threads>
-	<memory-report>true</memory-report>
-	<pythonpath>/home/ec2-user/server/G7Platform/Web/G7Platform/G7Platform/main/g7admin/</pythonpath>
+	<chdir>/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin</chdir>
+	<pythonpath>/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/</pythonpath>
 	<socket>127.0.0.1:8882</socket>
+	<enable-threads>true</enable-threads>
+	<pidfile>/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
 	<master>true</master>
-	<profiler>true</profiler>
-	<pidfile>/home/ec2-user/server/G7Platform/Web/G7Platform/workspace/profile/nginx/pid/nginx.pid</pidfile>
-	<logdate>true</logdate>
 	<module>wsgi</module>
-	<chdir>/home/ec2-user/server/G7Platform/Web/G7Platform/G7Platform/main/g7admin</chdir>
-	<pythonpath>/home/ec2-user/server/G7Platform/Web/G7Platform</pythonpath>
-	<processes>8</processes>
-	<pythonpath>/home/ec2-user/server/G7Platform/Web/G7Platform/G7Platform</pythonpath>
-	<limit-as>512</limit-as>
-	<listen>80</listen>
-	<daemonize>/home/ec2-user/server/G7Platform/Web/G7Platform/workspace/log/django/django.log</daemonize>
-	<pythonpath>/home/ec2-user/server/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
-	<py-programname>/usr/local/bin/python3</py-programname>
+	<pythonpath>/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin/</pythonpath>
 	<plugin>/usr/local/lib/uwsgi/py34_plugin.so</plugin>
+	<daemonize>/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/log/django/django.log</daemonize>
+	<py-programname>/usr/local/bin/python3</py-programname>
+	<memory-report>true</memory-report>
+	<logdate>true</logdate>
+	<pythonpath>/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform</pythonpath>
+	<limit-as>512</limit-as>
+	<pythonpath>/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform</pythonpath>
+	<processes>8</processes>
+	<listen>80</listen>
+	<profiler>true</profiler>
 </uwsgi>

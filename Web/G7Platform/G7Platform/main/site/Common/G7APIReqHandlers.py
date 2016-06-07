@@ -60,7 +60,7 @@ class G7APIReqHandler(G7ReqHandler):
             return ""
         else:
             try:
-                return G7CryptorTool.getB64DecryptText(self.get_argument("p"))
+                return G7CryptorTool.getB64DecryptText(G7Cryptor.urlDecode(self.get_argument("p")))
             except:
                 return self.get_argument("p")
 
