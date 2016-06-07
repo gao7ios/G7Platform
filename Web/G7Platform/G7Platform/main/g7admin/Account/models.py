@@ -120,6 +120,27 @@ class G7User(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
 
+    def toJsonDict(self, host="127.0.0.1"):
+
+        return {
+                    "is_admin":int(self.is_admin),
+                    "username":self.username,
+                    "userid":self.userid,
+                    "nickname":self.nickname,
+                    "job":self.job,
+                    "sex":self.sex,
+                    "mobile":self.mobile,
+                    "email":self.email,
+                    "thumb":"http://"+str(host)+str(self.thumb),
+                    "date_of_birth":str(self.date_of_birth),
+                    "age":self.age,
+                    "expires_time":str(self.expires_time),
+                    "usignature":self.usignature,
+                    "clientid":str(self.clientid),
+                    "userDesc":self.description,
+                    "email_vip":int(self.email_vip),
+                }
+
     @property
     def is_staff(self):
         "Is the user a member of staff?"

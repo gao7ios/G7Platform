@@ -31,10 +31,13 @@ webURLList = [
 
 # 配置接口列表
 apiURLList = [
-    G7ApiPathURL("application","upload",G7ApplicationReqHandler, version="1.0"),
     (r"/test", G7TestReqHandler),
-    (r"/feedback", G7FeedbackReqHandler),
-    (r"/login", G7AccountReqHandler),
+
+    G7ApiPathURL("application","upload",G7ApplicationReqHandler, version="1.0"),
+    G7ApiPathURL("feedback","feedback",G7AccountProfileReqHandler, version="1.0"),
+
+    G7ApiPathURL("account","login",G7AccountLoginReqHandler, version="1.0"),
+    G7ApiPathURL("account","profile",G7AccountProfileReqHandler, version="1.0"),
 
     (r"/application/install/(?P<app_id>.*?).html", G7AppInstallReqHandler),
     (r"/application/install/(?P<plist_app_id>.*?).plist", G7AppPlistReqHandler),

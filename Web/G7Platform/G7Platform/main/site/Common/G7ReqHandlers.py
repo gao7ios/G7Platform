@@ -12,6 +12,7 @@ class G7ReqHandler(tornado.web.RequestHandler):
     template_path = template_path
     tableName = ""
     session = G7DBSession()
+    
 
     def __init__(self, application, request, **kwargs):
         super(G7ReqHandler, self).__init__(application, request)

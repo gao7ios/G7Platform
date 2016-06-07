@@ -20,7 +20,6 @@ class G7AppInstallReqHandler(G7WebReqHandler):
 	
 	def get(self, app_id=""):
 		''' 应用安装主页 '''
-		print("应用安装主页1")
 		
 		apps = G7Project.objects.all()
 		app = apps[0]
@@ -37,5 +36,4 @@ class G7AppPlistReqHandler(G7APIReqHandler):
 		
 	def get(self, plist_app_id=""):
 		''' 组装plist '''
-		print("组装plist")
 		return self.write("plist_app_id");

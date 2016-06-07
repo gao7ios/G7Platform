@@ -11,10 +11,11 @@ class G7AppDetailReqHandlers(G7APIReqHandler):
     '''
         首页
     '''
+
+    
     def get(self):
         resultData = {"requestData":self.paramsJson, "User-Agent1":self.httpHeadersJson}
         # g7log(resultData)
-        print(resultData)
 
         proID = self.paramsJson["id"];
         proID = int(proID)
@@ -37,7 +38,6 @@ class G7AppDetailReqHandlers(G7APIReqHandler):
         if resultPro == 0:
             self.responseWrite(0, "id错误", data="")
             return
-
 
         project1 = resultPro
         jsonData=model_to_dict(project1)
@@ -64,6 +64,5 @@ class G7AppDetailReqHandlers(G7APIReqHandler):
 
     def post(self):
         resultData = {"requestData":self.paramsJson, "User-Agent1":self.httpHeadersJson}
-        print(resultData)
         self.responseWrite(0, "asdfasdf2", data=resultData)
 

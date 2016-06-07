@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
 import os
 
 import platform
-print(platform.python_version())
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "g7admin.settings")

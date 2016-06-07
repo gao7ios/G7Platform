@@ -8,9 +8,13 @@ from G7Platform.main.site.Common.G7ReqHandlers import *
 from G7Platform.core.tool.cryptor.G7CryptorTool import *
 from G7Platform.core.tool.cryptor.G7Cryptor import *
 from urllib.parse import *
+from Account.models import G7User
 
 class G7APIReqHandler(G7ReqHandler):
     """api请求基类"""
+
+    
+    
 
     @property
     def current_user(self):
@@ -18,15 +22,16 @@ class G7APIReqHandler(G7ReqHandler):
         if "userid" in self.httpHeadersJson.keys():
             userid = self.httpHeadersJson["userid"]
             try:
-                user = BMUser.objects.get(userid=userid)
+                user = G7User.objects.get(userid=userid)
                 return user
-            except BMUser.DoesNotExist:
+            except G7User.DoesNotExist:
                 return None
         return None
 
     # 返回http headers头部信息
     @property
     def httpHeadersJson(self):
+
         jsonDic = {}
         if len(self.request.headers.get_list("User-Agent1")) > 0:
             try:
@@ -56,6 +61,7 @@ class G7APIReqHandler(G7ReqHandler):
 
     @property
     def params(self):
+
         if self.get_argument('p') == None:
             return ""
         else:
@@ -67,7 +73,6 @@ class G7APIReqHandler(G7ReqHandler):
     @property
     def paramsJson(self):
         try:
-            print(self.params)
             if len(self.params) == 0:
                 return {}
             else:
@@ -93,5 +98,4 @@ class G7APIReqHandler(G7ReqHandler):
             responseData = G7ResultAsistance.resultSuccessDataWrapperToJson(message, data)
 
         responseDataText = json.dumps(responseData)
-        g7log("responseDataText:"+str(responseDataText))
         return G7CryptorTool.getTextEncryptB64(responseDataText, G7CryptorType.des)

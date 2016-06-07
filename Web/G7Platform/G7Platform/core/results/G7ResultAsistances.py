@@ -19,7 +19,7 @@ class G7ResultAsistance:
         else:
             retDic = {
                 "ResultCode":str(code),
-                "ResultMessage":"",
+                "ResultMessage":message,
                 "Data":data
             }
 
@@ -30,7 +30,6 @@ class G7ResultAsistance:
         retDic = {}
         if type(code) != type(""):
             code = str(code)
-
         if code in G7ResultDic.keys():
             retDic = {
                 "ResultCode":str(code),
@@ -40,10 +39,9 @@ class G7ResultAsistance:
         else:
             retDic = {
                 "ResultCode":str(code),
-                "ResultMessage":"",
+                "ResultMessage":message,
                 "Data":data
             }
-
         return json.dumps(retDic)
 
 

@@ -3,64 +3,62 @@ __author__ = 'yuyang'
 
 from G7Platform.G7Globals import *
 from Account.models import G7User
-from G7Platform.main.site.Common.G7APIReqHandlers import G7APIReqHandler
+from G7Platform.main.site.Common.G7APIReqHandlers import *
 from G7Platform.main.site.Common.G7WebReqHandlers import G7WebReqHandler
 
-class G7AccountReqHandler(G7APIReqHandler):
+class G7AccountLoginReqHandler(G7APIReqHandler):
 
-        def get(self):
-                username = self.paramsJson.get("username")
-                password = self.paramsJson.get("password")
+    def login(self):
 
-                users = G7User.objects.filter(username=username)
+        username = self.paramsJson.get("username")
+        password = self.paramsJson.get("password")
+        users = G7User.objects.filter(username=username)
 
-                isExist =  len(users) > 0
+        isExist =  len(users) > 0
+        if isExist == True:
+            user = users.first()
+            isSuccess =  user.check_password(password)
+            if  isSuccess:
+                resultData = user.toJsonDict(self.request.host)
+                self.responseWrite(0, "登录成功", data=resultData)
+            else:  
+                self.responseWrite(1, "用户密码错误", data={})
+        else:
+            self.responseWrite(1, "用户不存在", data={})
 
-                if isExist == True:
-                        user = users.first()
-                        isSuccess =  user.check_password(password)
-                        if  isSuccess:
-                                resultData = {
+    def get(self):
+        
+        return self.login()
 
-                                                "des":"登录成功",
-                                                "data": {
-                                                "is_active":int(user.is_active),
-                                                "is_admin":int(user.is_admin),
-                                                "username":user.username,
-                                                "userid":user.userid,
-                                                "nickname":user.nickname,
-                                                "job":user.job,
-                                                "sex":user.sex,
-                                                "mobile":user.mobile,
-                                                "email":user.email,
-                                                "thumb":str(user.thumb),
-                                                "date_of_birth":str(user.date_of_birth),
-                                                "age":user.age,
-                                                "expires_time":str(user.expires_time),
-                                                "usignature":user.usignature,
-                                                "nickname":user.nickname,
-                                                "clientid":str(user.clientid),
-                                                "groups":str(user.groups),
-                                                "description":user.description,
-                                                "email_vip":user.email_vip,
-                                                "mail_pwd":user.mail_pwd
-                                            }
-                                }
-                                self.responseWrite(0, "登录成功", data=resultData)
-                        else:
-                                resultData = {
+    def post(self):
 
-                                                "des":"用户密码错误",
-                                                "data": {}
+        return self.login()
 
-                                }
-                                self.responseWrite(0, "请求成功", data=resultData)
-                else:
-                        resultData = {
-                                                "des":"用户不存在",
-                                                "data": {}
-                                }
-                        self.responseWrite(0, "请求成功", data=resultData)
+
+class G7AccountProfileReqHandler(G7APIReqHandler):
+
+    def profile(self):
+
+        userid = self.paramsJson.get("userid")
+        if userid == self.current_user.userid:
+            resultData = self.current_user.toJsonDict(self.request.host)
+            self.responseWrite(0, "获取成功", data=resultData)
+        else:
+            users = G7User.objects.filter(userid=userid)
+            if len(users) > 0:
+                user = users.first()
+                resultData = user.toJsonDict()
+                self.responseWrite(0, "获取成功", data=resultData)
+            else:
+                self.responseWrite(1, "获取失败", data={})
+
+    def get(self):
+        return self.profile()
+
+    def post(self):
+        return self.profile()
+
+
 
                        
 
