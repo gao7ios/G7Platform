@@ -62,7 +62,7 @@ class G7Project(models.Model):
         max_length=200)
 
     name = models.CharField(max_length=150, default="", blank=False,verbose_name=_(u"名称"))
-    descriptin = models.TextField(verbose_name=_(u"产品简介"),default="",null=True,blank=True)
+    description = models.TextField(verbose_name=_(u"产品简介"),default="",null=True,blank=True)
     applications = models.ManyToManyField("Application.G7Application",
                                      verbose_name=_(u"应用"),
                                      blank=True,
@@ -106,6 +106,27 @@ class G7Project(models.Model):
     icon_preview.short_description = _('图标')
     icon_preview.allow_tags = True
 
+    def toJsonDict(self, host="127.0.0.1"):
+
+        return {
+                    "latestAppIdentifier":self.applications.last().identifier,
+                    "identifier":self.identifier,
+                    "bundleId":self.bundleID,
+                    "createAt":str(self.create_at),
+                    "modifiedAt":str(self.modified_at),
+                    "iconUrl":host+self.icon.url,
+                    "ownner":self.owner.toJsonDict(host),
+                    "projectDescription":self.description,
+                    "latestVersion":self.latest_version,
+                    "latestInnerVersion":str(self.latest_inner_version),
+                    "latestBuildVersion":str(self.latest_build_version),
+                    "pid":self.project_id,
+                    "platform":self.platform,
+                    "name":self.name,
+                    "status":self.project_status,
+                    "productType":self.project_type,
+                }
+
     class Meta:
         verbose_name = _(u"产品")
         verbose_name_plural = _(u"产品")
@@ -124,15 +145,16 @@ class G7Application(models.Model):
         (3,_(u"通用版本，适用iOS系列")),
     )
 
+    user = models.ForeignKey('Account.G7User', verbose_name=_("用户"), blank=True, null=True)
     product_id = models.IntegerField(verbose_name=_(u"产品id"),default=0,blank=False,null=False)
     product_type = models.IntegerField(verbose_name=_(u"产品类型"), choices=product_type_choices, default=0, null=True,blank=True)
-    channel = models.IntegerField(verbose_name=_(u"频道"),default=0,blank=False,null=False)
+    channel = models.IntegerField(verbose_name=_(u"渠道"),default=0,blank=False,null=False)
     inner_version = models.IntegerField(blank=False, default=0, verbose_name=_(u"内部版本"),null=False)
 
     name = models.CharField(max_length=150, verbose_name=_(u"名字"))
-    appid = models.CharField(verbose_name=_(u"标识码"),
-                                 max_length=100,default="",
-                                 blank=True,unique=True)
+    identifier = models.CharField(verbose_name=_(u"标识码"),
+                                 max_length=100, default="",
+                                 blank=True, unique=True)
     file = models.FileField(upload_to="application/package", verbose_name=_(u"ipa包文件"),blank=True,null=True)
     dsymFile = models.FileField(upload_to="application/package", verbose_name=_(u"dsym包文件"),blank=True,null=True)
     version = models.CharField(blank=True, default="0.0", verbose_name=_(u"版本"), max_length=150)
@@ -143,6 +165,27 @@ class G7Application(models.Model):
     description = models.TextField(verbose_name=_(u"说明"), blank=True, null=True, default="")
     build_version = models.CharField(verbose_name=_(u"编译版本"),default="0", max_length=200)
     frameworks = models.ManyToManyField("Application.G7Application",verbose_name=_(u"使用到的框架"), blank=True, related_name="applications")
+
+    def toJsonDict(self, host="127.0.0.1"):
+        return {
+
+                    "identifier":self.identifier,
+                    "bundleId":self.bundleID,
+                    "createAt":str(self.create_at),
+                    "modifiedAt":str(self.modified_at),
+                    "iconUrl":host+self.icon.url,
+                    "appDescription":self.description,
+                    "channel":self.channel,
+                    "innerVersion":str(self.inner_version),
+                    "buildVersion":str(self.build_version),
+                    "pid":self.project_id,
+                    "name":self.name,
+                    "fileUrl":host+self.file.url,
+                    "dsymFileUrl":host+self.dsymFile.url,
+                    "version":self.version,
+                    "productType":self.project_type,
+                }
+
 
     def icon_preview(self):
         return '<img src="{icon_url}" width="40px" height="40px" />'.format(icon_url=self.icon.url)

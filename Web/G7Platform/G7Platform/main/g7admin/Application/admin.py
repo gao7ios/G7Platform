@@ -22,7 +22,7 @@ class G7ProjectAdmin(admin.ModelAdmin):
     filter_horizontal = ("applications","members")
     form = G7ProjectForm
     fieldsets = (
-        (None, {'fields': ('name', "descriptin","owner","icon")}),
+        (None, {'fields': ('name', "description","owner","icon")}),
         ('状态', {'fields': ("project_status",)}),
         ('基本信息', {'fields': ("platform","bundleID","project_id","project_type","latest_version","latest_inner_version","latest_build_version")}),
         ('应用产品', {'fields': ("applications","identifier")}),
@@ -116,18 +116,18 @@ class G7ApplicationAdmin(admin.ModelAdmin):
             'fields': ('name',"frameworks", "inner_version", "icon", "product_type",  "version",'bundleID','projects')}
         )
     )
-
+    
     fieldsets = (
-        (_(u"简介"), {'fields': ("name", "product_id", "inner_version", "channel", "product_type", "version", "icon", "build_version")}),
+        (_(u"简介"), {'fields': ("name",  "user","product_id", "inner_version", "channel", "product_type", "version", "icon", "build_version")}),
         (_(u"说明"), {'fields': ( "description", )}),
-        (_(u"应用包"), {'fields': ("file", "dsymFile", "bundleID", "appid" ,)}),
+        (_(u"应用包"), {'fields': ("file", "dsymFile", "bundleID", "identifier" ,)}),
         (_(u"使用到的框架"), {"fields":("frameworks",)}),
         (_(u"选择产品"), {'fields': ("projects",)}),
     )
 
 
     filter_horizontal = ("frameworks",)
-    readonly_fields = ['icon_preview',"appid", "build_version"]
+    readonly_fields = ['icon_preview',"identifier", "build_version"]
 
 
     # exclude = ("applications",)

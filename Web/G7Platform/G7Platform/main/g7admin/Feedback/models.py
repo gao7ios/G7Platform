@@ -9,7 +9,7 @@ class G7FeedbackModel(models.Model):
 
     username = models.CharField(verbose_name=_(u"联系人姓名"),max_length=200,default="",blank=True,null=True)
     contact = models.CharField(verbose_name=_(u"联系方式"),max_length=200,default="",blank=True,null=True)
-    context = models.CharField(verbose_name=_(u"反馈内容"),max_length=2000,default="",blank=False,null=False)
+    context = models.TextField(verbose_name=_(u"反馈内容"),max_length=2000,default="",blank=False,null=False)
 
     class Meta:
         verbose_name = _(u"反馈")

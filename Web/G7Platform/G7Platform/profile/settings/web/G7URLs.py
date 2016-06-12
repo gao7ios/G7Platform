@@ -1,15 +1,17 @@
 #-*- coding: UTF-8 -*-
 __author__ = 'yuyang'
 
+import tornado
+
 from G7Platform.main.site.Account.G7AccountReqHandlers import *
 from G7Platform.main.site.Index.G7IndexReqHandlers import *
 from G7Platform.main.site.Application.G7ApplicationReqHandlers import *
 from G7Platform.main.site.Application.G7AppInstallReqHandlers import *
+from G7Platform.main.site.Application.G7AppInstallReqHandlers import *
 from G7Platform.main.site.G7Test.G7TestReqHandlers import *
 from G7Platform.main.site.Feedback.G7FeedbackReqHandlers import *
 from G7Platform.main.site.Account.G7AccountReqHandlers import *
-from G7Platform.main.site.AppDetail.G7AppDetailReqHandlers import *
-import tornado
+from G7Platform.main.site.Application.G7ProjectReqHandlers import *
 
 # 接口url配置方法
 def G7ApiPathURL(channel, path, className, version=None):
@@ -32,19 +34,24 @@ webURLList = [
 
 # 配置接口列表
 apiURLList = [
+
     (r"/test", G7TestReqHandler),
     (r'/media/(.*)', tornado.web.StaticFileHandler, {'path': media_path}),
 
+    G7ApiPathURL("project","list",G7ProjectListReqHandler, version="1.0"),
+    G7ApiPathURL("project","detail",G7ProjectDetailReqHandler, version="1.0"),
+
     G7ApiPathURL("application","upload",G7ApplicationReqHandler, version="1.0"),
+    G7ApiPathURL("application","list",G7ApplicationListReqHandler, version="1.0"),
+    G7ApiPathURL("application","detail",G7ApplicationDetailReqHandler, version="1.0"),
+    
     G7ApiPathURL("feedback","feedback",G7AccountProfileReqHandler, version="1.0"),
 
     G7ApiPathURL("account","login",G7AccountLoginReqHandler, version="1.0"),
     G7ApiPathURL("account","profile",G7AccountProfileReqHandler, version="1.0"),
 
-    (r"/application/install/(?P<app_id>.*?).html", G7AppInstallReqHandler),
-    (r"/application/install/(?P<plist_app_id>.*?).plist", G7AppPlistReqHandler),
-    (r"/appDetail", G7AppDetailReqHandlers),
-
+    (r"/application/install/(?P<app_id>.*?)", G7AppInstallReqHandler),
+    (r"/application/info/(?P<plist_app_id>.*?).plist", G7AppPlistReqHandler),
 
 ]
 

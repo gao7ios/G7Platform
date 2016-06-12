@@ -19,7 +19,7 @@
                    <key>needs-shine</key>
                    <true/>
                    <key>url</key>
-                   <string>{{ ipa_icon_url }}</string>
+                   <string>{{ domain }}{{ app.icon.url }}</string>
                </dict>
                <dict>
                    <key>kind</key>
@@ -27,20 +27,20 @@
                    <key>needs-shine</key>
                    <true/>
                    <key>url</key>
-                   <string>{{ ipa_icon_url }}</string>
+                   <string>{{ domain }}{{ app.icon.url }}</string>
                </dict>
            </array><key>metadata</key>
            <dict>
                <key>bundle-identifier</key>
-               <string>{{ bundle_id }}</string>
+               <string>{{ app.bundleID }}</string>
                <key>bundle-version</key>
-               <string>{{ version }}</string>
+               <string>{{ app.version }}</string>
                <key>kind</key>
                <string>software</string>
                <key>subtitle</key>
-               <string>{{ subtitle }}</string>
+               <string>{{ app.name }}</string>
                <key>title</key>
-               <string>{{ title }}</string>
+               <string>{{ app.name }}</string>
            </dict>
        </dict>
    </array>

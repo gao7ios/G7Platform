@@ -17,9 +17,14 @@ class G7AccountLoginReqHandler(G7APIReqHandler):
         isExist =  len(users) > 0
         if isExist == True:
             user = users.first()
-            isSuccess =  user.check_password(password)
-            if  isSuccess:
-                resultData = user.toJsonDict(self.request.host)
+
+            isSuccess = user.check_password(password)
+            if isSuccess:
+                if self.httpHeadersJson.get("g7udid"):
+                    user.deviceId = self.httpHeadersJson.get("g7udid")
+                    user.save()
+                    
+                resultData = user.toJsonDict("http://"+self.request.host)
                 self.responseWrite(0, "登录成功", data=resultData)
             else:  
                 self.responseWrite(1, "用户密码错误", data={})
@@ -40,14 +45,14 @@ class G7AccountProfileReqHandler(G7APIReqHandler):
     def profile(self):
 
         userid = self.paramsJson.get("userid")
-        if userid == self.current_user.userid:
-            resultData = self.current_user.toJsonDict(self.request.host)
+        if self.current_user and userid == self.current_user.userid:
+            resultData = self.current_user.toJsonDict("http://"+self.request.host)
             self.responseWrite(0, "获取成功", data=resultData)
         else:
             users = G7User.objects.filter(userid=userid)
             if len(users) > 0:
                 user = users.first()
-                resultData = user.toJsonDict()
+                resultData = user.toJsonDict("http://"+self.request.host)
                 self.responseWrite(0, "获取成功", data=resultData)
             else:
                 self.responseWrite(1, "获取失败", data={})

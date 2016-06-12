@@ -13,9 +13,6 @@ from Account.models import G7User
 class G7APIReqHandler(G7ReqHandler):
     """api请求基类"""
 
-    
-    
-
     @property
     def current_user(self):
         doc = "The current_user property."
@@ -49,11 +46,11 @@ class G7APIReqHandler(G7ReqHandler):
     def is_login(self):
         if len(self.httpHeadersJson) == 0:
             return False
-        if ("deviceid" not in list(self.httpHeadersJson.keys())) or ("usignature" not in list(self.httpHeadersJson.keys())) or ("userid" not in list(self.httpHeadersJson.keys())):
+        if ("g7udid" not in list(self.httpHeadersJson.keys())) or ("usignature" not in list(self.httpHeadersJson.keys())) or ("userid" not in list(self.httpHeadersJson.keys())):
             return False
-        deviceid = self.httpHeadersJson["deviceid"]
-        usignature = self.httpHeadersJson["usignature"]
-        userid = self.httpHeadersJson["userid"]
+        deviceid = self.httpHeadersJson.get("g7udid")
+        usignature = self.httpHeadersJson.get("usignature")
+        userid = self.httpHeadersJson.get("userid")
         if  self.current_user == None:
             return False
 

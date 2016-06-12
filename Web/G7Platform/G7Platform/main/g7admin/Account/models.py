@@ -131,7 +131,7 @@ class G7User(AbstractBaseUser):
                     "sex":self.sex,
                     "mobile":self.mobile,
                     "email":self.email,
-                    "thumb":"http://"+str(host)+str(self.thumb),
+                    "thumb":str(host)+str(self.thumb),
                     "date_of_birth":str(self.date_of_birth),
                     "age":self.age,
                     "expires_time":str(self.expires_time),
