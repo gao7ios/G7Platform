@@ -291,6 +291,15 @@ function pyDesIns() {
 # 安装pyDes
 g7Install pyDesIns pyDesIns "python3 -c \"import pyDes\""
 
+# pycrypto 安装函数
+function pycryptoIns() {
+  sudo pip3 install pycrypto;
+}
+
+# 安装pycrypto
+g7Install pycrypto pycryptoIns "python3 -c \"import Crypto\""
+
+
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
 
