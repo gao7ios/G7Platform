@@ -7,15 +7,11 @@ server {
 
 	index index.html index.htm index.php;
 
-	location ~ \.php$ {
-		alias $phpRootPath;
-        include fastcgi.conf;
-        fastcgi_intercept_errors on;
-        fastcgi_pass   $phpFcgiPass;
-        client_max_body_size    1000m;
+    location ^~ /application/info {
+        rewrite ^ https://$server_name:443$request_uri? permanent;
     }
 
-    location ^~ /application/info/*.plist {
+    location ^~ /application/install {
         rewrite ^ https://$server_name:443$request_uri? permanent;
     }
 
@@ -65,15 +61,7 @@ server {
     ssl_certificate ssl/ipa.cer;
     ssl_certificate_key ssl/ipa.key;
 
-	location ~ \.php$ {
-		alias $phpRootPath;
-        include fastcgi.conf;
-        fastcgi_intercept_errors on;
-        fastcgi_pass   $phpFcgiPass;
-        client_max_body_size    1000m;
-    }
-
-	location ^~ /application/info/*.plist {
+	location ^~ /application/info {
         proxy_pass_header Server;
         proxy_set_header Host $http_host;
         proxy_redirect off;
@@ -82,7 +70,18 @@ server {
         proxy_pass http://$tornadoUpStream;
         client_max_body_size    1000m;
     }
-    
+
+    location ^~ /application/install {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://$tornadoUpStream;
+        client_max_body_size    1000m;
+    }
+
+
 	location / {
         rewrite  ^  http://$server_name$request_uri? permanent;
     }
