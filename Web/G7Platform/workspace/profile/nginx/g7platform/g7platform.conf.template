@@ -1,14 +1,13 @@
 
 server {
 	listen 80;
-	server_name localhost;
+	server_name marsplat.tk;
 
 	index index.html index.htm index.php;
 
 	ssl on;
     ssl_certificate ssl/ipa.cer;
     ssl_certificate_key ssl/ipa.key;
-
 
 	location ~ \.php$ {
 		alias $phpRootPath;
@@ -39,7 +38,6 @@ server {
 		autoindex on;
 	}
 
-
 	location ^~ /media {
 		alias $tornadoMediaPath;
 		default_type application/octet-stream;
@@ -55,6 +53,7 @@ server {
 }
 
 server {
+	
 	listen 80;
 	server_name app.marsplat.tk;
 
