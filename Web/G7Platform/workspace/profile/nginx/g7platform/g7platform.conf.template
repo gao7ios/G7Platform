@@ -1,6 +1,6 @@
 
 server {
-	listen 80;
+	listen 443;
 	server_name marsplat.tk;
 
 	index index.html index.htm index.php;
