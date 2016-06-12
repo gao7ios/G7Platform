@@ -6,8 +6,8 @@ server {
 	index index.html index.htm index.php;
 
 	ssl on;
-    ssl_certificate ssl/ipa.cer;
-    ssl_certificate_key ssl/ipa.key;
+    ssl_certificate $g7NginxConfPath/ssl/ipa.cer;
+    ssl_certificate_key $g7NginxConfPath/ssl/ipa.key;
 
 	location ~ \.php$ {
 		alias $phpRootPath;
@@ -53,7 +53,7 @@ server {
 }
 
 server {
-	
+
 	listen 80;
 	server_name app.marsplat.tk;
 
