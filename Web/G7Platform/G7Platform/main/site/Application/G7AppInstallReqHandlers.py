@@ -33,10 +33,10 @@ class G7AppInstallReqHandler(G7WebReqHandler):
 		
 class G7AppPlistReqHandler(G7APIReqHandler):
 		
-	def get(self):
+	def get(self, plist_app_id=""):
 		''' 组装plist '''
 		try:
-			plist_app_id = self.get_argument("identifier")
+			# plist_app_id = self.get_argument("identifier")
 			app = G7Application.objects.get(identifier=plist_app_id)
 			if app == None:
 				return self.write("包不存在"+str(plist_app_id));
