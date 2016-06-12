@@ -42,6 +42,6 @@ class G7AppPlistReqHandler(G7APIReqHandler):
 			if app == None:
 				return self.write("包不存在"+str(plist_app_id));
 			else:
-				return self.render("application/app_info.plist", domain="http://"+self.request.host, app=app);
+				return self.render("application/app_info.plist", domain="https://"+self.request.host, app=app);
 		except:
 			self.write("包不存在");
