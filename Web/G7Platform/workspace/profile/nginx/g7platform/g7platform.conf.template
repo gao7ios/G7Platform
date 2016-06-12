@@ -83,7 +83,13 @@ server {
 
 
 	location / {
-        rewrite  ^  http://$server_name$request_uri? permanent;
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://$tornadoUpStream;
+        client_max_body_size    1000m;
     }
 }
 
