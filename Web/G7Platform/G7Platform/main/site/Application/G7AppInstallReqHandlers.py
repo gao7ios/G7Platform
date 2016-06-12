@@ -23,21 +23,20 @@ class G7AppInstallReqHandler(G7WebReqHandler):
 		
 		try:
 			app = G7Application.objects.get(identifier=app_id)
-			print("app")
-			print(app == None)
 			if app == None:
 				return self.write("包不存在"+str(app_id));
 			else:
-				return self.render("application/app_install.html", title=app.name, plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist");
+				return self.render("application/app_install.html", title=app.name, plist_info_url="https://"+self.request.host+"/application/info/ipa_info.plist?identifier="+app.identifier);
 		except:
 			self.write("包不存在");
 
 		
 class G7AppPlistReqHandler(G7APIReqHandler):
 		
-	def get(self, plist_app_id=""):
+	def get(self):
 		''' 组装plist '''
 		try:
+			plist_app_id = self.get_argument("identifier")
 			app = G7Application.objects.get(identifier=plist_app_id)
 			if app == None:
 				return self.write("包不存在"+str(plist_app_id));

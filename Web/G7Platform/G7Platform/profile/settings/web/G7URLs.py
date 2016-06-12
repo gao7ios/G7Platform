@@ -51,7 +51,7 @@ apiURLList = [
     G7ApiPathURL("account","profile",G7AccountProfileReqHandler, version="1.0"),
 
     (r"/application/install/(?P<app_id>.*?)", G7AppInstallReqHandler),
-    (r"/application/info/(?P<plist_app_id>.*?).plist", G7AppPlistReqHandler),
+    (r"/application/info/ipa_info.plist", G7AppPlistReqHandler),
 
 ]
 

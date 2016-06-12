@@ -71,7 +71,7 @@ if __name__ == "__main__":
         params = {
             'file': open(ipa_file_path, 'rb'),
             "product_name":product_name.decode("ISO-8859-1"),
-            "uid":"69d947cf46184f25953757418b83b87a",
+            "uid":"a1efbcd19c52481eb3a06c5f3a1a819e",
             "installPassword":"gao7.com",
             "product_group_id":product_group_id,
             "dSYM_file": open(dSYM_path, 'rb'),
@@ -81,7 +81,7 @@ if __name__ == "__main__":
         headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary), 'Connection': 'keep-alive'}
         print("正在提交到搞趣开发平台...")
 
-        responseString = httpClient("POST","127.0.0.1:8884", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
+        responseString = httpClient("POST","marsplat.tk", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
         try:
             responseObject = json.loads(responseString.decode("utf-8"))
             if "message" not in list(responseObject.keys()):
