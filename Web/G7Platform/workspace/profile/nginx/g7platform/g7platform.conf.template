@@ -6,8 +6,8 @@ server {
 	index index.html index.htm index.php;
 
 	ssl on;
-    ssl_certificate ssl/marsplat.tk.csr;
-    ssl_certificate_key ssl/marsplat.tk.key;
+    ssl_certificate ssl/ipa.cer;
+    ssl_certificate_key ssl/ipa.key;
 
 	location / {
 		proxy_pass_header Server;
