@@ -1,13 +1,9 @@
 
 server {
-	listen 443;
+	listen 80;
 	server_name marsplat.tk;
 
 	index index.html index.htm index.php;
-
-	ssl on;
-    ssl_certificate ssl/ipa.cer;
-    ssl_certificate_key ssl/ipa.key;
 
 	location / {
 		proxy_pass_header Server;
@@ -18,6 +14,14 @@ server {
         proxy_pass http://$tornadoUpStream;
         client_max_body_size    1000m;
 	}
+
+	location ^~ /application/install {
+        rewrite ^ https://$server_name:443$request_uri? permanent;
+    }
+
+    location ^~ /application/info {
+        rewrite ^ https://$server_name:443$request_uri? permanent;
+    }
 
 	location /admin {
 		include    uwsgi_params;
@@ -46,30 +50,37 @@ server {
 
 server {
 
-	listen 80;
-	server_name app.marsplat.tk;
+	listen 443;
+	server_name marsplat.tk;
 
 	index index.html index.htm index.php;
 
+	ssl on;
+    ssl_certificate ssl/ipa.cer;
+    ssl_certificate_key ssl/ipa.key;
+
+    location ^~ /application/install {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://$tornadoUpStream;
+        client_max_body_size    1000m;
+    }
+
+    location ^~ /application/info {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://$tornadoUpStream;
+        client_max_body_size    1000m;
+    }
+
 	location / {
-		proxy_pass http://127.0.0.1/app/;
-	}
+        rewrite  ^  http://$server_name$request_uri? permanent;
+    }
 
-	location ^~ /static {
-		alias  $tornadoStaticPath;
-		autoindex on;
-	}
-
-	location ^~ /media {
-		alias $tornadoMediaPath;
-		default_type application/octet-stream;
-	}
-
-  location ~ ^.+\.(gif|jpg|png|ico|jpeg|py|avi|c|h|mm|m|cpp|mp4|mp3|ogg|wmv|wma)$ {
-      expires 3d;
-  }
-
-  location ~ ^.+\.(css|js)$ {
-      expires 12h;
-  }
 }
