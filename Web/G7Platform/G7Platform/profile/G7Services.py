@@ -118,6 +118,7 @@ class G7ReleaseServer(G7Server):
             host = "127.0.0.1"
             port = release_django_port
             listen = 80
+            pythonpath0 = "/usr/local/lib/python3.4/site-packages"
             pythonpath1 = project_path  # G7Platform
             pythonpath2 = subproject_path
             pythonpath3 = subproject_path+"/main/"+django_project_name+"/"+django_project_name+"/"
@@ -135,6 +136,7 @@ class G7ReleaseServer(G7Server):
                 "pidfile":pidfile,
                 "processes":"8",
 		        "plugin":"/usr/local/lib/uwsgi/py34_plugin.so",
+                "pythonpath0":pythonpath0,
                 "pythonpath1":pythonpath1,
                 "pythonpath2":pythonpath2,
                 "pythonpath3":pythonpath3,
@@ -185,8 +187,8 @@ class G7ReleaseServer(G7Server):
         # phpFpmResult = os.system("sudo php-fpm 2>/dev/null 1>/dev/null;")
         # if phpFpmResult > 0:
         #     os.system("sudo service php5-fpm start;")
-
-        os.system("uwsgi -x {uwsgi_conf_path};".format(uwsgi_conf_path=path.join(profile_path,"uwsgi/{project_name}_profile.xml".format(project_name=django_project_name))))
+        uwsgi_command = "uwsgi -x {uwsgi_conf_path};".format(uwsgi_conf_path=path.join(profile_path,"uwsgi/{project_name}_profile.xml".format(project_name=django_project_name)))
+        result = os.system(uwsgi_command)
         os.system("sudo nginx -c {conf_path} -p {nginx_path}".format(conf_path=self.nginxConfPath, nginx_path=nginx_path))
 
 
