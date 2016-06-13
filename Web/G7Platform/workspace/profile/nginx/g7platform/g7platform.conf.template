@@ -19,18 +19,6 @@ server {
         client_max_body_size    1000m;
 	}
 
-	location /ipa {
-
-		alias test;  
-        add_header Content-Dispositoin "attachment"; 
-	}
-
-	location /ipahtml {
-
-		root   test;  
-		index  index.html index.htm; 
-	}
-
 	location /admin {
 		include    uwsgi_params;
 		uwsgi_pass  $djangoUwsgiPass;
