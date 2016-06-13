@@ -98,21 +98,6 @@ function pythonIns() {
 	$osinstaller python3-pip;
 	$osinstaller python3-easyinstall;
   $osinstaller zlib-devel bzip2-devel openssl-devel ncurses-devel;
-
-  python3 -V 2>/dev/null 1>/dev/null;
-  if [ $? -ne 0 ]
-  then
-    if [ ! -f $dirPath/packages/Python-3.4.3.tgz ]
-    then
-      wget https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tgz -P $dirPath/packages;
-    fi
-    tar xvf $dirPath/packages/Python-3.4.3.tgz -C $dirPath/packages;
-    cd $dirPath/packages/Python-3.4.3;
-    CFLAGS="$CFLAGS -O3 -fPIC" CXXFLAGS="$CXXFLAGS -fPIC" ./configure;
-    sudo make && sudo make install;
-    cd $dirPath;
-    sudo rm -rf $dirPath/packages/Python-3.4.3;
-  fi
 }
 # 安装Python3.4.3
 g7Install Python3.4.3 pythonIns "python3 -V";
@@ -121,12 +106,12 @@ g7Install Python3.4.3 pythonIns "python3 -V";
 function mysqlIns() {
   if [ "$osinstaller" == "sudo yum install" ];
   then
-    $osinstaller mariadb mariadb-server lig7ariadbclient* mysql-devel mariadb-devel;
+    $osinstaller mariadb mariadb-server libmariadbclient* mysql-devel mariadb-devel;
     sudo systemctl enable mariadb.service;
   elif [ "$osinstaller" == "sudo apt-get install" ];
   then
-    $osinstaller mariadb mariadb-server lig7ariadbclient*;
-    $osinstaller mysql mysql-server lig7ysqlclient*;
+    $osinstaller mariadb mariadb-server libmariadbclient*;
+    $osinstaller mysql mysql-server libmysqlclient*;
   fi
 }
 # 安装Mysql5.6
