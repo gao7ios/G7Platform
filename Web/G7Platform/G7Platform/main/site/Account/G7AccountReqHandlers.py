@@ -5,6 +5,7 @@ from G7Platform.G7Globals import *
 from Account.models import G7User
 from G7Platform.main.site.Common.G7APIReqHandlers import *
 from G7Platform.main.site.Common.G7WebReqHandlers import G7WebReqHandler
+import uuid
 
 class G7AccountLoginReqHandler(G7APIReqHandler):
 
@@ -22,6 +23,7 @@ class G7AccountLoginReqHandler(G7APIReqHandler):
             if isSuccess:
                 if self.httpHeadersJson.get("g7udid"):
                     user.deviceId = self.httpHeadersJson.get("g7udid")
+                    user.usignature = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
                     user.save()
                     
                 resultData = user.toJsonDict("http://"+self.request.host)

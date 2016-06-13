@@ -110,6 +110,7 @@ class G7Project(models.Model):
 
         return {
                     "latestAppIdentifier":self.applications.last().identifier,
+                    "latestAppInstallUrl":host+"/application/install/"+self.applications.last().identifier,
                     "identifier":self.identifier,
                     "bundleId":self.bundleID,
                     "createAt":str(self.create_at),
@@ -126,7 +127,7 @@ class G7Project(models.Model):
                     "status":self.project_status,
                     "productType":self.project_type,
                 }
-
+                
     class Meta:
         verbose_name = _(u"产品")
         verbose_name_plural = _(u"产品")

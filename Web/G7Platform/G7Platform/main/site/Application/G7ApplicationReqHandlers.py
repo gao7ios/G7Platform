@@ -21,10 +21,12 @@ else:
 import tornado
 import tornado.web
 
-from Application.models import G7Application, G7Project
-from Account.models import G7User
+from Application.models import *
+from Account.models import *
 from G7Platform.main.site.Common.G7APIReqHandlers import G7APIReqHandler
 from G7Platform.main.site.Common.G7ReqHandlers import G7ReqHandler
+from G7Platform.main.site.Common.G7ListReqHandlers import G7ListReqHandler
+
 from G7Platform.G7Globals import *
 from django.core.files.base import ContentFile
 from django.conf import settings
@@ -224,7 +226,7 @@ from django.conf import settings
 # 		except:
 # 			return G7ReqHandler.responseDataText(10003)
 
-class G7ApplicationReqHandler(G7APIReqHandler):
+class G7ApplicationUploadReqHandler(G7APIReqHandler):
 
 	def infoPlistFrom(self, buffer):
 		info = {}
@@ -476,3 +478,88 @@ class G7ApplicationReqHandler(G7APIReqHandler):
 		except:
 			# ipa包备份失败, 储存资料失败!!!
 			return self.responseWrite({"message":"ipa包备份失败, 储存资料失败!!!"})
+
+
+class G7MyApplicationListReqHandler(G7ListReqHandler):
+    '''
+        获取我的应用包列表接口
+    '''
+    def fetchList(self):
+
+        try:
+            # 用户id
+            userid = user.userid
+            user = self.current_user
+            
+            pageIndex = int(self.paramsJson.get("pageIndex"))
+            allApplications = G7Application.objects.all()
+            allApplications = [application.toJsonDict("http://"+self.request.host) for application in allApplications if application.user != None and userid == application.user.userid]
+            isLastPage = self.isLastPage(allList=allApplications, pageIndex=pageIndex)
+            applications = self.sourceList(allList=allApplications, pageIndex=pageIndex)
+            return self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
+        except:
+            return self.responseWrite(1, "获取失败", data=[])
+
+    def get(self):
+        return self.fetchList()
+
+
+    def post(self):
+        return self.fetchList()
+
+
+
+class G7ApplicationListReqHandler(G7ListReqHandler):
+    '''
+        获取应用包列表接口
+    '''
+    def fetchList(self):
+
+        try:
+            identifier = self.paramsJson.get("identifier")
+            if identifier == None or identifier == "":
+                pageIndex = int(self.paramsJson.get("pageIndex"))
+                allApplications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all()]
+                isLastPage = self.isLastPage(allList=allApplications, pageIndex=pageIndex)
+                applications = self.sourceList(allList=allApplications, pageIndex=pageIndex)
+                self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
+            else:
+                # 根据projectID获取应用列表
+                pageIndex = int(self.paramsJson.get("pageIndex"))
+                allApplications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all()]
+                isLastPage = self.isLastPage(allList=allApplications, pageIndex=pageIndex)
+                applications = self.sourceList(allList=allApplications, pageIndex=pageIndex)
+                self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
+            
+        except:
+            self.responseWrite(1, "获取失败", data=[])
+
+    def get(self):
+        return self.fetchList()
+
+
+    def post(self):
+        return self.fetchList()
+
+class G7ApplicationDetailReqHandler(G7APIReqHandler):
+    '''
+        获取应用包详情
+    '''
+    def fetchDetail(self):
+
+        try:
+            # 应用包的identifier
+            identifier = self.paramsJson.get("identifier")
+            application = G7Application.objects.get(identifier=identifier)
+            if application:
+                return self.responseWrite(0, "获取成功", data=application.toJsonDict("http://"+self.request.host))
+            else:
+                return self.responseWrite(1, "获取成功", data={})
+        except:
+            return self.responseWrite(1, "获取失败", data={})
+
+    def post(self):
+        return self.fetchDetail()
+
+    def get(self):
+        return self.fetchDetail()

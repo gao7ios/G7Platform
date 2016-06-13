@@ -13,7 +13,7 @@ from django.conf import settings
 
 from Application.models import *
 
-class G7AppInstallReqHandler(G7WebReqHandler):
+class G7ApplicationInstallReqHandler(G7WebReqHandler):
 	"""
 	应用包
 	"""
@@ -23,8 +23,6 @@ class G7AppInstallReqHandler(G7WebReqHandler):
 		
 		try:
 			app = G7Application.objects.get(identifier=app_id)
-			print("app")
-			print(app == None)
 			if app == None:
 				return self.write("包不存在"+str(app_id));
 			else:
@@ -33,7 +31,7 @@ class G7AppInstallReqHandler(G7WebReqHandler):
 			self.write("包不存在");
 
 		
-class G7AppPlistReqHandler(G7APIReqHandler):
+class G7ApplicationPlistReqHandler(G7APIReqHandler):
 		
 	def get(self, plist_app_id=""):
 		''' 组装plist '''

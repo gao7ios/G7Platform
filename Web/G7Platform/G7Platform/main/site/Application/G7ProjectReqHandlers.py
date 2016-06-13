@@ -2,25 +2,28 @@
 
 from G7Platform.main.site.Common.G7APIReqHandlers import G7APIReqHandler
 from G7Platform.main.site.Common.G7WebReqHandlers import G7WebReqHandler
+from G7Platform.main.site.Common.G7ListReqHandlers import G7ListReqHandler
 import json
 from G7Platform.G7Globals import *
 from Application.models import *
 from Account.models import *
 
-class G7ProjectListReqHandler(G7APIReqHandler): 
 
-
+class G7ProjectListReqHandler(G7ListReqHandler): 
+    '''
+        获取所有产品列表
+    '''
     def fetchList(self):
         
-        userid = self.paramsJson.get("identifier")
-        pageIndex = self.paramsJson.get("pageIndex")
+        # try:
         print(self.paramsJson)
-        try:
-            user = G7User.objects.get(userid=userid)
-            projects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all() if userid in [user.userid for user in project.members.all()]]
-            return self.responseWrite(0, "获取成功", data=projects)
-        except:
-            return self.responseWrite(1, "获取失败", data=[])
+        pageIndex = int(self.paramsJson.get("pageIndex"))
+        allProjects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all()]
+        isLastPage = self.isLastPage(allList=allProjects, pageIndex=pageIndex)
+        projects = self.sourceList(allList=allProjects, pageIndex=pageIndex)
+        return self.responseWrite(0, "获取成功", data={"list":projects, "isLastPage":isLastPage})
+        # except:
+        #     return self.responseWrite(1, "获取失败", data=[])
 
     def get(self):
         
@@ -30,13 +33,40 @@ class G7ProjectListReqHandler(G7APIReqHandler):
         
         return self.fetchList()
 
+class G7MyProjectListReqHandler(G7ListReqHandler):
+
+    '''
+        获取我的产品列表
+    '''
+
+    def fetchList(self):
+        try:
+            # 用户id
+            userid = self.current_user.userid
+            pageIndex = int(self.paramsJson.get("pageIndex"))
+            projects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all() if userid in [user.userid for user in project.members.all() if user != None]]
+            isLastPage = self.isLastPage(allList=projects, pageIndex=pageIndex)
+            projects = self.sourceList(allList=projects, pageIndex=pageIndex)
+            return self.responseWrite(0, "获取成功", data={"list":projects, "isLastPage":isLastPage})
+        except:
+            return self.responseWrite(1, "获取失败", data=[])
+
+    def get(self):
+        return self.fetchList()
+
+    def post(self):
+        return self.fetchList()
+
 
 class G7ProjectDetailReqHandler(G7APIReqHandler):
-
+    '''
+        获取产品详情
+    '''
     def fetchDetail(self):
 
-        identifier = self.paramsJson.get("identifier")  
         try:
+            # 产品identifier
+            identifier = self.paramsJson.get("identifier")  
             project = G7Project.objects.get(identifier=identifier)
             if project:
                 return self.responseWrite(0, "获取成功", data=project.toJsonDict("http://"+self.request.host))
@@ -51,50 +81,6 @@ class G7ProjectDetailReqHandler(G7APIReqHandler):
     def get(self):
         return self.fetchDetail()
 
-class G7ApplicationListReqHandler(G7APIReqHandler):
-    '''
-        首页
-    '''
-    def fetchList(self):
 
-        userid = self.paramsJson.get("identifier")
-        pageIndex = self.paramsJson.get("pageIndex")
-        try:
-            user = G7User.objects.get(userid=userid)
-            applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all() if userid == application.user.userid]
-            self.responseWrite(0, "获取成功", data=applications)
-        except:
-            self.responseWrite(1, "获取失败", data=[])
-
-    def get(self):
-        return self.fetchList()
-
-
-    def post(self):
-        return self.fetchList()
-
-
-
-class G7ApplicationDetailReqHandler(G7APIReqHandler):
-    '''
-        首页
-    '''
-    def fetchDetail(self):
-
-        identifier = self.paramsJson.get("identifier")    
-        try:
-            application = G7Application.objects.get(identifier=identifier)
-            if application:
-                return self.responseWrite(0, "获取成功", data=application.toJsonDict("http://"+self.request.host))
-            else:
-                return self.responseWrite(1, "获取成功", data={})
-        except:
-            return self.responseWrite(1, "获取失败", data={})
-
-    def post(self):
-        return self.fetchDetail()
-
-    def get(self):
-        return self.fetchDetail()
 
      

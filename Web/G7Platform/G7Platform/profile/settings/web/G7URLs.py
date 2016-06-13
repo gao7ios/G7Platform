@@ -23,6 +23,10 @@ def G7ApiPathURL(channel, path, className, version=None):
 
 # url配置信息
 
+serviceURLList = [    
+    (r'/media/(.*)', tornado.web.StaticFileHandler, {'path': media_path}),
+]
+
 # 配置web地址列表
 webURLList = [
 	    (r"/", G7IndexReqHandler),
@@ -36,13 +40,15 @@ webURLList = [
 apiURLList = [
 
     (r"/test", G7TestReqHandler),
-    (r'/media/(.*)', tornado.web.StaticFileHandler, {'path': media_path}),
+
+    G7ApiPathURL("application","upload",G7ApplicationUploadReqHandler, version="1.0"),
 
     G7ApiPathURL("project","list",G7ProjectListReqHandler, version="1.0"),
+    G7ApiPathURL("project","mylist",G7MyProjectListReqHandler, version="1.0"),
     G7ApiPathURL("project","detail",G7ProjectDetailReqHandler, version="1.0"),
 
-    G7ApiPathURL("application","upload",G7ApplicationReqHandler, version="1.0"),
     G7ApiPathURL("application","list",G7ApplicationListReqHandler, version="1.0"),
+    G7ApiPathURL("application","mylist",G7MyApplicationListReqHandler, version="1.0"),
     G7ApiPathURL("application","detail",G7ApplicationDetailReqHandler, version="1.0"),
     
     G7ApiPathURL("feedback","feedback",G7AccountProfileReqHandler, version="1.0"),
@@ -50,9 +56,8 @@ apiURLList = [
     G7ApiPathURL("account","login",G7AccountLoginReqHandler, version="1.0"),
     G7ApiPathURL("account","profile",G7AccountProfileReqHandler, version="1.0"),
 
-    (r"/application/install/(?P<app_id>.*?)", G7AppInstallReqHandler),
-    (r"/application/info/(?P<plist_app_id>.*?).plist", G7AppPlistReqHandler),
-
+    (r"/application/install/(?P<app_id>.*?)", G7ApplicationInstallReqHandler),
+    (r"/application/info/(?P<plist_app_id>.*?).plist", G7ApplicationPlistReqHandler),
 ]
 
-urlList = apiURLList+webURLList
+urlList = serviceURLList+apiURLList+webURLList
