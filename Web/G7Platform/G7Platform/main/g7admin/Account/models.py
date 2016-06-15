@@ -88,7 +88,7 @@ class G7User(AbstractBaseUser):
     nickname = models.CharField(verbose_name=_(u"昵称"),max_length=255, default="", blank=True)
     clientid = models.CharField(verbose_name=_(u"客户端id"),max_length=100,default="", blank=True)
     realname = models.CharField(verbose_name=_(u"真实姓名"),max_length=255, default="", blank=True, null=True)
-    job = models.CharField(verbose_name=_(u"职业"), max_length=100, default="无业游民")
+    job = models.CharField(verbose_name=_(u"职业"), max_length=100, default="暂无岗位")
     groups = models.ManyToManyField("Account.G7Group", verbose_name=_('群组'),
         blank=True, related_name="members")
 
@@ -123,6 +123,7 @@ class G7User(AbstractBaseUser):
     def toJsonDict(self, host="127.0.0.1"):
 
         return {
+                    "realname":self.realname,
                     "is_admin":int(self.is_admin),
                     "username":self.username,
                     "userid":self.userid,

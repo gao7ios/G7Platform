@@ -42,7 +42,10 @@ class G7MyProjectListReqHandler(G7ListReqHandler):
     def fetchList(self):
         try:
             # 用户id
-            userid = self.current_user.userid
+            userid = self.paramsJson.get("identifier")
+            if self.paramsJson.get("identifier") != None and self.paramsJson.get("identifier") != "":
+                userid = self.current_user.userid
+
             pageIndex = int(self.paramsJson.get("pageIndex"))
             projects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all() if userid in [user.userid for user in project.members.all() if user != None]]
             isLastPage = self.isLastPage(allList=projects, pageIndex=pageIndex)
@@ -81,6 +84,29 @@ class G7ProjectDetailReqHandler(G7APIReqHandler):
     def get(self):
         return self.fetchDetail()
 
+class G7ProjectMembersReqHandler(G7ListReqHandler):
+
+    def fetchMembers(self):
+        try:
+            # project id
+            projectId = self.paramsJson.get("identifier")
+            project = G7Project.objects.get(identifier=projectId)
+            if project != None:
+                pageIndex = int(self.paramsJson.get("pageIndex"))
+                users = [user.toJsonDict("http://"+self.request.host) for user in project.members.all() ]
+                isLastPage = self.isLastPage(allList=users, pageIndex=pageIndex)
+                users = self.sourceList(allList=users, pageIndex=pageIndex)
+                return self.responseWrite(0, "获取成功", data={"list":users, "isLastPage":isLastPage})
+            else:
+                return self.responseWrite(1, "获取失败", data=[])
+        except:
+            return self.responseWrite(1, "获取失败", data=[])
+
+    def post(self):
+        return self.fetchMembers()
+
+    def get(self):
+        return self.fetchMembers()
 
 
      

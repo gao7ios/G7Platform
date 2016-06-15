@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('nickname', models.CharField(blank=True, default='', max_length=255, verbose_name='昵称')),
                 ('clientid', models.CharField(blank=True, default='', max_length=100, verbose_name='客户端id')),
                 ('realname', models.CharField(blank=True, default='', max_length=255, null=True, verbose_name='真实姓名')),
-                ('job', models.CharField(default='无业游民', max_length=100, verbose_name='职业')),
+                ('job', models.CharField(default='暂无岗位', max_length=100, verbose_name='职业')),
                 ('mobile', models.CharField(blank=True, default='', max_length=50, null=True, verbose_name='电话号码')),
                 ('description', models.TextField(blank=True, default='', null=True, verbose_name='简介')),
                 ('email_vip', models.BooleanField(default=False, verbose_name='VIP邮件接收者')),

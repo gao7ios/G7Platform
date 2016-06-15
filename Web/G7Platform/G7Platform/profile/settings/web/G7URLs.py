@@ -46,7 +46,8 @@ apiURLList = [
     G7ApiPathURL("project","list",G7ProjectListReqHandler, version="1.0"),
     G7ApiPathURL("project","mylist",G7MyProjectListReqHandler, version="1.0"),
     G7ApiPathURL("project","detail",G7ProjectDetailReqHandler, version="1.0"),
-
+    G7ApiPathURL("project","members",G7ProjectMembersReqHandler, version="1.0"),
+    
     G7ApiPathURL("application","list",G7ApplicationListReqHandler, version="1.0"),
     G7ApiPathURL("application","mylist",G7MyApplicationListReqHandler, version="1.0"),
     G7ApiPathURL("application","detail",G7ApplicationDetailReqHandler, version="1.0"),

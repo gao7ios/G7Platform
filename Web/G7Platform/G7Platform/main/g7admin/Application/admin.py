@@ -76,7 +76,7 @@ class G7ApplicationForm(forms.ModelForm):
             self.fields['projects'].queryset = G7Project.objects.all()
 
             self.fields["frameworks"].initial = self.instance.frameworks.all()
-            self.fields["frameworks"].queryset = G7Application.objects.filter(Q(product_type=1) | Q(product_type=2) | Q(product_type=4))
+            self.fields["frameworks"].queryset = G7Application.objects.filter(Q(project_type=1) | Q(project_type=2) | Q(project_type=4))
             self.fields['frameworks'].widget = RelatedFieldWidgetWrapper(
                                                 FilteredSelectMultiple(_(u'项目'),False),
                                                 G7Application._meta.get_field('frameworks').rel,
@@ -113,12 +113,12 @@ class G7ApplicationAdmin(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('name',"frameworks", "inner_version", "icon", "product_type",  "version",'bundleID','projects')}
+            'fields': ('name',"frameworks", "inner_version", "icon", "project_type",  "version",'bundleID','projects')}
         )
     )
     
     fieldsets = (
-        (_(u"简介"), {'fields': ("name",  "user","product_id", "inner_version", "channel", "product_type", "version", "icon", "build_version")}),
+        (_(u"简介"), {'fields': ("name",  "user","project_id", "inner_version", "channel", "project_type", "version", "icon", "build_version")}),
         (_(u"说明"), {'fields': ( "description", )}),
         (_(u"应用包"), {'fields': ("file", "dsymFile", "bundleID", "identifier" ,)}),
         (_(u"使用到的框架"), {"fields":("frameworks",)}),

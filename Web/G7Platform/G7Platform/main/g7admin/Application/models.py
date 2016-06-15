@@ -107,6 +107,20 @@ class G7Project(models.Model):
     icon_preview.allow_tags = True
 
     def toJsonDict(self, host="127.0.0.1"):
+# platform_choices = (
+#                     (0,_(u"通用")),
+#                     (1,_(u"iOS")),
+#                     (2,_(u"Android")),
+#                     (999,_(u"其他")),
+#                    )
+        platformText = "通用"
+        if self.platform == 1:
+            platformText = "iOS"
+        elif self.platform == 2:
+            platformText = "Android"
+        elif self.platform == 999:
+            platformText = "其他"
+
 
         return {
                     "latestAppIdentifier":self.applications.last().identifier,
@@ -122,12 +136,12 @@ class G7Project(models.Model):
                     "latestInnerVersion":str(self.latest_inner_version),
                     "latestBuildVersion":str(self.latest_build_version),
                     "pid":self.project_id,
-                    "platform":self.platform,
+                    "platform":platformText,
                     "name":self.name,
                     "status":self.project_status,
-                    "productType":self.project_type,
+                    "projectType":self.project_type,
                 }
-                
+
     class Meta:
         verbose_name = _(u"产品")
         verbose_name_plural = _(u"产品")
@@ -139,7 +153,7 @@ class G7Project(models.Model):
 
 class G7Application(models.Model):
 
-    product_type_choices = (
+    project_type_choices = (
         (0, _(u"未知(ids默认为0)")),
         (1,_(u"iPhone/iTouch版本")),
         (2,_(u"HD版本，仅适用iPad/iPad2")),
@@ -147,8 +161,8 @@ class G7Application(models.Model):
     )
 
     user = models.ForeignKey('Account.G7User', verbose_name=_("用户"), blank=True, null=True)
-    product_id = models.IntegerField(verbose_name=_(u"产品id"),default=0,blank=False,null=False)
-    product_type = models.IntegerField(verbose_name=_(u"产品类型"), choices=product_type_choices, default=0, null=True,blank=True)
+    project_id = models.IntegerField(verbose_name=_(u"产品id"),default=0,blank=False,null=False)
+    project_type = models.IntegerField(verbose_name=_(u"产品类型"), choices=project_type_choices, default=0, null=True,blank=True)
     channel = models.IntegerField(verbose_name=_(u"渠道"),default=0,blank=False,null=False)
     inner_version = models.IntegerField(blank=False, default=0, verbose_name=_(u"内部版本"),null=False)
 
@@ -168,8 +182,11 @@ class G7Application(models.Model):
     frameworks = models.ManyToManyField("Application.G7Application",verbose_name=_(u"使用到的框架"), blank=True, related_name="applications")
 
     def toJsonDict(self, host="127.0.0.1"):
-        return {
 
+        
+
+        jsonDict = {
+                    "appInstallUrl":host+"/application/install/"+self.identifier,
                     "identifier":self.identifier,
                     "bundleId":self.bundleID,
                     "createAt":str(self.create_at),
@@ -184,8 +201,13 @@ class G7Application(models.Model):
                     "fileUrl":host+self.file.url,
                     "dsymFileUrl":host+self.dsymFile.url,
                     "version":self.version,
-                    "productType":self.project_type,
+                    "projectType":self.project_type,
                 }
+
+        if self.user != None:
+            jsonDict["user"] = self.user.toJsonDict(host)
+        
+        return jsonDict
 
 
     def icon_preview(self):

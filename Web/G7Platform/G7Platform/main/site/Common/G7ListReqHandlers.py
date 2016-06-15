@@ -42,7 +42,9 @@ class G7ListReqHandler(G7APIReqHandler):
                 if len(allList) <= currentPageCount+pageCount:
                     sourceList = allList[len(allList)-currentPageCount]
                 else:
-                    sourceList = aList[currentPageCount:currentPageCount+pageCount]
+                    sourceList = allList[currentPageCount:currentPageCount+pageCount]
+        if type(sourceList) != type([]):
+            sourceList = [sourceList]
 
         return sourceList
 
