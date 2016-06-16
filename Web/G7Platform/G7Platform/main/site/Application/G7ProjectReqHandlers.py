@@ -17,7 +17,9 @@ class G7ProjectListReqHandler(G7ListReqHandler):
         
         try:
             print(self.paramsJson)
-            pageIndex = int(self.paramsJson.get("pageIndex"))
+            pageIndex = 0
+            if self.paramsJson.get("pageIndex") != None:
+                pageIndex = int(self.paramsJson.get("pageIndex"))
             allProjects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all()]
             isLastPage = self.isLastPage(allList=allProjects, pageIndex=pageIndex)
             projects = self.sourceList(allList=allProjects, pageIndex=pageIndex)
