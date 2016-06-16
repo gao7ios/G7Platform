@@ -15,15 +15,15 @@ class G7ProjectListReqHandler(G7ListReqHandler):
     '''
     def fetchList(self):
         
-        # try:
-        print(self.paramsJson)
-        pageIndex = int(self.paramsJson.get("pageIndex"))
-        allProjects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all()]
-        isLastPage = self.isLastPage(allList=allProjects, pageIndex=pageIndex)
-        projects = self.sourceList(allList=allProjects, pageIndex=pageIndex)
-        return self.responseWrite(0, "获取成功", data={"list":projects, "isLastPage":isLastPage})
-        # except:
-        #     return self.responseWrite(1, "获取失败", data=[])
+        try:
+            print(self.paramsJson)
+            pageIndex = int(self.paramsJson.get("pageIndex"))
+            allProjects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all()]
+            isLastPage = self.isLastPage(allList=allProjects, pageIndex=pageIndex)
+            projects = self.sourceList(allList=allProjects, pageIndex=pageIndex)
+            return self.responseWrite(0, "获取成功", data={"list":projects, "isLastPage":isLastPage})
+        except:
+            return self.responseWrite(1, "获取失败", data=[])
 
     def get(self):
         
