@@ -67,8 +67,9 @@ if __name__ == "__main__":
 #python post-to-g7platform.py test 测试 10 ./test.ipa 10293 11
         # dSYM包地址
         dSYM_path = path.splitext(ipa_file_path)[0]+"-dSYM.zip"
-
+        
         params = {
+            'info_plist': {},
             'file': open(ipa_file_path, 'rb'),
             "product_name":product_name.decode("ISO-8859-1"),
             "uid":"d87389f861f041889ae0042bb60f5a41",
@@ -81,7 +82,7 @@ if __name__ == "__main__":
         headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary), 'Connection': 'keep-alive'}
         print("正在提交到搞趣开发平台...")
 
-        responseString = httpClient("POST","127.0.0.1:8884", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
+        responseString = httpClient("POST","marsplat.tk", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
         try:
             responseObject = json.loads(responseString.decode("utf-8"))
             if "message" not in list(responseObject.keys()):

@@ -146,7 +146,7 @@ class G7Project(models.Model):
                     "projectType":self.project_type,
                 }
         if self.owner != None:
-            retJsonDict["owner"] = self.owner.toJsonDict(host)
+            retJsonDict["ownner"] = self.owner.toJsonDict(host)
 
         return retJsonDict
 
