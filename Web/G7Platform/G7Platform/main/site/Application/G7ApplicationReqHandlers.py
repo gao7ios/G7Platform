@@ -491,12 +491,12 @@ class G7MyApplicationListReqHandler(G7ListReqHandler):
             
             userid = self.paramsJson.get("identifier")
             if userid == None or userid == "":
-                userid = self.current_user.userid
-            
+                if self.current_user != None:
+                    userid = self.current_user.userid
+
             pageIndex = 0
-            if self.paramsJson.get("pageIndex") != None:
+            if self.paramsJson.get("pageIndex") != None and self.paramsJson.get("pageIndex") != "":
                 pageIndex = int(self.paramsJson.get("pageIndex"))
-            print("userid:{userid}, pageIndex:{pageIndex}".format(userid=userid, pageIndex=pageIndex))
             allApplications = G7Application.objects.all()
             allApplications = [application.toJsonDict("http://"+self.request.host) for application in allApplications if application.user != None and userid == application.user.userid]
             isLastPage = self.isLastPage(allList=allApplications, pageIndex=pageIndex)
