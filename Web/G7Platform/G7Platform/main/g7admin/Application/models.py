@@ -125,7 +125,9 @@ class G7Project(models.Model):
         if "http://" in host:
             installHost = host.split("http://")[1]
 
-        return {
+
+
+        retJsonDict = {
                     "latestAppIdentifier":self.applications.last().identifier,
                     "latestAppInstallUrl":"itms-services://?action=download-manifest&url="+"https://"+installHost+"/application/info/"+self.applications.last().identifier+".plist",
                     "identifier":self.identifier,
@@ -133,7 +135,6 @@ class G7Project(models.Model):
                     "createAt":str(self.create_at),
                     "modifiedAt":str(self.modified_at),
                     "iconUrl":host+self.icon.url,
-                    "ownner":self.owner.toJsonDict(host),
                     "projectDescription":self.description,
                     "latestVersion":self.latest_version,
                     "latestInnerVersion":str(self.latest_inner_version),
@@ -144,6 +145,11 @@ class G7Project(models.Model):
                     "status":self.project_status,
                     "projectType":self.project_type,
                 }
+        if self.owner != None:
+            retJsonDict["owner"] = self.owner.toJsonDict(host)
+
+        return retJsonDict
+
 
     class Meta:
         verbose_name = _(u"产品")
