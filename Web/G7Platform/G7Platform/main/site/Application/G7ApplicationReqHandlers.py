@@ -492,7 +492,10 @@ class G7MyApplicationListReqHandler(G7ListReqHandler):
             userid = self.paramsJson.get("identifier")
             if userid == None or userid == "":
                 userid = self.current_user.userid
-            pageIndex = int(self.paramsJson.get("pageIndex"))
+            
+            pageIndex = 0
+            if self.paramsJson.get("pageIndex") != None:
+                pageIndex = int(self.paramsJson.get("pageIndex"))
             print("userid:{userid}, pageIndex:{pageIndex}".format(userid=userid, pageIndex=pageIndex))
             allApplications = G7Application.objects.all()
             allApplications = [application.toJsonDict("http://"+self.request.host) for application in allApplications if application.user != None and userid == application.user.userid]
@@ -521,7 +524,9 @@ class G7ApplicationListReqHandler(G7ListReqHandler):
         # try:
         identifier = self.paramsJson.get("identifier")
         if identifier == None or identifier == "":
-            pageIndex = int(self.paramsJson.get("pageIndex"))
+            pageIndex = 0
+            if self.paramsJson.get("pageIndex") != None:
+                pageIndex = int(self.paramsJson.get("pageIndex"))
             applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all()]
             isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
             applications = self.sourceList(allList=applications, pageIndex=pageIndex)
@@ -530,7 +535,9 @@ class G7ApplicationListReqHandler(G7ListReqHandler):
             # 根据projectID获取应用列表
             project = G7Project.objects.get(identifier=identifier)
             if project != None:
-                pageIndex = int(self.paramsJson.get("pageIndex"))
+                pageIndex = 0
+                if self.paramsJson.get("pageIndex") != None:
+                    pageIndex = int(self.paramsJson.get("pageIndex"))
                 applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all() if application.project_id==project.project_id]
                 isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
                 applications = self.sourceList(allList=applications, pageIndex=pageIndex)

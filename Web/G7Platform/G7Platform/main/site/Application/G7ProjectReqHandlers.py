@@ -45,8 +45,10 @@ class G7MyProjectListReqHandler(G7ListReqHandler):
             userid = self.paramsJson.get("identifier")
             if self.paramsJson.get("identifier") != None and self.paramsJson.get("identifier") != "":
                 userid = self.current_user.userid
-
-            pageIndex = int(self.paramsJson.get("pageIndex"))
+                
+            pageIndex = 0
+            if self.paramsJson.get("pageIndex") != None:
+                pageIndex = int(self.paramsJson.get("pageIndex"))
             projects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all() if userid in [user.userid for user in project.members.all() if user != None]]
             isLastPage = self.isLastPage(allList=projects, pageIndex=pageIndex)
             projects = self.sourceList(allList=projects, pageIndex=pageIndex)
@@ -92,7 +94,9 @@ class G7ProjectMembersReqHandler(G7ListReqHandler):
             projectId = self.paramsJson.get("identifier")
             project = G7Project.objects.get(identifier=projectId)
             if project != None:
-                pageIndex = int(self.paramsJson.get("pageIndex"))
+                pageIndex = 0
+                if self.paramsJson.get("pageIndex") != None:
+                    pageIndex = int(self.paramsJson.get("pageIndex"))
                 users = [user.toJsonDict("http://"+self.request.host) for user in project.members.all() ]
                 isLastPage = self.isLastPage(allList=users, pageIndex=pageIndex)
                 users = self.sourceList(allList=users, pageIndex=pageIndex)
