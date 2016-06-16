@@ -121,10 +121,13 @@ class G7Project(models.Model):
         elif self.platform == 999:
             platformText = "其他"
 
+        installHost = host
+        if "http://" in host:
+            installHost = host.split("http://")[1]
 
         return {
                     "latestAppIdentifier":self.applications.last().identifier,
-                    "latestAppInstallUrl":host+"/application/install/"+self.applications.last().identifier,
+                    "latestAppInstallUrl":"itms-services://?action=download-manifest&url="+"https://"+installHost+"/application/info/"+self.applications.last().identifier+".plist",
                     "identifier":self.identifier,
                     "bundleId":self.bundleID,
                     "createAt":str(self.create_at),
@@ -184,9 +187,12 @@ class G7Application(models.Model):
     def toJsonDict(self, host="127.0.0.1"):
 
         
+        installHost = host
+        if "http://" in host:
+            installHost = host.split("http://")[1]
 
         jsonDict = {
-                    "appInstallUrl":host+"/application/install/"+self.identifier,
+                    "appInstallUrl":"itms-services://?action=download-manifest&url="+"https://"+installHost+"/application/info/"+self.identifier+".plist",
                     "identifier":self.identifier,
                     "bundleId":self.bundleID,
                     "createAt":str(self.create_at),
@@ -206,7 +212,7 @@ class G7Application(models.Model):
 
         if self.user != None:
             jsonDict["user"] = self.user.toJsonDict(host)
-        
+
         return jsonDict
 
 

@@ -31,72 +31,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "G7Platform/G7Platform/main/site/Application/G7ProjectReqHandlers.py",
-			"settings":
-			{
-				"buffer_size": 2696,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
-			"settings":
-			{
-				"buffer_size": 23524,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-			"settings":
-			{
-				"buffer_size": 159,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "G7Platform/G7Platform/main/g7admin/Application/models.py",
-			"settings":
-			{
-				"buffer_size": 8790,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "G7Platform/G7Platform/main/g7admin/Application/admin.py",
-			"settings":
-			{
-				"buffer_size": 5439,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "Searching 1 file for \"product\"\n\n/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/models.py:\n  126                      \"name\":self.name,\n  127                      \"status\":self.project_status,\n  128:                     \"productType\":self.project_type,\n  129                  }\n  130  \n  ...\n  140  class G7Application(models.Model):\n  141  \n  142:     product_type_choices = (\n  143          (0, _(u\"未知(ids默认为0)\")),\n  144          (1,_(u\"iPhone/iTouch版本\")),\n  ...\n  148  \n  149      user = models.ForeignKey('Account.G7User', verbose_name=_(\"用户\"), blank=True, null=True)\n  150:     product_id = models.IntegerField(verbose_name=_(u\"产品id\"),default=0,blank=False,null=False)\n  151:     product_type = models.IntegerField(verbose_name=_(u\"产品类型\"), choices=product_type_choices, default=0, null=True,blank=True)\n  152      channel = models.IntegerField(verbose_name=_(u\"渠道\"),default=0,blank=False,null=False)\n  153      inner_version = models.IntegerField(blank=False, default=0, verbose_name=_(u\"内部版本\"),null=False)\n  ...\n  184                      \"dsymFileUrl\":host+self.dsymFile.url,\n  185                      \"version\":self.version,\n  186:                     \"productType\":self.project_type,\n  187                  }\n  188  \n\n6 matches in 1 file\n\n\nSearching 1 file for \"project\"\n\n/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py:\n   46  #         self.product_name = \"\"\n   47  #         self.build_version = \"\"\n   48: #         self.project_version = \"\"\n   49  #         self.currentG7User = None\n   50  #         self.g7CommonSetting = {}\n   ..\n  173  #         environsString += '<h3>构建包信息</h3><p>'\n  174  #         # environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\\\n  175: #         environsString += '<p>版本号 : ' + self.project_version + '<p>'\n  176  #         environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'\n  177  #         environsString += '<p>App名称 : ' + str(self.product_name) + '<p>'\n  ...\n  406          icon = data[\"Icon\"]\n  407  \n  408:         # 判断当前产品中是否使用了接收到的Project_id\n  409:         projects = G7Project.objects.filter(project_id = TDPID)\n  410:         if len(projects) > 0:\n  411:             project = projects[0]\n  412          else:\n  413:             project = G7Project(bundleID=bundleID, project_id=TDPID, project_type=0, icon=icon, name=appName, identifier=uuid.uuid4().hex)\n  414              if icon:\n  415:                 project.icon.save(\"application/icon/\"+timeNow+\".png\", icon)\n  416              else:\n  417:                 project.icon = \"application/icon/default_icon.png\"\n  418:             project.save()\n  419  \n  420          try:\n  ...\n  440              application.dsymFile.save(dsymFileName, dsymFile)\n  441  \n  442:             project.applications.add(application)\n  443:             project.latest_build_version = application.build_version\n  444:             project.latest_version = application.version\n  445:             project.latest_inner_version = application.inner_version\n  446:             project.members.add(currentG7User)\n  447:             project.save()\n  448  \n  449          #     # buff = io.BufferedReader(ipaFile.file)\n  ...\n  462          #     uploader.plist = {'G7PID':g7PID, 'G7VER':g7VER, 'G7CH':g7CH, 'G7PT':g7PT}\n  463  \n  464:         #     users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())\n  465  \n  466          #     try:\n  467          #         if type(int(product_group_id)) == type(0) and int(product_group_id) > 0:\n  468:         #             users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())+[user for user in G7User.objects.all() if len([group for group in list(user.groups.all()) if group.id == int(product_group_id)])>0]\n  469          #     except:\n  470          #         pass\n  ...\n  473          #     uploader.mail_receiver = list({}.fromkeys(emails).keys())\n  474          #     uploader.build_version = buildVersion\n  475:         #     uploader.project_version = appVersion\n  476          #     uploader.g7CommonSetting = g7CommonSetting\n  477              return self.write({\"message\":\"提交成功\"})\n  ...\n  525                  self.responseWrite(0, \"获取成功\", data={\"list\":applications, \"isLastPage\":isLastPage})\n  526              else:\n  527:                 # 根据projectID获取应用列表\n  528:                 project = G7Project.objects.get(identifier=identifier)\n  529:                 if project != None:\n  530                      pageIndex = int(self.paramsJson.get(\"pageIndex\"))\n  531                      applications = [application.toJsonDict(\"http://\"+self.request.host) for application in G7Application.objects.all()]\n\n29 matches in 1 file\n",
-			"settings":
-			{
-				"buffer_size": 4831,
-				"line_ending": "Unix",
-				"name": "Find Results",
-				"scratch": true
-			}
-		},
-		{
-			"file": "G7Platform/G7Platform/main/site/Common/G7ListReqHandlers.py",
-			"settings":
-			{
-				"buffer_size": 1579,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "G7Platform/workspace/test/post-to-g7platform.py",
-			"settings":
-			{
-				"buffer_size": 3099,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -153,11 +87,20 @@
 	],
 	"file_history":
 	[
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/test/post-to-g7platform.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Common/G7ListReqHandlers.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/migrations/0001_initial.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/models.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/admin.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ProjectReqHandlers.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings/web/G7URLs.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
+		"/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/models.py",
 		"/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/Default/Default (OSX).sublime-keymap",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7AppInstallReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Common/G7APIReqHandlers.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Account/G7AccountReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings/G7Settings.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/g7platform/g7platform.conf.template",
@@ -165,19 +108,13 @@
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/test/test.plist",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Linux/G7PlatformInitial.command",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Darwin/G7PlatformInitial.command",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ProjectReqHandlers.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/models.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/template/application/app_info.plist",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/G7Services.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/uwsgi/g7admin_profile.xml",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/template/application/app_install.html",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings/web/G7URLs.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/test/post-to-g7platform.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/log/django/django.log",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/log/access.log",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/log/error.log",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/admin.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/models.py",
 		"/Users/yuyang/workspace/project/Foreigner/MBForeigner/iOS/MBForeigner/Podfile",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/test/post-to-g7platform.command",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Feedback/models.py",
@@ -208,6 +145,7 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"",
 			"<current file>",
 			"",
 			"<current file>",
@@ -219,6 +157,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"无业游民",
 			"product",
 			"aList",
 			"product_id",
@@ -269,407 +208,8 @@
 	"groups":
 	[
 		{
-			"selected": 3,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "G7Platform/G7Platform/main/site/Application/G7ProjectReqHandlers.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2696,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1929,
-								1929
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"spell_check": true,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 533.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 23524,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								21759,
-								21759
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 7514.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 159,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								156,
-								152
-							]
-						],
-						"settings":
-						{
-							"auto_complete": true,
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "G7Platform/G7Platform/main/g7admin/Application/models.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8790,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3987,
-								3987
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1503.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "G7Platform/G7Platform/main/g7admin/Application/admin.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5439,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1291,
-								1291
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4831,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										289,
-										296
-									],
-									[
-										421,
-										428
-									],
-									[
-										651,
-										658
-									],
-									[
-										753,
-										760
-									],
-									[
-										821,
-										828
-									],
-									[
-										1230,
-										1237
-									],
-									[
-										1595,
-										1602
-									],
-									[
-										1890,
-										1897
-									],
-									[
-										2209,
-										2216
-									],
-									[
-										2235,
-										2242
-									],
-									[
-										2248,
-										2255
-									],
-									[
-										2271,
-										2278
-									],
-									[
-										2313,
-										2320
-									],
-									[
-										2347,
-										2354
-									],
-									[
-										2357,
-										2364
-									],
-									[
-										2409,
-										2416
-									],
-									[
-										2421,
-										2428
-									],
-									[
-										2448,
-										2455
-									],
-									[
-										2466,
-										2473
-									],
-									[
-										2587,
-										2594
-									],
-									[
-										2695,
-										2702
-									],
-									[
-										2765,
-										2772
-									],
-									[
-										2910,
-										2917
-									],
-									[
-										2967,
-										2974
-									],
-									[
-										3043,
-										3050
-									],
-									[
-										3107,
-										3114
-									],
-									[
-										3183,
-										3190
-									],
-									[
-										3237,
-										3244
-									],
-									[
-										3509,
-										3516
-									],
-									[
-										3750,
-										3757
-									],
-									[
-										4138,
-										4145
-									],
-									[
-										4452,
-										4459
-									],
-									[
-										4491,
-										4498
-									],
-									[
-										4503,
-										4510
-									],
-									[
-										4572,
-										4579
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								1318,
-								1318
-							]
-						],
-						"settings":
-						{
-							"default_dir": "/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform",
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 2,
-							"result_base_dir": "",
-							"result_file_regex": "^([^ 	].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 422.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "G7Platform/G7Platform/main/site/Common/G7ListReqHandlers.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1579,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								865,
-								865
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"open_with_edit": true,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 39.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "G7Platform/workspace/test/post-to-g7platform.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 3099,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1999,
-								1999
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 67.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				}
 			]
 		}
 	],
