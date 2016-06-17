@@ -46,43 +46,95 @@ if __name__ == "__main__":
     if len(sys.argv) >= 6:
 
         #项目名称，用在 拼接 tomcat 文件地址
-        project_name = str(sys.argv[1])
+        project_name = ""
+        if len(sys.argv) >= 2:
+            project_name = str(sys.argv[1])
 
         #产品名称
-        product_name = str(sys.argv[2])
+        product_name = ""
+        if len(sys.argv) >= 3:
+             product_name = str(sys.argv[2])
 
         #项目构建版本
-        project_version = str(sys.argv[3])
+        project_version = ""
+        if len(sys.argv) >= 4:
+            project_version = str(sys.argv[3])
 
         #获取ipa地址
-        ipa_file_path = str(sys.argv[4])
+        ipa_file_path = ""
+        if len(sys.argv) >= 5:
+            ipa_file_path = str(sys.argv[4])
 
         #构建版本号
-        build_version = str(sys.argv[5])
+        build_version = ""
+        if len(sys.argv) >= 6:
+            build_version = str(sys.argv[5])
 
         #产品组ID
-        product_group_id = str(sys.argv[6])
+        product_group_id = ""
+        if len(sys.argv) >= 7:
+            product_group_id = str(sys.argv[6])
 
-#        ipa_file_path = "test.ipa"
-#python post-to-g7platform.py test 测试 10 ./test.ipa 10293 11
+        plist_path = ""
+        if len(sys.argv) >= 8: 
+            plist_path=sys.argv[7]
+
+        uid = "d87389f861f041889ae0042bb60f5a41"
+        if len(sys.argv) >= 9: 
+            uid=sys.argv[8]
+
+
+
+        info_plist = {}
+        try:
+            from biplist import *
+            info_plist = readPlist(plist_path)
+        except:
+            info_plist = {}
+            
         # dSYM包地址
         dSYM_path = path.splitext(ipa_file_path)[0]+"-dSYM.zip"
-        
+        ipa_file = ""
+        try:
+            print("ipa_file_path:{ipa_file_path}".format(ipa_file_path=ipa_file_path))
+            print(ipa_file)
+            ipa_file = open(ipa_file_path, 'rb')
+            
+        except:
+            ipa_file = ""
+
+        dsym_file = ""
+        try:
+            print("dSYM_path:{dSYM_path}".format(dSYM_path=dSYM_path))
+            print(dsym_file)
+            dsym_file = open(dSYM_path, 'rb')
+
+        except:
+            dsym_file = ""
+
         params = {
-            'info_plist': {},
-            'file': open(ipa_file_path, 'rb'),
+            'file': ipa_file,
             "product_name":product_name.decode("ISO-8859-1"),
-            "uid":"d87389f861f041889ae0042bb60f5a41",
+            "uid":uid,
             "installPassword":"gao7.com",
             "product_group_id":product_group_id,
-            "dSYM_file": open(dSYM_path, 'rb'),
+            "dSYM_file": dsym_file,
+            "TDPID":info_plist.get("TDPID"),
+            "TDPT":info_plist.get("TDPT"),
+            "TDCH":info_plist.get("TDCH"),
+            "TDVER":info_plist.get("TDVER"),
         }
+        
+
+        print(sys.argv)
+        print(params)
+        
         # print(params)
         coded_params, boundary = _encode_multipart(params)
         headers = {'Content-Type': 'multipart/form-data; boundary={boundary}'.format(boundary=boundary), 'Connection': 'keep-alive'}
         print("正在提交到搞趣开发平台...")
 
-        responseString = httpClient("POST","marsplat.tk", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
+        responseString = httpClient("POST", "marsplat.tk", "/api/1.0/application/upload", coded_params.encode('ISO-8859-1'), headers)
         try:
             responseObject = json.loads(responseString.decode("utf-8"))
             if "message" not in list(responseObject.keys()):
@@ -91,5 +143,11 @@ if __name__ == "__main__":
                 print(responseObject["message"])
         except:
             print("解析{responseString}失败".format(responseString=responseString))
+
+        try:
+            ipa_file.close()
+            dsym_file.close()
+        except:
+            pass
     else:
         print("备份失败，传入脚本参数数量不匹配")
