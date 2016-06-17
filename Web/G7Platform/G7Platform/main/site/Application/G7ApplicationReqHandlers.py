@@ -433,7 +433,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
 
         # g7log(ipaFileName)
-        application = G7Application(bundleID=bundleID, project_id=TDPID, product_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
+        application = G7Application(bundleID=bundleID, project_id=TDPID, project_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
         if icon:
             application.icon.save("application/icon/"+timeNow+".png", icon)
         else:
