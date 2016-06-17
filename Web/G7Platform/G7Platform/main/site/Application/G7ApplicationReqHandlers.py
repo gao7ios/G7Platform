@@ -421,34 +421,34 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                 project.icon = "application/icon/default_icon.png"
             project.save()
 
-        # try:
+        try:
             # 创建新的包
-        ipaFile = ContentFile(fileBody)
-        ipaFileDir = time.strftime("%Y%m%d",localTime)
-        ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
-            appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
-        dsymFile = ContentFile(fileBody)
-        dsymFileDir = time.strftime("%Y%m%d",localTime)
-        dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
-            appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+            ipaFile = ContentFile(fileBody)
+            ipaFileDir = time.strftime("%Y%m%d",localTime)
+            ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
+                appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+            dsymFile = ContentFile(fileBody)
+            dsymFileDir = time.strftime("%Y%m%d",localTime)
+            dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
+                appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
 
-        # g7log(ipaFileName)
-        application = G7Application(bundleID=bundleID, project_id=TDPID, project_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
-        if icon:
-            application.icon.save("application/icon/"+timeNow+".png", icon)
-        else:
-            application.icon = "application/icon/default_icon.png"
-        application.user = currentG7User
-        application.save()
-        application.file.save(ipaFileName, ipaFile)
-        application.dsymFile.save(dsymFileName, dsymFile)
+            # g7log(ipaFileName)
+            application = G7Application(bundleID=bundleID, project_id=TDPID, project_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
+            if icon:
+                application.icon.save("application/icon/"+timeNow+".png", icon)
+            else:
+                application.icon = "application/icon/default_icon.png"
+            application.user = currentG7User
+            application.save()
+            application.file.save(ipaFileName, ipaFile)
+            application.dsymFile.save(dsymFileName, dsymFile)
 
-        project.applications.add(application)
-        project.latest_build_version = application.build_version
-        project.latest_version = application.version
-        project.latest_inner_version = application.inner_version
-        project.members.add(currentG7User)
-        project.save()
+            project.applications.add(application)
+            project.latest_build_version = application.build_version
+            project.latest_version = application.version
+            project.latest_inner_version = application.inner_version
+            project.members.add(currentG7User)
+            project.save()
 
         #     # buff = io.BufferedReader(ipaFile.file)
         #     # # 上传到蒲公英
@@ -478,10 +478,10 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         #     uploader.build_version = buildVersion
         #     uploader.project_version = appVersion
         #     uploader.g7CommonSetting = g7CommonSetting
-        return self.write({"message":"提交成功"})
-        # except:
-        #     # ipa包备份失败, 储存资料失败!!!
-        #     return self.write({"message":"ipa包备份失败, 储存资料失败!!!"})
+            return self.write({"message":"提交成功"})
+        except:
+            # ipa包备份失败, 储存资料失败!!!
+            return self.write({"message":"ipa包备份失败, 储存资料失败!!!"})
 
 
 class G7MyApplicationListReqHandler(G7ListReqHandler):
