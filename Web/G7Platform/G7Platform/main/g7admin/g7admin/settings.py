@@ -18,7 +18,7 @@ sys.path.append(path.join(BASE_DIR,"../../../"))
 
 from G7Platform.profile.settings.G7Settings import dbname,dbuser,dbhost,dbpassword,static_path,media_path,template_path
 
-SECRET_KEY = '4!z#tbz(tz5%51fn!yy3ws656%g2sau1tv+mads^ge42zku(c&'
+SECRET_KEY = 'h#^6%o!7*xb5!cqq(-s4w+qd999v06zezmi+@5mho3sn5f670d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     "Account",
     "Feedback",
     "Application",
+    "Push",
 )
 
 MIDDLEWARE_CLASSES = (

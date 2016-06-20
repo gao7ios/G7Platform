@@ -122,9 +122,9 @@ class UserCreationForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        user.userid = uuid.uuid4().hex
-        user.usignature = uuid.uuid4().hex
-        user.clientid = uuid.uuid4().hex
+        user.userid = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
+        user.usignature = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
+        user.clientid = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
 
         if commit:
             user.save()

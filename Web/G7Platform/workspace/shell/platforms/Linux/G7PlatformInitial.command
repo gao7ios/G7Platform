@@ -284,6 +284,27 @@ function pycryptoIns() {
 # 安装pycrypto
 g7Install pycrypto pycryptoIns "python3 -c \"import Crypto\""
 
+# PyAPNs 安装函数
+function pyAPNsIns() {
+  mkdir pyAPNsIns;
+  sudo rm -rf pyAPNsIns/*;
+  cd pyAPNsIns;
+  git clone https://github.com/djacobs/PyAPNs.git;
+  cd PyAPNs;
+  sudo python3 setup.py install;
+  cd ../..;
+  echo $pwd;
+  sudo rm -rf pyAPNsIns;
+}
+
+g7Install pyAPNs pyAPNsIns "python3 -c \"import apns\""
+
+# pyOpenSSL 安装函数
+function pyOpenSSLIns() {
+  sudo pip3 install pyOpenSSL;
+}
+g7Install pyOpenSSL pyOpenSSLIns "python3 -c \"import OpenSSL\""
+
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;

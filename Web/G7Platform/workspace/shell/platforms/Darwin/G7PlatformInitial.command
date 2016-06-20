@@ -240,7 +240,28 @@ function pyDesIns() {
 }
 
 # 安装pyDes
-g7Install pyDesIns pyDesIns "python3 -c \"import pyDes\""
+g7Install pyDev pyDesIns "python3 -c \"import pyDes\""
+
+
+# PyAPNs 安装函数
+function pyAPNsIns() {
+	mkdir pyAPNsIns;
+	rm -rf pyAPNsIns/*;
+	cd pyAPNsIns;
+	git clone https://github.com/djacobs/PyAPNs.git;
+	cd PyAPNs;
+	sudo python3 setup.py install;
+}
+
+g7Install pyAPNs pyAPNsIns "python3 -c \"import apns\""
+
+# pyOpenSSL 安装函数
+function pyOpenSSLIns() {
+	sudo pip3 install pyOpenSSL;
+}
+g7Install pyOpenSSL pyOpenSSLIns "python3 -c \"import OpenSSL\""
+
+
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
