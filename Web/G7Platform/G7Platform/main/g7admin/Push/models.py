@@ -24,7 +24,6 @@ class G7PushProfile(models.Model):
                              max_length=100,
                              default="",
                              blank=False,unique=False)
-    cerfile = models.FileField(upload_to="push/profile", verbose_name=_(u"cer文件"),blank=False,null=False)
     private_pem_file = models.FileField(upload_to="push/profile/private", verbose_name=_(u"私钥文件"),blank=True,null=True)
     public_pem_file = models.FileField(upload_to="push/profile/public", verbose_name=_(u"公钥文件"),blank=True,null=True)
 

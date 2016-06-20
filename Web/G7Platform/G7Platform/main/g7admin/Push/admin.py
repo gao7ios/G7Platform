@@ -9,10 +9,8 @@ class G7PushProfileCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     name = forms.CharField(label='名称', widget=forms.TextInput)
-    password = forms.CharField(label='密码', widget=forms.PasswordInput)
     p12File = forms.CharField(label='私钥(p12文件)', widget=forms.FileInput)
     p12Password = forms.CharField(label='私钥密码', widget=forms.PasswordInput)
-    cerFile = forms.CharField(label='公钥(cer文件)', widget=forms.FileInput)
 
     class Meta:
         model = G7PushProfile
@@ -27,8 +25,7 @@ class G7PushProfileCreationForm(forms.ModelForm):
             p12 = crypto.load_pkcs12(open(pushProfile.p12File.path, "rb").read())
 
         pushProfile.private_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_privatekey(crypto.FILETYPE_PEM, p12.get_privatekey())))
-        cer = crypto.load_certificate(crypto.FILETYPE_ASN1, open(pushProfile.cerFile.path, "rb").read())
-        pushProfile.public_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, cert.get_certificate())))
+        pushProfile.public_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, p12.get_certificate())))
 
         if commit:
             pushProfile.save()
@@ -37,6 +34,33 @@ class G7PushProfileCreationForm(forms.ModelForm):
 class G7PushProfileAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
     add_form = G7PushProfileCreationForm
+    
+    # identifier = models.CharField(verbose_name=_(u"标识码"),
+    #                          max_length=100,
+    #                          default="",
+    #                          blank=True,unique=True)
+
+    # name = models.CharField(verbose_name=_(u"名称"),
+    #                          max_length=100,
+    #                          default="",
+    #                          blank=False,unique=False)
+
+    # p12file = models.FileField(upload_to="push/profile", verbose_name=_(u"p12文件"),blank=False,null=False)
+    # p12password = models.CharField(verbose_name=_(u"p12文件密码"),
+    #                          max_length=100,
+    #                          default="",
+    #                          blank=False,unique=False)
+    # cerfile = models.FileField(upload_to="push/profile", verbose_name=_(u"cer文件"),blank=False,null=False)
+    # private_pem_file = models.FileField(upload_to="push/profile/private", verbose_name=_(u"私钥文件"),blank=True,null=True)
+    # public_pem_file = models.FileField(upload_to="push/profile/public", verbose_name=_(u"公钥文件"),blank=True,null=True)
+
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('name', 'p12File', 'p12Password', 'cerFile')}
+        ),
+    )
 
 
 admin.site.register(G7PushProfile, G7PushProfileAdmin)
