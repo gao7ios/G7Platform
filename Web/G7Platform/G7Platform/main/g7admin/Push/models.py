@@ -27,3 +27,10 @@ class G7PushProfile(models.Model):
     private_pem_file = models.FileField(upload_to="push/profile/private", verbose_name=_(u"私钥文件"),blank=True,null=True)
     public_pem_file = models.FileField(upload_to="push/profile/public", verbose_name=_(u"公钥文件"),blank=True,null=True)
 
+    class Meta:
+        verbose_name = _(u"推送")
+        verbose_name_plural = _(u"推送")
+        app_label = 'Push'
+
+    def __str__(self):
+        return str(self.id)+"."+self.name
