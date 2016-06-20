@@ -3,6 +3,7 @@ from django.core.files.base import ContentFile
 from OpenSSL import crypto
 from django import forms
 from Push.models import *
+
 # Register your models here.
 class G7PushProfileCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -33,6 +34,9 @@ class G7PushProfileCreationForm(forms.ModelForm):
             user.save()
         return user
 
-class G7PushProfileAdmin(admin):
+class G7PushProfileAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
     add_form = G7PushProfileCreationForm
+    
+
+admin.site.register(G7PushProfile, G7PushProfileAdmin)
