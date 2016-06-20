@@ -13,10 +13,10 @@ class G7PushProfileCreationForm(forms.ModelForm):
     p12File = forms.CharField(label='私钥(p12文件)', widget=forms.FileInput)
     p12Password = forms.CharField(label='私钥密码', widget=forms.PasswordInput)
     cerFile = forms.CharField(label='公钥(cer文件)', widget=forms.FileInput)
-    
+
     class Meta:
         model = G7PushProfile
-        fields = ('username',)
+        fields = ('name', 'password', 'p12File', 'p12Password', 'cerFile',)
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -37,6 +37,6 @@ class G7PushProfileCreationForm(forms.ModelForm):
 class G7PushProfileAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
     add_form = G7PushProfileCreationForm
-    
+
 
 admin.site.register(G7PushProfile, G7PushProfileAdmin)
