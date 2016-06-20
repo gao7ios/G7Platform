@@ -58,7 +58,7 @@ class G7PushProfileAdmin(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('name', 'p12File', 'p12Password', 'cerFile')}
+            'fields': ('name', 'p12File', 'p12Password')}
         ),
     )
 
