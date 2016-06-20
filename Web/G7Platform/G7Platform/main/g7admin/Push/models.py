@@ -1,4 +1,10 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
+import uuid
+from django.conf import settings
+from django.utils import timezone
+import time, datetime
+import random
 
 # Create your models here.
 class G7PushProfile(models.Model):
@@ -26,5 +32,4 @@ class G7PushProfile(models.Model):
     cerfile = models.FileField(upload_to="push/profile", verbose_name=_(u"cer文件"),blank=False,null=False)
     private_pem_file = models.FileField(upload_to="push/profile/private", verbose_name=_(u"私钥文件"),blank=True,null=True)
     public_pem_file = models.FileField(upload_to="push/profile/public", verbose_name=_(u"公钥文件"),blank=True,null=True)
-    
-    
+
