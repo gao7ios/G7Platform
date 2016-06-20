@@ -161,3 +161,5 @@ class G7User(AbstractBaseUser):
             return str(self.id)+"."+self.realname
         else:
             return str(self.id)+"."+self.username
+
+

@@ -34,3 +34,20 @@ class G7PushProfile(models.Model):
 
     def __str__(self):
         return str(self.id)+"."+self.name
+
+
+class G7PushNotificatinToken(models.Model):
+
+    token = models.CharField(verbose_name=_(u"推送标识码"),
+                             max_length=150,
+                             default="",
+                             blank=True,unique=True)
+
+    class Meta:
+        verbose_name = _(u"推送标识码")
+        verbose_name_plural = _(u"推送标识码")
+        app_label = 'Push'
+
+    def __str__(self):
+        return str(self.id)+"."+self.token
+        
