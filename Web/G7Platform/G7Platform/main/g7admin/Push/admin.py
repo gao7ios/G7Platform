@@ -16,6 +16,8 @@ class G7PushProfileCreationForm(forms.ModelForm):
         model = G7PushProfile
         fields = ('name', 'p12File', 'p12Password')
 
+
+
     def save(self, commit=True):
         # Save the provided password in hashed format
         pushProfile = super(G7PushProfileCreationForm, self).save(commit=False)
@@ -38,9 +40,12 @@ class G7PushProfileAdmin(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('name', 'p12File', 'p12Password' )}
+            'fields': ('name', 'p12File', 'p12Password')
+            }
         ),
     )
+    readonly_fields = ("identifier",)
+
 
 class G7PushNotificatinTokenAdmin(admin.ModelAdmin):
     pass
