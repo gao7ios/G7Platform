@@ -13,10 +13,10 @@ class G7PushProfileCreationForm(forms.ModelForm):
     p12File = forms.CharField(label='私钥(p12文件)', widget=forms.FileInput)
     p12Password = forms.CharField(label='私钥密码', widget=forms.PasswordInput)
     cerFile = forms.CharField(label='公钥(cer文件)', widget=forms.FileInput)
-
+    
     class Meta:
         model = G7PushProfile
-        fields = '__all__'
+        fields = ('username',)
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -31,8 +31,8 @@ class G7PushProfileCreationForm(forms.ModelForm):
         pushProfile.public_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, cert.get_certificate())))
 
         if commit:
-            user.save()
-        return user
+            pushProfile.save()
+        return pushProfile
 
 class G7PushProfileAdmin(admin.ModelAdmin):
     # The forms to add and change user instances
