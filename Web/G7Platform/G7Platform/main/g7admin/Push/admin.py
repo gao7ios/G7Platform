@@ -14,7 +14,7 @@ class G7PushProfileCreationForm(forms.ModelForm):
 
     class Meta:
         model = G7PushProfile
-        fields = ('name', 'password', 'p12File', 'p12Password', 'cerFile',)
+        fields = ('name', 'p12File', 'p12Password')
 
     def save(self, commit=True):
         # Save the provided password in hashed format
