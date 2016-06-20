@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.core.files.base import ContentFile
 from OpenSSL import crypto
 from django import forms
-
+from Push.models import *
 # Register your models here.
 class G7PushProfileCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
