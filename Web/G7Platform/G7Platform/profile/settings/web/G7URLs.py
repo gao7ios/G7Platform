@@ -28,7 +28,7 @@ serviceURLList = [
 
 # 配置web地址列表
 webURLList = [
-	    (r"/", G7IndexReqHandler),
+	    (r"/", G7AppIndexReqHandler),
         (r"/blog", G7BlogReqHandler),
         (r"/contact", G7ContactReqHandler),
         (r"/single", G7SingleReqHandler),
