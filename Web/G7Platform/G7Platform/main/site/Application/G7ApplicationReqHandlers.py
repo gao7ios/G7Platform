@@ -455,10 +455,10 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
 
             from apns import APNs, Frame, Payload
             pushProfiles = G7PushProfile.object.filter(using=True)
-            if len(pushProfiles) > 0 and pushProfiles.first.public_pem_file != None and pushProfiles.first.public_pem_file != "" and pushProfiles.first.private_pem_file != None and pushProfiles.first.private_pem_file != "":
+            if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
                 pushTokens = G7PushNotificatinToken.objects.all()
                 for pushToken in pushTokens:
-                    apns = APNs(use_sandbox=True, cert_file=pushProfiles.first.public_pem_file.path, key_file=pushProfiles.first.private_pem_file.path)
+                    apns = APNs(use_sandbox=True, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
                     payload = Payload(alert="Hello World!", sound="default", badge=1)
                     apns.gateway_server.send_notification(pushToken.token, payload)
             
