@@ -12,7 +12,7 @@ from G7Platform.main.site.G7Test.G7TestReqHandlers import *
 from G7Platform.main.site.Feedback.G7FeedbackReqHandlers import *
 from G7Platform.main.site.Account.G7AccountReqHandlers import *
 from G7Platform.main.site.Application.G7ProjectReqHandlers import *
-
+from G7Platform.main.site.Home.G7HomeReqHandlers import *
 # 接口url配置方法
 def G7ApiPathURL(channel, path, className, version=None):
 
@@ -40,6 +40,9 @@ webURLList = [
 apiURLList = [
 
     (r"/test", G7TestReqHandler),
+
+# G7HomeInitialReqHandler
+    G7ApiPathURL("home","initial",G7HomeInitialReqHandler, version="1.0"),
 
     G7ApiPathURL("application","upload",G7ApplicationUploadReqHandler, version="1.0"),
 

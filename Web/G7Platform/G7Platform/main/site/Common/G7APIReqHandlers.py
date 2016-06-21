@@ -38,9 +38,6 @@ class G7APIReqHandler(G7ReqHandler):
             except:
                 try:
                     jsonDic = dict(parse_qsl(http_headers))
-                    token = jsonDic.get("token")
-                    if token != None and token != "" and len(G7PushNotificatinToken.objects.filter(token=jsonDic.get("token"))) == 0:
-                        G7PushNotificatinToken(token=token).save()
                 except:
                     jsonDic = {}
 
