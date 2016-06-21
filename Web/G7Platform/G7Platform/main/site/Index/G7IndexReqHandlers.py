@@ -35,7 +35,7 @@ class G7AppIndexReqHandler(G7WebReqHandler):
 		try:
 			app = G7Application.objects.latest("modified_at")
 			if app != None:
-				return self.render("application/app_install.html", title=app.name, plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist");
+				return self.render("appindex/index.html", title=app.name, plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist");
 		except:
 			pass
 		return self.render("appindex/index.html")
