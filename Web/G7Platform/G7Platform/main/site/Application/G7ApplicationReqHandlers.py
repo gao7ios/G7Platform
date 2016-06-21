@@ -464,7 +464,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                         name = application.user.username
                     custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
 
-                    payload = Payload(alert="😃 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom, action_loc_key="😊点我打开"))
+                    payload = Payload(alert="😃 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom, action_loc_key="😊点我打开")
                     apns.gateway_server.send_notification(pushToken.token, payload)
 
         #     # buff = io.BufferedReader(ipaFile.file)
