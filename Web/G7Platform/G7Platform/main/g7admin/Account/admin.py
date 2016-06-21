@@ -12,6 +12,7 @@ from django.db.models.fields.related import ManyToManyRel
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper,FilteredSelectMultiple
 from django.db.models.fields import FieldDoesNotExist
 import uuid
+
 class G7GroupForm(forms.ModelForm):
 
     members = forms.ModelMultipleChoiceField(
@@ -65,9 +66,6 @@ class G7GroupForm(forms.ModelForm):
 
         return instance
 
-
-
-
 class G7GroupAdmin(admin.ModelAdmin):
 
     form = G7GroupForm
@@ -87,7 +85,6 @@ class G7GroupAdmin(admin.ModelAdmin):
             'fields': ('name', 'members', 'permissions',)}
         ),
     )
-
 
     def formfield_for_manytomany(self, db_field, request=None, **kwargs):
         if db_field.name == 'permissions':
@@ -185,7 +182,8 @@ class G7UserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2')}
+            'fields': ('username', 'email', 'password1', 'password2')
+            }
         ),
     )
 

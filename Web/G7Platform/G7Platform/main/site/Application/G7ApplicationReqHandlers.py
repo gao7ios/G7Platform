@@ -312,6 +312,8 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
 
         return integerValue
 
+    
+
     @tornado.web.asynchronous
     @tornado.gen.coroutine
     def post(self):
@@ -449,6 +451,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             project.latest_inner_version = application.inner_version
             project.members.add(currentG7User)
             project.save()
+
 
         #     # buff = io.BufferedReader(ipaFile.file)
         #     # # 上传到蒲公英
