@@ -168,7 +168,7 @@ class G7UserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('username', 'realname','email', 'email_vip', 'job')
+    list_display = ('username', 'realname','email', 'job')
     list_filter = ('is_admin',)
     ordering = ('id',)
 
