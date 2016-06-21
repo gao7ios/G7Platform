@@ -7,11 +7,10 @@ from G7Platform.main.site.Account.G7AccountReqHandlers import *
 from G7Platform.main.site.Index.G7IndexReqHandlers import *
 from G7Platform.main.site.Application.G7ApplicationReqHandlers import *
 from G7Platform.main.site.Application.G7AppInstallReqHandlers import *
-from G7Platform.main.site.Application.G7AppInstallReqHandlers import *
 from G7Platform.main.site.G7Test.G7TestReqHandlers import *
 from G7Platform.main.site.Feedback.G7FeedbackReqHandlers import *
 from G7Platform.main.site.Account.G7AccountReqHandlers import *
-from G7Platform.main.site.Application.G7ProjectReqHandlers import *
+from G7Platform.main.site.Application.G7ProductReqHandlers import *
 from G7Platform.main.site.Home.G7HomeReqHandlers import *
 # 接口url配置方法
 def G7ApiPathURL(channel, path, className, version=None):
@@ -46,10 +45,10 @@ apiURLList = [
 
     G7ApiPathURL("application","upload",G7ApplicationUploadReqHandler, version="1.0"),
 
-    G7ApiPathURL("project","list",G7ProjectListReqHandler, version="1.0"),
-    G7ApiPathURL("project","mylist",G7MyProjectListReqHandler, version="1.0"),
-    G7ApiPathURL("project","detail",G7ProjectDetailReqHandler, version="1.0"),
-    G7ApiPathURL("project","members",G7ProjectMembersReqHandler, version="1.0"),
+    G7ApiPathURL("product","list",G7ProductListReqHandler, version="1.0"),
+    G7ApiPathURL("product","mylist",G7MyProductListReqHandler, version="1.0"),
+    G7ApiPathURL("product","detail",G7ProductDetailReqHandler, version="1.0"),
+    G7ApiPathURL("product","members",G7ProductMembersReqHandler, version="1.0"),
     
     G7ApiPathURL("application","list",G7ApplicationListReqHandler, version="1.0"),
     G7ApiPathURL("application","mylist",G7MyApplicationListReqHandler, version="1.0"),

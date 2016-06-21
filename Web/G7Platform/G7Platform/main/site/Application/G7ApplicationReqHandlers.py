@@ -46,7 +46,7 @@ from django.conf import settings
 #         self.mail_receiver = []
 #         self.product_name = ""
 #         self.build_version = ""
-#         self.project_version = ""
+#         self.product_version = ""
 #         self.currentG7User = None
 #         self.g7CommonSetting = {}
 #         self.plist = {}
@@ -173,7 +173,7 @@ from django.conf import settings
 
 #         environsString += '<h3>构建包信息</h3><p>'
 #         # environsString += '<p>ipa 包下载地址 : ' + '暂不提供' + '<p>'\
-#         environsString += '<p>版本号 : ' + self.project_version + '<p>'
+#         environsString += '<p>版本号 : ' + self.product_version + '<p>'
 #         environsString += '<p>产品信息 :  PID:' + str(pid)+ '  CH:'+ str(ch)+ '  VER:' + str(ver)+ '  PT:' + str(pt) + ' <p>'
 #         environsString += '<p>App名称 : ' + str(self.product_name) + '<p>'
 #         environsString += '<p>BundleId : ' + str(appIdentifier) + '<p>'
@@ -413,16 +413,16 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         icon = data["Icon"]
 
         # 判断当前产品中是否使用了接收到的Project_id
-        projects = G7Project.objects.filter(project_id = TDPID)
-        if len(projects) > 0:
-            project = projects[0]
+        products = G7Product.objects.filter(product_id = TDPID)
+        if len(products) > 0:
+            product = products[0]
         else:
-            project = G7Project(bundleID=bundleID, project_id=TDPID, project_type=0, icon=icon, name=appName, identifier=uuid.uuid4().hex)
+            product = G7Product(bundleID=bundleID, product_id=TDPID, product_type=0, icon=icon, name=appName, identifier=uuid.uuid4().hex)
             if icon:
-                project.icon.save("application/icon/"+timeNow+".png", icon)
+                product.icon.save("application/icon/"+timeNow+".png", icon)
             else:
-                project.icon = "application/icon/default_icon.png"
-            project.save()
+                product.icon = "application/icon/default_icon.png"
+            product.save()
 
         # try:
             # 创建新的包
@@ -436,7 +436,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
 
         # g7log(ipaFileName)
-        application = G7Application(bundleID=bundleID, project_id=TDPID, project_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
+        application = G7Application(bundleID=bundleID, product_id=TDPID, product_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
         if icon:
             application.icon.save("application/icon/"+timeNow+".png", icon)
         else:
@@ -446,12 +446,12 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         application.file.save(ipaFileName, ipaFile)
         application.dsymFile.save(dsymFileName, dsymFile)
 
-        project.applications.add(application)
-        project.latest_build_version = application.build_version
-        project.latest_version = application.version
-        project.latest_inner_version = application.inner_version
-        project.members.add(currentG7User)
-        project.save()
+        product.applications.add(application)
+        product.latest_build_version = application.build_version
+        product.latest_version = application.version
+        product.latest_inner_version = application.inner_version
+        product.members.add(currentG7User)
+        product.save()
 
         from apns import APNs, Frame, Payload
         pushProfiles = G7PushProfile.objects.filter(using=True)
@@ -464,7 +464,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                     name = application.user.username
                 custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
 
-                payload = Payload(alert="😃 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
+                payload = Payload(alert="👉 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
                 apns.gateway_server.send_notification(pushToken.token, payload)
 
         #     # buff = io.BufferedReader(ipaFile.file)
@@ -482,18 +482,18 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         #     uploader.currentG7User = currentG7User
         #     uploader.plist = {'G7PID':g7PID, 'G7VER':g7VER, 'G7CH':g7CH, 'G7PT':g7PT}
 
-        #     users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())
+        #     users = list(G7User.objects.filter(email_vip=True))+list(product.members.all())
 
         #     try:
         #         if type(int(product_group_id)) == type(0) and int(product_group_id) > 0:
-        #             users = list(G7User.objects.filter(email_vip=True))+list(project.members.all())+[user for user in G7User.objects.all() if len([group for group in list(user.groups.all()) if group.id == int(product_group_id)])>0]
+        #             users = list(G7User.objects.filter(email_vip=True))+list(product.members.all())+[user for user in G7User.objects.all() if len([group for group in list(user.groups.all()) if group.id == int(product_group_id)])>0]
         #     except:
         #         pass
 
         #     emails = [user.email for user in users]
         #     uploader.mail_receiver = list({}.fromkeys(emails).keys())
         #     uploader.build_version = buildVersion
-        #     uploader.project_version = appVersion
+        #     uploader.product_version = appVersion
         #     uploader.g7CommonSetting = g7CommonSetting
         return self.write({"message":"提交成功"})
         # except:
@@ -552,13 +552,13 @@ class G7ApplicationListReqHandler(G7ListReqHandler):
                 applications = self.sourceList(allList=applications, pageIndex=pageIndex)
                 self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
             else:
-                # 根据projectID获取应用列表
-                project = G7Project.objects.get(identifier=identifier)
-                if project != None:
+                # 根据productID获取应用列表
+                product = G7Product.objects.get(identifier=identifier)
+                if product != None:
                     pageIndex = 0
                     if self.paramsJson.get("pageIndex") != None:
                         pageIndex = int(self.paramsJson.get("pageIndex"))
-                    applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all() if application.project_id==project.project_id]
+                    applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all() if application.product_id==product.product_id]
                     isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
                     applications = self.sourceList(allList=applications, pageIndex=pageIndex)
                     self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})

@@ -9,23 +9,23 @@ from Application.models import *
 from Account.models import *
 
 
-class G7ProjectListReqHandler(G7ListReqHandler): 
+class G7ProductListReqHandler(G7ListReqHandler): 
     '''
         获取所有产品列表
     '''
     def fetchList(self):
         
-        try:
-            print(self.paramsJson)
-            pageIndex = 0
-            if self.paramsJson.get("pageIndex") != None:
-                pageIndex = int(self.paramsJson.get("pageIndex"))
-            allProjects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all()]
-            isLastPage = self.isLastPage(allList=allProjects, pageIndex=pageIndex)
-            projects = self.sourceList(allList=allProjects, pageIndex=pageIndex)
-            return self.responseWrite(0, "获取成功", data={"list":projects, "isLastPage":isLastPage})
-        except:
-            return self.responseWrite(1, "获取失败", data=[])
+        # try:
+        print(self.paramsJson)
+        pageIndex = 0
+        if self.paramsJson.get("pageIndex") != None:
+            pageIndex = int(self.paramsJson.get("pageIndex"))
+        allProducts = [product.toJsonDict("http://"+self.request.host) for product in G7Product.objects.all()]
+        isLastPage = self.isLastPage(allList=allProducts, pageIndex=pageIndex)
+        products = self.sourceList(allList=allProducts, pageIndex=pageIndex)
+        return self.responseWrite(0, "获取成功", data={"list":products, "isLastPage":isLastPage})
+        # except:
+        #     return self.responseWrite(1, "获取失败", data=[])
 
     def get(self):
         
@@ -35,7 +35,7 @@ class G7ProjectListReqHandler(G7ListReqHandler):
         
         return self.fetchList()
 
-class G7MyProjectListReqHandler(G7ListReqHandler):
+class G7MyProductListReqHandler(G7ListReqHandler):
 
     '''
         获取我的产品列表
@@ -51,10 +51,10 @@ class G7MyProjectListReqHandler(G7ListReqHandler):
             pageIndex = 0
             if self.paramsJson.get("pageIndex") != None:
                 pageIndex = int(self.paramsJson.get("pageIndex"))
-            projects = [project.toJsonDict("http://"+self.request.host) for project in G7Project.objects.all() if userid in [user.userid for user in project.members.all() if user != None]]
-            isLastPage = self.isLastPage(allList=projects, pageIndex=pageIndex)
-            projects = self.sourceList(allList=projects, pageIndex=pageIndex)
-            return self.responseWrite(0, "获取成功", data={"list":projects, "isLastPage":isLastPage})
+            products = [product.toJsonDict("http://"+self.request.host) for product in G7Product.objects.all() if userid in [user.userid for user in product.members.all() if user != None]]
+            isLastPage = self.isLastPage(allList=products, pageIndex=pageIndex)
+            products = self.sourceList(allList=products, pageIndex=pageIndex)
+            return self.responseWrite(0, "获取成功", data={"list":products, "isLastPage":isLastPage})
         except:
             return self.responseWrite(1, "获取失败", data=[])
 
@@ -65,7 +65,7 @@ class G7MyProjectListReqHandler(G7ListReqHandler):
         return self.fetchList()
 
 
-class G7ProjectDetailReqHandler(G7APIReqHandler):
+class G7ProductDetailReqHandler(G7APIReqHandler):
     '''
         获取产品详情
     '''
@@ -74,9 +74,9 @@ class G7ProjectDetailReqHandler(G7APIReqHandler):
         try:
             # 产品identifier
             identifier = self.paramsJson.get("identifier")  
-            project = G7Project.objects.get(identifier=identifier)
-            if project:
-                return self.responseWrite(0, "获取成功", data=project.toJsonDict("http://"+self.request.host))
+            product = G7Product.objects.get(identifier=identifier)
+            if product:
+                return self.responseWrite(0, "获取成功", data=product.toJsonDict("http://"+self.request.host))
             else:
                 return self.responseWrite(1, "获取成功", data={})
         except:
@@ -88,18 +88,18 @@ class G7ProjectDetailReqHandler(G7APIReqHandler):
     def get(self):
         return self.fetchDetail()
 
-class G7ProjectMembersReqHandler(G7ListReqHandler):
+class G7ProductMembersReqHandler(G7ListReqHandler):
 
     def fetchMembers(self):
         try:
-            # project id
-            projectId = self.paramsJson.get("identifier")
-            project = G7Project.objects.get(identifier=projectId)
-            if project != None:
+            # product id
+            productId = self.paramsJson.get("identifier")
+            product = G7Product.objects.get(identifier=productId)
+            if product != None:
                 pageIndex = 0
                 if self.paramsJson.get("pageIndex") != None:
                     pageIndex = int(self.paramsJson.get("pageIndex"))
-                users = [user.toJsonDict("http://"+self.request.host) for user in project.members.all() ]
+                users = [user.toJsonDict("http://"+self.request.host) for user in product.members.all() ]
                 isLastPage = self.isLastPage(allList=users, pageIndex=pageIndex)
                 users = self.sourceList(allList=users, pageIndex=pageIndex)
                 return self.responseWrite(0, "获取成功", data={"list":users, "isLastPage":isLastPage})

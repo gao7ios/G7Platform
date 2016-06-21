@@ -3,7 +3,7 @@
 import tornado
 import tornado.web
 
-from Application.models import G7Application, G7Project
+from Application.models import G7Application, G7Product
 from Account.models import G7User
 from G7Platform.main.site.Common.G7APIReqHandlers import G7APIReqHandler
 from G7Platform.main.site.Common.G7WebReqHandlers import G7WebReqHandler

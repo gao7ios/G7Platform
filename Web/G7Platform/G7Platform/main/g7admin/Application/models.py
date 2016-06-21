@@ -9,7 +9,7 @@ import time, datetime
 import random
 # Create your models here.
 
-class G7Project(models.Model):
+class G7Product(models.Model):
 
     status_choices = (
                     (0,_(u"新建")),
@@ -44,14 +44,14 @@ class G7Project(models.Model):
                                    choices=platform_choices,
                                    blank=True)
 
-    project_type = models.IntegerField(choices=type_choices,
+    product_type = models.IntegerField(choices=type_choices,
                                   verbose_name=_(u"类型"),
                                   default=0)
 
-    project_status = models.IntegerField(choices=status_choices,
+    product_status = models.IntegerField(choices=status_choices,
                                     verbose_name=_(u"状态"),
                                     default=0)
-    project_id = models.IntegerField(verbose_name=_(u"产品id"),default=0,blank=False,null=False)
+    product_id = models.IntegerField(verbose_name=_(u"产品id"),default=0,blank=False,null=False)
 
     latest_version = models.CharField(verbose_name=_(u"最新版本"),max_length=200, default="0.0",blank=True,null=True)
     latest_inner_version = models.IntegerField(verbose_name=_(u"最新内部版本"),default=0,blank=True,null=True)
@@ -66,11 +66,11 @@ class G7Project(models.Model):
     applications = models.ManyToManyField("Application.G7Application",
                                      verbose_name=_(u"应用"),
                                      blank=True,
-                                     related_name="projects")
+                                     related_name="products")
 
     icon = models.ImageField(verbose_name=_(u"图标"),
-        upload_to="project/icon/",
-        default="project/icon/default_icon.png")
+        upload_to="product/icon/",
+        default="product/icon/default_icon.png")
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                              verbose_name=_(u"拥有人"),
@@ -81,7 +81,7 @@ class G7Project(models.Model):
 
     members = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                     verbose_name=_(u"成员"),
-                                    related_name='projects',
+                                    related_name='products',
                                     db_constraint=False,
                                     blank=True)
 
@@ -135,15 +135,15 @@ class G7Project(models.Model):
                     "createAt":str(self.create_at),
                     "modifiedAt":str(self.modified_at),
                     "iconUrl":host+self.icon.url,
-                    "projectDescription":self.description,
+                    "productDescription":self.description,
                     "latestVersion":self.latest_version,
                     "latestInnerVersion":str(self.latest_inner_version),
                     "latestBuildVersion":str(self.latest_build_version),
-                    "pid":self.project_id,
+                    "pid":self.product_id,
                     "platform":platformText,
                     "name":self.name,
-                    "status":self.project_status,
-                    "projectType":self.project_type,
+                    "status":self.product_status,
+                    "productType":self.product_type,
                 }
         if self.owner != None:
             retJsonDict["ownner"] = self.owner.toJsonDict(host)
@@ -162,7 +162,7 @@ class G7Project(models.Model):
 
 class G7Application(models.Model):
 
-    project_type_choices = (
+    product_type_choices = (
         (0, _(u"未知(ids默认为0)")),
         (1,_(u"iPhone/iTouch版本")),
         (2,_(u"HD版本，仅适用iPad/iPad2")),
@@ -170,8 +170,8 @@ class G7Application(models.Model):
     )
 
     user = models.ForeignKey('Account.G7User', verbose_name=_("用户"), blank=True, null=True)
-    project_id = models.IntegerField(verbose_name=_(u"产品id"),default=0,blank=False,null=False)
-    project_type = models.IntegerField(verbose_name=_(u"产品类型"), choices=project_type_choices, default=0, null=True,blank=True)
+    product_id = models.IntegerField(verbose_name=_(u"产品id"),default=0,blank=False,null=False)
+    product_type = models.IntegerField(verbose_name=_(u"产品类型"), choices=product_type_choices, default=0, null=True,blank=True)
     channel = models.IntegerField(verbose_name=_(u"渠道"),default=0,blank=False,null=False)
     inner_version = models.IntegerField(blank=False, default=0, verbose_name=_(u"内部版本"),null=False)
 
@@ -208,12 +208,12 @@ class G7Application(models.Model):
                     "channel":self.channel,
                     "innerVersion":str(self.inner_version),
                     "buildVersion":str(self.build_version),
-                    "pid":self.project_id,
+                    "pid":self.product_id,
                     "name":self.name,
                     "fileUrl":host+self.file.url,
                     "dsymFileUrl":host+self.dsymFile.url,
                     "version":self.version,
-                    "projectType":self.project_type,
+                    "productType":self.product_type,
                 }
 
         if self.user != None:

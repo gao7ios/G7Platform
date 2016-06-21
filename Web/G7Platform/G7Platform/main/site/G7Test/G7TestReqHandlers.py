@@ -4,7 +4,7 @@ from G7Platform.main.site.Common.G7APIReqHandlers import G7APIReqHandler
 from G7Platform.main.site.Common.G7WebReqHandlers import G7WebReqHandler
 import json
 from G7Platform.G7Globals import *
-from Application.models import G7Application,G7Project
+from Application.models import G7Application,G7Product
 from django.forms.models import model_to_dict
 
 class G7TestReqHandler(G7APIReqHandler):
