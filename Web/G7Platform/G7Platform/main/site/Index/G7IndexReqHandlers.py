@@ -3,6 +3,8 @@
 from G7Platform.main.site.Common.G7APIReqHandlers import G7APIReqHandler
 from G7Platform.main.site.Common.G7WebReqHandlers import G7WebReqHandler
 
+from Application.models import *
+
 class G7IndexReqHandler(G7WebReqHandler):
 	'''
 		首页
@@ -30,4 +32,10 @@ class G7SingleReqHandler(G7WebReqHandler):
 class G7AppIndexReqHandler(G7WebReqHandler):
 
 	def get(self):
+		try:
+			app = G7Application.objects.latest("modified_at")
+			if app != None:
+				return self.render("application/app_install.html", title=app.name, plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist");
+		except:
+			pass
 		return self.render("appindex/index.html")

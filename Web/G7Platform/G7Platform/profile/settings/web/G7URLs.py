@@ -32,7 +32,7 @@ webURLList = [
         (r"/blog", G7BlogReqHandler),
         (r"/contact", G7ContactReqHandler),
         (r"/single", G7SingleReqHandler),
-        (r"/app/", G7AppIndexReqHandler),
+        (r"/app", G7AppIndexReqHandler),
 ]
 
 # 配置接口列表
