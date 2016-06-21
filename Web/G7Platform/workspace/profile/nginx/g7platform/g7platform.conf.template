@@ -56,8 +56,8 @@ server {
 	index index.html index.htm index.php;
 
 	ssl on;
-    ssl_certificate ssl/ipa.cer;
-    ssl_certificate_key ssl/ipa.key;
+    ssl_certificate ssl/server/ipa.cer;
+    ssl_certificate_key ssl/server/ipa.key;
 
     location ^~ /application/install {
         proxy_pass_header Server;
