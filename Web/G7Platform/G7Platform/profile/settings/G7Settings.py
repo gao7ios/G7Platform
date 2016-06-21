@@ -6,7 +6,7 @@ from os import path
 import sys
 
 # 是否使用测试模式
-debug = True 
+debug = False 
 
 # 端口
 
