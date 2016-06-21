@@ -454,7 +454,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         project.save()
 
         from apns import APNs, Frame, Payload
-        pushProfiles = G7PushProfile.object.filter(using=True)
+        pushProfiles = G7PushProfile.objects.filter(using=True)
         if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
             pushTokens = G7PushNotificatinToken.objects.all()
             for pushToken in pushTokens:
