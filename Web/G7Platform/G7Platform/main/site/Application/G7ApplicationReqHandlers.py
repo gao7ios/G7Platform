@@ -23,6 +23,7 @@ import tornado.web
 
 from Application.models import *
 from Account.models import *
+from Push.models import *
 from G7Platform.main.site.Common.G7APIReqHandlers import G7APIReqHandler
 from G7Platform.main.site.Common.G7ReqHandlers import G7ReqHandler
 from G7Platform.main.site.Common.G7ListReqHandlers import G7ListReqHandler
@@ -312,7 +313,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
 
         return integerValue
 
-    
+
 
     @tornado.web.asynchronous
     @tornado.gen.coroutine
@@ -451,6 +452,16 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             project.latest_inner_version = application.inner_version
             project.members.add(currentG7User)
             project.save()
+
+            from apns import APNs, Frame, Payload
+            pushProfiles = G7PushProfile.object.filter(using=True)
+            if len(pushProfiles) > 0 and pushProfiles.first.public_pem_file != None and pushProfiles.first.public_pem_file != "" and pushProfiles.first.private_pem_file != None and pushProfiles.first.private_pem_file != "":
+                pushTokens = G7PushNotificatinToken.objects.all()
+                for pushToken in pushTokens:
+                    apns = APNs(use_sandbox=True, cert_file=pushProfiles.first.public_pem_file.path, key_file=pushProfiles.first.private_pem_file.path)
+                    payload = Payload(alert="Hello World!", sound="default", badge=1)
+                    apns.gateway_server.send_notification(pushToken.token, payload)
+            
 
 
         #     # buff = io.BufferedReader(ipaFile.file)
