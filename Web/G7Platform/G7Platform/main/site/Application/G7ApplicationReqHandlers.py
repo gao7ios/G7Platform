@@ -462,10 +462,10 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                     name = application.user.realname
                     if name == None or name == "":
                         name = application.user.username
-                    payload = Payload(alert="😃 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1)
-                    apns.gateway_server.send_notification(pushToken.token, payload)
-            
+                    custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
 
+                    payload = Payload(alert="😃 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
+                    apns.gateway_server.send_notification(pushToken.token, payload)
 
         #     # buff = io.BufferedReader(ipaFile.file)
         #     # # 上传到蒲公英
@@ -509,7 +509,6 @@ class G7MyApplicationListReqHandler(G7ListReqHandler):
 
         try:
             # 用户id
-            
             userid = self.paramsJson.get("identifier")
             if userid == None or userid == "":
                 if self.current_user != None:
@@ -542,32 +541,32 @@ class G7ApplicationListReqHandler(G7ListReqHandler):
     '''
     def fetchList(self):
 
-        # try:
-        identifier = self.paramsJson.get("identifier")
-        if identifier == None or identifier == "":
-            pageIndex = 0
-            if self.paramsJson.get("pageIndex") != None:
-                pageIndex = int(self.paramsJson.get("pageIndex"))
-            applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all()]
-            isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
-            applications = self.sourceList(allList=applications, pageIndex=pageIndex)
-            self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
-        else:
-            # 根据projectID获取应用列表
-            project = G7Project.objects.get(identifier=identifier)
-            if project != None:
+        try:
+            identifier = self.paramsJson.get("identifier")
+            if identifier == None or identifier == "":
                 pageIndex = 0
                 if self.paramsJson.get("pageIndex") != None:
                     pageIndex = int(self.paramsJson.get("pageIndex"))
-                applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all() if application.project_id==project.project_id]
+                applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all()]
                 isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
                 applications = self.sourceList(allList=applications, pageIndex=pageIndex)
                 self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
             else:
-                self.responseWrite(1, "获取失败", data=[])
+                # 根据projectID获取应用列表
+                project = G7Project.objects.get(identifier=identifier)
+                if project != None:
+                    pageIndex = 0
+                    if self.paramsJson.get("pageIndex") != None:
+                        pageIndex = int(self.paramsJson.get("pageIndex"))
+                    applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all() if application.project_id==project.project_id]
+                    isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
+                    applications = self.sourceList(allList=applications, pageIndex=pageIndex)
+                    self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
+                else:
+                    self.responseWrite(1, "获取失败", data=[])
             
-        # except:
-        #     self.responseWrite(1, "获取失败", data=[])
+        except:
+            self.responseWrite(1, "获取失败", data=[])
 
     def get(self):
         return self.fetchList()

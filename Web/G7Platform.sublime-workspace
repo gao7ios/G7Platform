@@ -35,30 +35,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "G7Platform/G7Platform/main/g7admin/Push/models.py",
-			"settings":
-			{
-				"buffer_size": 1825,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "G7Platform/G7Platform/main/g7admin/Account/admin.py",
-			"settings":
-			{
-				"buffer_size": 7888,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "G7Platform/G7Platform/main/g7admin/Push/admin.py",
-			"settings":
-			{
-				"buffer_size": 2063,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -98,49 +74,69 @@
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/__pycache__",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/migrations",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Feedback",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Feedback/migrations",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/MyTest",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/MyTest/migrations",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/migrations",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Common",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Home",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Index/__pycache__",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Push",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings/web",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/template",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/log",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/log/django",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/g7platform",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/ssl",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/ssl/localhost",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/ssl/server",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/uwsgi",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Darwin",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Darwin/tools",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Linux",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/test"
 	],
 	"file_history":
 	[
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/log/G7Platform.log",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/admin.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/admin.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/models.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/g7platform/g7platform.conf.template",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings/web/G7URLs.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Home/G7HomeReqHandlers.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Home/__init__.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/models.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/migrations/0001_initial.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/ssl/server/serial",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Push/G7PushManager.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Common/G7APIReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/apps.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin/settings.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Common/G7APIReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/__init__.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/admin.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/models.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Linux/G7PlatformInitial.command",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Darwin/G7PlatformInitial.command",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/G7Globals.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/g7platform/g7platform.conf.template",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/admin.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Push/G7PushManager.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Push/__init__.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Account/G7AccountReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings/G7Settings.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/test/post-to-g7platform.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/models.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ProjectReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Common/G7ListReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/migrations/0001_initial.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings/web/G7URLs.py",
 		"/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/Users/yuyang/Library/Application Support/Sublime Text 3/Packages/Default/Default (OSX).sublime-keymap",
@@ -195,6 +191,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"first",
+			"私钥密码",
 			"uuid",
 			"clean_password2",
 			"prod",
@@ -252,97 +250,8 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "G7Platform/G7Platform/main/g7admin/Push/models.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1825,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1396,
-								1418
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 34.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "G7Platform/G7Platform/main/g7admin/Account/admin.py",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 7888,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6532,
-								6555
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2419.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "G7Platform/G7Platform/main/g7admin/Push/admin.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2063,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1870,
-								1870
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
