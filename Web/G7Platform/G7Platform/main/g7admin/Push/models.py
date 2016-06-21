@@ -23,7 +23,7 @@ class G7PushProfile(models.Model):
     p12password = models.CharField(verbose_name=_(u"p12文件密码"),
                              max_length=100,
                              default="",
-                             blank=True,unique=False, null=False)
+                             blank=True, null=True)
     private_pem_file = models.FileField(upload_to="push/profile/private", verbose_name=_(u"私钥文件"),blank=True,null=True)
     public_pem_file = models.FileField(upload_to="push/profile/public", verbose_name=_(u"公钥文件"),blank=True,null=True)
     using = models.BooleanField(verbose_name=_(u"使用中"), default=True)
