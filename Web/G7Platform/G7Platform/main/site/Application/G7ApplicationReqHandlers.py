@@ -424,43 +424,46 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                 project.icon = "application/icon/default_icon.png"
             project.save()
 
-        # try:
+        try:
             # 创建新的包
-        ipaFile = ContentFile(fileBody)
-        ipaFileDir = time.strftime("%Y%m%d",localTime)
-        ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
-            appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
-        dsymFile = ContentFile(fileBody)
-        dsymFileDir = time.strftime("%Y%m%d",localTime)
-        dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
-            appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+            ipaFile = ContentFile(fileBody)
+            ipaFileDir = time.strftime("%Y%m%d",localTime)
+            ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
+                appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+            dsymFile = ContentFile(fileBody)
+            dsymFileDir = time.strftime("%Y%m%d",localTime)
+            dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
+                appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
 
-        # g7log(ipaFileName)
-        application = G7Application(bundleID=bundleID, project_id=TDPID, project_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
-        if icon:
-            application.icon.save("application/icon/"+timeNow+".png", icon)
-        else:
-            application.icon = "application/icon/default_icon.png"
-        application.user = currentG7User
-        application.save()
-        application.file.save(ipaFileName, ipaFile)
-        application.dsymFile.save(dsymFileName, dsymFile)
+            # g7log(ipaFileName)
+            application = G7Application(bundleID=bundleID, project_id=TDPID, project_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
+            if icon:
+                application.icon.save("application/icon/"+timeNow+".png", icon)
+            else:
+                application.icon = "application/icon/default_icon.png"
+            application.user = currentG7User
+            application.save()
+            application.file.save(ipaFileName, ipaFile)
+            application.dsymFile.save(dsymFileName, dsymFile)
 
-        project.applications.add(application)
-        project.latest_build_version = application.build_version
-        project.latest_version = application.version
-        project.latest_inner_version = application.inner_version
-        project.members.add(currentG7User)
-        project.save()
+            project.applications.add(application)
+            project.latest_build_version = application.build_version
+            project.latest_version = application.version
+            project.latest_inner_version = application.inner_version
+            project.members.add(currentG7User)
+            project.save()
 
-        from apns import APNs, Frame, Payload
-        pushProfiles = G7PushProfile.objects.filter(using=True)
-        if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
-            pushTokens = G7PushNotificatinToken.objects.all()
-            for pushToken in pushTokens:
-                apns = APNs(use_sandbox=True, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
-                payload = Payload(alert="Hello World!", sound="default", badge=1)
-                apns.gateway_server.send_notification(pushToken.token, payload)
+            from apns import APNs, Frame, Payload
+            pushProfiles = G7PushProfile.objects.filter(using=True)
+            if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
+                pushTokens = G7PushNotificatinToken.objects.all()
+                for pushToken in pushTokens:
+                    apns = APNs(use_sandbox=True, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
+                    name = application.user.realname
+                    if name == None or name == "":
+                        name = application.user.username
+                    payload = Payload(alert="😃 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1)
+                    apns.gateway_server.send_notification(pushToken.token, payload)
             
 
 
@@ -493,9 +496,9 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         #     uploader.project_version = appVersion
         #     uploader.g7CommonSetting = g7CommonSetting
             return self.write({"message":"提交成功"})
-        # except:
+        except:
             # ipa包备份失败, 储存资料失败!!!
-            # return self.write({"message":"ipa包备份失败!!!"})
+            return self.write({"message":"ipa包备份失败!!!"})
 
 
 class G7MyApplicationListReqHandler(G7ListReqHandler):
