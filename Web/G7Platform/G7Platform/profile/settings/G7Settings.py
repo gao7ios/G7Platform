@@ -103,6 +103,8 @@ g7MakeDirs(profile_path)
 g7MakeDirs(shell_path)
 g7MakeDirs(log_path)
 g7MakeDirs(nginx_path)
+g7MakeDirs(nginx_path+"/logs")
+g7MakeDirs(nginx_path+"/pid")
 g7MakeDirs(tornado_log_path, touch_file=True)
 
 ########################### 数据库 ###########################
