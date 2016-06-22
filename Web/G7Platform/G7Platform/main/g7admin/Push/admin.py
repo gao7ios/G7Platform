@@ -77,7 +77,7 @@ class G7PushProfileAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'p12file', 'p12password', 'using')
+            'fields': ('name', 'p12file', 'p12password', 'using', 'use_sandbox')
         }),
         ('Advanced options', {
             'classes': ('collapse',),
@@ -89,7 +89,7 @@ class G7PushProfileAdmin(admin.ModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('name', 'p12file', 'p12password', 'using')
+            'fields': ('name', 'p12file', 'p12password', 'using', 'use_sandbox')
             }
         ),
     )
