@@ -53,8 +53,12 @@ class G7PushProfileCreationForm(forms.ModelForm):
             else:
                 p12 = crypto.load_pkcs12(p12file.file.read())
 
-            pushProfile.private_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_privatekey(crypto.FILETYPE_PEM, p12.get_privatekey())))
-            pushProfile.public_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, p12.get_certificate())))
+            privateIdentifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
+            publicIdentifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
+
+            g7log("publicIdentifier:{publicIdentifier}, privateIdentifier:{privateIdentifier}".format(publicIdentifier=publicIdentifier, privateIdentifier=privateIdentifier))
+            pushProfile.private_pem_file.save(privateIdentifier,ContentFile(crypto.dump_privatekey(crypto.FILETYPE_PEM, p12.get_privatekey())))
+            pushProfile.public_pem_file.save(publicIdentifier,ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, p12.get_certificate())))
 
         if commit:
             pushProfile.save()
