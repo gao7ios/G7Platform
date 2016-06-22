@@ -27,6 +27,7 @@ class G7PushProfile(models.Model):
     private_pem_file = models.FileField(upload_to="push/profile/private", verbose_name=_(u"私钥文件"),blank=True,null=True)
     public_pem_file = models.FileField(upload_to="push/profile/public", verbose_name=_(u"公钥文件"),blank=True,null=True)
     using = models.BooleanField(verbose_name=_(u"使用中"), default=True)
+    use_sandbox = models.BooleanField(verbose_name=_(u"是否使用沙盒"), default=True)
 
     class Meta:
         verbose_name = _(u"推送")

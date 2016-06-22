@@ -455,12 +455,11 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
                 pushTokens = G7PushNotificatinToken.objects.all()
                 for pushToken in pushTokens:
-                    apns = APNs(use_sandbox=True, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
+                    apns = APNs(use_sandbox=pushProfiles[0].use_sandbox, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
                     name = application.user.realname
                     if name == None or name == "":
                         name = application.user.username
                     custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
-
                     payload = Payload(alert="👉 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
                     apns.gateway_server.send_notification(pushToken.token, payload)
 

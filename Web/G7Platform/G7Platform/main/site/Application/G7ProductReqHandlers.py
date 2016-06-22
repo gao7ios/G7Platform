@@ -15,17 +15,16 @@ class G7ProductListReqHandler(G7ListReqHandler):
     '''
     def fetchList(self):
         
-        # try:
-        print(self.paramsJson)
-        pageIndex = 0
-        if self.paramsJson.get("pageIndex") != None:
-            pageIndex = int(self.paramsJson.get("pageIndex"))
-        allProducts = [product.toJsonDict("http://"+self.request.host) for product in G7Product.objects.all()]
-        isLastPage = self.isLastPage(allList=allProducts, pageIndex=pageIndex)
-        products = self.sourceList(allList=allProducts, pageIndex=pageIndex)
-        return self.responseWrite(0, "获取成功", data={"list":products, "isLastPage":isLastPage})
-        # except:
-        #     return self.responseWrite(1, "获取失败", data=[])
+        try:
+            pageIndex = 0
+            if self.paramsJson.get("pageIndex") != None:
+                pageIndex = int(self.paramsJson.get("pageIndex"))
+            allProducts = [product.toJsonDict("http://"+self.request.host) for product in G7Product.objects.all()]
+            isLastPage = self.isLastPage(allList=allProducts, pageIndex=pageIndex)
+            products = self.sourceList(allList=allProducts, pageIndex=pageIndex)
+            return self.responseWrite(0, "获取成功", data={"list":products, "isLastPage":isLastPage})
+        except:
+            return self.responseWrite(1, "获取失败", data=[])
 
     def get(self):
         

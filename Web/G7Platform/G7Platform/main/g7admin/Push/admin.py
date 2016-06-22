@@ -46,6 +46,9 @@ class G7PushProfileCreationForm(forms.ModelForm):
 
         p12file = self.cleaned_data.get("p12file")
         p12password = self.cleaned_data.get("p12password")
+        useSandbox = self.cleaned_data.get("use_sandbox")
+        if useSandbox == None:
+            useSandbox = True
         pushProfile = super(G7PushProfileCreationForm, self).save(commit=commit)
         if p12file != None:
             fileContent = p12file.file.read()
@@ -61,7 +64,7 @@ class G7PushProfileCreationForm(forms.ModelForm):
             pushProfile.identifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
             pushProfile.private_pem_file.save(privateIdentifier,ContentFile(crypto.dump_privatekey(crypto.FILETYPE_PEM, p12.get_privatekey())))
             pushProfile.public_pem_file.save(publicIdentifier,ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, p12.get_certificate())))
-
+            pushProfile.useSandbox = useSandbox
         if commit:
             pushProfile.save()
 
