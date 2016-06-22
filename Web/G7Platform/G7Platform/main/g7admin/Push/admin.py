@@ -55,7 +55,7 @@ class G7PushProfileCreationForm(forms.ModelForm):
 
             privateIdentifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
             publicIdentifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
-
+            pushProfile.identifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
             g7log("publicIdentifier:{publicIdentifier}, privateIdentifier:{privateIdentifier}".format(publicIdentifier=publicIdentifier, privateIdentifier=privateIdentifier))
             pushProfile.private_pem_file.save(privateIdentifier,ContentFile(crypto.dump_privatekey(crypto.FILETYPE_PEM, p12.get_privatekey())))
             pushProfile.public_pem_file.save(publicIdentifier,ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, p12.get_certificate())))
