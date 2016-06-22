@@ -43,15 +43,18 @@ class G7PushProfileCreationForm(forms.ModelForm):
 
 
     def save(self, commit=True):
+
         p12file = self.cleaned_data.get("p12file")
         p12password = self.cleaned_data.get("p12password")
         g7log(dir(p12file.file))
+        g7log(type(p12file))
         pushProfile = super(G7PushProfileCreationForm, self).save(commit=commit)
         if p12file != None:
+            fileContent = p12file.file.read()
             if p12password != None and p12password != "":
-                p12 = crypto.load_pkcs12(p12file.file.read(), p12password)
+                p12 = crypto.load_pkcs12(fileContent, p12password)
             else:
-                p12 = crypto.load_pkcs12(p12file.file.read())
+                p12 = crypto.load_pkcs12(fileContent)
 
             privateIdentifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
             publicIdentifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
