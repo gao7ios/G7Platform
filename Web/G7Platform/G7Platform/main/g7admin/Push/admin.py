@@ -45,7 +45,6 @@ class G7PushProfileCreationForm(forms.ModelForm):
     def save(self, commit=True):
         p12file = self.cleaned_data.get("p12file")
         p12password = self.cleaned_data.get("p12password")
-        g7log(p12file.file.getvalue())
         g7log(dir(p12file.file))
         pushProfile = super(G7PushProfileCreationForm, self).save(commit=commit)
         if p12file != None:
