@@ -32,10 +32,11 @@ class G7SingleReqHandler(G7WebReqHandler):
 class G7AppIndexReqHandler(G7WebReqHandler):
 
 	def get(self):
+		plist_info_url = ""
 		try:
 			app = G7Application.objects.latest("modified_at")
-			if app != None:
-				return self.render("appindex/index.html", title=app.name, plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist");
+			plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist"
 		except:
 			pass
-		return self.render("appindex/index.html")
+			
+		return self.render("appindex/index.html", plist_info_url=plist_info_url)
