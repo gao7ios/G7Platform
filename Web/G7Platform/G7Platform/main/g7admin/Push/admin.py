@@ -5,7 +5,7 @@ from django import forms
 from Push.models import *
 from G7Platform.G7Globals import *
 from io import TextIOWrapper
-
+from django.core.files.uploadedfile import InMemoryUploadedFile
 # # Register your models here.
 # class G7PushProfileCreationForm(forms.ModelForm):
 #     """A form for creating new users. Includes all the required
@@ -51,6 +51,8 @@ class G7PushProfileCreationForm(forms.ModelForm):
         pushProfile = super(G7PushProfileCreationForm, self).save(commit=commit)
         if p12file != None:
             fileContent = p12file.file.read()
+            if type(InMemoryUploadedFile) == InMemoryUploadedFile:
+                fileContent = p12file.file.getvalue()
             if p12password != None and p12password != "":
                 p12 = crypto.load_pkcs12(fileContent, p12password)
             else:
