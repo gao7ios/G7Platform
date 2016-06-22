@@ -339,7 +339,6 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                 currentG7User = uidUsers[0]
             #     pgyer_uKey = currentG7User.pgyer_ukey
             #     pgyer_apiKey = currentG7User.pgyer_apiKey
-            #     g7log("uid:{uid}, username:{username} ,pgyer_uKey:{pgyer_uKey}, pgyer_apiKey:{pgyer_apiKey}".format(uid=uid, username=currentG7User.username, pgyer_uKey=pgyer_uKey, pgyer_apiKey=pgyer_apiKey))
             #     if pgyer_uKey == None or pgyer_uKey == "" or pgyer_apiKey == None or pgyer_apiKey == "":
             #         # 请填写该用户所拥有的蒲公英uKey和apiKey
             #         return self.responseWrite(10008)
@@ -403,7 +402,6 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
 
         localTime = time.localtime()
         timeNow = time.strftime("%Y%m%d%H%M%S", localTime)
-        # g7log("timeNow:"+timeNow)
         # 编译版本
         buildVersion = "{timeNow}".format(timeNow=timeNow)  # 默认获取当前时间
         if "CFBundleVersion" in list(info.keys()):
@@ -424,48 +422,47 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                 product.icon = "application/icon/default_icon.png"
             product.save()
 
-        # try:
+        try:
             # 创建新的包
-        ipaFile = ContentFile(fileBody)
-        ipaFileDir = time.strftime("%Y%m%d",localTime)
-        ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
-            appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
-        dsymFile = ContentFile(fileBody)
-        dsymFileDir = time.strftime("%Y%m%d",localTime)
-        dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
-            appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+            ipaFile = ContentFile(fileBody)
+            ipaFileDir = time.strftime("%Y%m%d",localTime)
+            ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
+                appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
+            dsymFile = ContentFile(fileBody)
+            dsymFileDir = time.strftime("%Y%m%d",localTime)
+            dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
+                appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
 
-        # g7log(ipaFileName)
-        application = G7Application(bundleID=bundleID, product_id=TDPID, product_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
-        if icon:
-            application.icon.save("application/icon/"+timeNow+".png", icon)
-        else:
-            application.icon = "application/icon/default_icon.png"
-        application.user = currentG7User
-        application.save()
-        application.file.save(ipaFileName, ipaFile)
-        application.dsymFile.save(dsymFileName, dsymFile)
+            application = G7Application(bundleID=bundleID, product_id=TDPID, product_type=TDPT, name=appName, channel=TDCH, version=appVersion, build_version=buildVersion, inner_version=TDVER, identifier=uuid.uuid4().hex)
+            if icon:
+                application.icon.save("application/icon/"+timeNow+".png", icon)
+            else:
+                application.icon = "application/icon/default_icon.png"
+            application.user = currentG7User
+            application.save()
+            application.file.save(ipaFileName, ipaFile)
+            application.dsymFile.save(dsymFileName, dsymFile)
 
-        product.applications.add(application)
-        product.latest_build_version = application.build_version
-        product.latest_version = application.version
-        product.latest_inner_version = application.inner_version
-        product.members.add(currentG7User)
-        product.save()
+            product.applications.add(application)
+            product.latest_build_version = application.build_version
+            product.latest_version = application.version
+            product.latest_inner_version = application.inner_version
+            product.members.add(currentG7User)
+            product.save()
 
-        from apns import APNs, Frame, Payload
-        pushProfiles = G7PushProfile.objects.filter(using=True)
-        if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
-            pushTokens = G7PushNotificatinToken.objects.all()
-            for pushToken in pushTokens:
-                apns = APNs(use_sandbox=True, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
-                name = application.user.realname
-                if name == None or name == "":
-                    name = application.user.username
-                custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
+            from apns import APNs, Frame, Payload
+            pushProfiles = G7PushProfile.objects.filter(using=True)
+            if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
+                pushTokens = G7PushNotificatinToken.objects.all()
+                for pushToken in pushTokens:
+                    apns = APNs(use_sandbox=True, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
+                    name = application.user.realname
+                    if name == None or name == "":
+                        name = application.user.username
+                    custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
 
-                payload = Payload(alert="👉 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
-                apns.gateway_server.send_notification(pushToken.token, payload)
+                    payload = Payload(alert="👉 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
+                    apns.gateway_server.send_notification(pushToken.token, payload)
 
         #     # buff = io.BufferedReader(ipaFile.file)
         #     # # 上传到蒲公英
@@ -495,10 +492,10 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         #     uploader.build_version = buildVersion
         #     uploader.product_version = appVersion
         #     uploader.g7CommonSetting = g7CommonSetting
-        return self.write({"message":"提交成功"})
-        # except:
+            return self.write({"message":"提交成功"})
+        except:
             # ipa包备份失败, 储存资料失败!!!
-            # return self.write({"message":"ipa包备份失败!!!"})
+            return self.write({"message":"ipa包备份失败!!!"})
 
 
 class G7MyApplicationListReqHandler(G7ListReqHandler):
@@ -513,7 +510,6 @@ class G7MyApplicationListReqHandler(G7ListReqHandler):
             if userid == None or userid == "":
                 if self.current_user != None:
                     userid = self.current_user.userid
-            g7log(userid)
             pageIndex = 0
             if self.paramsJson.get("pageIndex") != None and self.paramsJson.get("pageIndex") != "":
                 pageIndex = int(self.paramsJson.get("pageIndex"))

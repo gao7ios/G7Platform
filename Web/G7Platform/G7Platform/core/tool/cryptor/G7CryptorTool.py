@@ -50,9 +50,7 @@ class G7CryptorTool:
     def desBase64_TextEncodeB64(text):
 
         if len(text) > 0:
-            g7log("desBase64_TextEncodeB64:"+str(text))
             desEncodeText = G7Cryptor.desEncode(text, desPassword)
-            g7log("desEncodeText:"+str(desEncodeText))
             return G7Cryptor.base64Encode(desEncodeText)
         else:
             return b''
