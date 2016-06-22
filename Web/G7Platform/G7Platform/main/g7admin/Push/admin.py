@@ -51,7 +51,7 @@ class G7PushProfileCreationForm(forms.ModelForm):
         pushProfile = super(G7PushProfileCreationForm, self).save(commit=commit)
         if p12file != None:
             fileContent = p12file.file.read()
-            if type(InMemoryUploadedFile) == InMemoryUploadedFile:
+            if type(p12file.file) == InMemoryUploadedFile:
                 fileContent = p12file.file.getvalue()
             if p12password != None and p12password != "":
                 p12 = crypto.load_pkcs12(fileContent, p12password)
