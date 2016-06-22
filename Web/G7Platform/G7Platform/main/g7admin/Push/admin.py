@@ -49,9 +49,9 @@ class G7PushProfileCreationForm(forms.ModelForm):
         pushProfile = super(G7PushProfileCreationForm, self).save(commit=commit)
         if p12file != None:
             if p12password != None and p12password != "":
-                p12 = crypto.load_pkcs12(p12file.file.getvalue(), p12password)
+                p12 = crypto.load_pkcs12(p12file.file.read(), p12password)
             else:
-                p12 = crypto.load_pkcs12(p12file.file.getvalue())
+                p12 = crypto.load_pkcs12(p12file.file.read())
 
             pushProfile.private_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_privatekey(crypto.FILETYPE_PEM, p12.get_privatekey())))
             pushProfile.public_pem_file.save(str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex),ContentFile(crypto.dump_certificate(crypto.FILETYPE_PEM, p12.get_certificate())))
