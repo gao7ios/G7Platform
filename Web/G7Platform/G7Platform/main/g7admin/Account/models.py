@@ -122,6 +122,10 @@ class G7User(AbstractBaseUser):
 
     def toJsonDict(self, host="127.0.0.1"):
 
+        sex = 0
+        if self.sex == "man":
+            sex = 1
+        
         return {
                     "realname":self.realname,
                     "is_admin":int(self.is_admin),
@@ -129,7 +133,7 @@ class G7User(AbstractBaseUser):
                     "userid":self.userid,
                     "nickname":self.nickname,
                     "job":self.job,
-                    "sex":self.sex,
+                    "sex":sex,
                     "mobile":self.mobile,
                     "email":self.email,
                     "thumb":str(host)+str(self.thumb),
