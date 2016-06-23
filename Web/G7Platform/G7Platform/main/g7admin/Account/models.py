@@ -99,9 +99,9 @@ class G7User(AbstractBaseUser):
     # mail_host = models.CharField(verbose_name=_(u"邮件发送主机"), default="", max_length=200, null=True, blank=True)
     mail_pwd = models.CharField(verbose_name=_(u"邮箱密码"), default="", max_length=200, null=True, blank=True)
 
-    pgyer_ukey = models.CharField(verbose_name=_(u"蒲公英uKey"), default="", max_length=200, null=True, blank=True)
-    pgyer_apiKey = models.CharField(verbose_name=_(u"蒲公英api_key"), default="", max_length=200, null=True, blank=True)
-
+    permissions = models.ManyToManyField(Permission,
+        verbose_name=_('permissions'), blank=True)
+    
     def get_full_name(self):
         # The user is identified by their email address
         return self.username

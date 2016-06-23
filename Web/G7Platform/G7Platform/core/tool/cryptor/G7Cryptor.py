@@ -49,7 +49,6 @@ class G7Cryptor:
         if len(text) > 0:
             desCryptor = des(key, CBC, '\0\0\0\0\0\0\0\0', pad=None, padmode=PAD_PKCS5)
             length = 8
-            g7log("textdesEncode:"+str(text))
             count = len(text) % 8
             if count < length:
                 add = (length-count)
