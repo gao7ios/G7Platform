@@ -373,23 +373,31 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         # 渠道
         TDCH = 0
         if "TDCH" in list(info.keys()):
-            TDCH = self.intFilter(info["TDCH"])
+            TDCH = self.intFilter(info.get("TDCH"))
+        elif "channel" in list(info.keys()):
+            TDCH = self.intFilter(info.get("channel"))
 
         # 产品标识
         TDPID = 0
         if "TDPID" in list(info.keys()):
-            TDPID = self.intFilter(info["TDPID"])
-
+            TDPID = self.intFilter(info.get("TDPID"))
+        elif "productId" in list(info.keys()):
+            TDPID = self.intFilter(info.get.("productId"))
+        
         # 内部版本
         TDVER = 0
         if "TDVER" in list(info.keys()):
-            TDVER = self.intFilter(info["TDVER"])
-
+            TDVER = self.intFilter(info.get("TDVER"))
+        elif "version" in list(info.keys()):
+            TDVER = self.intFilter(info.get.("version"))
+        
         # 产品类型
         TDPT = 0
         if "TDPT" in list(info.keys()):
-            TDPT = self.intFilter(info["TDPT"])
-
+            TDPT = self.intFilter(info.get("TDPT"))
+        elif "platform" in list(info.keys()):
+            TDPT = self.intFilter(info.get.("platform"))
+        
         # 获取应用名
         appName = product_name
         if "CFBundleDisplayName" in list(info.keys()) and (appName == None or appName == ""):
