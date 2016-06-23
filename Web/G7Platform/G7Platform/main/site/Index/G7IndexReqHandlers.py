@@ -34,8 +34,10 @@ class G7AppIndexReqHandler(G7WebReqHandler):
 	def get(self):
 		plist_info_url = ""
 		try:
-			app = G7Application.objects.latest("modified_at")
-			plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist"
+			marsXApps = G7Application.objects.filter(name="MarsX")
+			if len(marsXApps) > 0:
+				app = marsXApps.latest("modified_at")
+				plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist"
 		except:
 			pass
 			
