@@ -176,7 +176,7 @@ class G7UserAdmin(UserAdmin):
         ('小组', {'fields': ('groups',)}),
         ("邮件设置", {"fields": ( "email", "mail_pwd",)}),
         ("蒲公英", {"fields": ("pgyer_ukey", "pgyer_apiKey")}),
-        ('权限', {'fields': ('is_admin', 'email_vip')}),
+        ('权限', {'fields': ('permissions','is_admin', 'email_vip')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.

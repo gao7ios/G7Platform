@@ -11,11 +11,8 @@ class G7PushTestReqHandler(G7WebReqHandler):
     '''
     def post(self):
 
-
         file_meta = self.request.files['p12file']
         for meta in file_metas:
-            filename=meta['filename']
-            filepath=os.path.join(upload_path,filename)
             meta_body = meta['body']
             from apns import APNs, Frame, Payload
             pushProfiles = G7PushProfile.objects.filter(using=True)

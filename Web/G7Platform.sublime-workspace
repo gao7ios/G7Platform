@@ -52,6 +52,65 @@
 			}
 		},
 		{
+			"file": "G7Platform/G7Platform/main/g7admin/Push/admin.py",
+			"settings":
+			{
+				"buffer_size": 4054,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
+			"settings":
+			{
+				"buffer_size": 25006,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "G7Platform/G7Platform/main/g7admin/Account/models.py",
+			"settings":
+			{
+				"buffer_size": 6674,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "G7Platform/G7Platform/main/site/Push/G7PushReqHandlers.py",
+			"settings":
+			{
+				"buffer_size": 1672,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "G7Platform/template/push/push.html",
+			"settings":
+			{
+				"buffer_size": 469,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "G7Platform/G7Platform/core/tool/cryptor/G7CryptorTool.py",
+			"settings":
+			{
+				"buffer_size": 4646,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#-*- coding: utf-8 -*-\n\nimport base64\nimport hashlib\nimport random\nimport string\nimport time\nfrom urllib.request import unquote, urlparse\nfrom G7Platform.G7Globals import *\nfrom Crypto.Cipher import *\nfrom Crypto import Random\nfrom binascii import b2a_hex, a2b_hex\n\nfrom pyDes import *\n\nclass G7Cryptor:\n    \"\"\"docstring for G7Cryptor\"\"\"\n\n    def aesEncode(text, key, mode=AES.MODE_CBC):\n        try:\n            cryptor = AES.new(key)\n            #这里密钥key 长度必须为16（AES-128）、24（AES-192）、或32（AES-256）Bytes 长度.目前AES-128足够用\n            length = 16\n            count = len(text)\n            add = length - (count % length)\n            text = G7Cryptor.convertToString(text) + (chr(0) * add)\n            ciphertext = cryptor.encrypt(G7Cryptor.convertToByte(text))\n            #因为AES加密时候得到的字符串不一定是ascii字符集的，输出到终端或者保存时候可能存在问题\n            #所以这里统一把加密后的字符串转化为16进制字符串\n            outputText = b2a_hex(ciphertext)\n            return outputText\n        except:\n            return b''\n\n    def aesDecode(text, key, mode=AES.MODE_CBC):\n        try:\n            cryptor = AES.new(key)\n            plain_text = G7Cryptor.convertToString(cryptor.decrypt(a2b_hex(G7Cryptor.convertToByte(text))))\n            outputText = plain_text.rstrip(chr(0))\n            return outputText\n        except:\n            return b''\n\n    def desEncode(text, key):\n        # try:\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            desCryptor = des(key, CBC, '\\0\\0\\0\\0\\0\\0\\0\\0', pad=None, padmode=PAD_PKCS5)\n            length = 8\n            count = len(text) % 8\n            if count < length:\n                add = (length-count)\n                text = text + (b' ' * add)\n            desEncodeText = desCryptor.encrypt(text)\n            return desEncodeText\n        else:\n            return b''\n        # except:\n        #     return b''\n\n    def desDecode(text, key):\n        # try:\n        desCryptor = des(key, CBC, '\\0\\0\\0\\0\\0\\0\\0\\0', pad=None, padmode=PAD_PKCS5)\n        desEncodeText = desCryptor.decrypt(text)\n        return \"\".join([x for x in G7Cryptor.convertToString(desEncodeText) if ord(x) > 8])\n        # except:\n        #     return b''\n\n    def base64Encode(text):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            try:\n                outputText = base64.b64encode(text)\n                return outputText\n            except:\n                try:\n                    outputText = base64.b64encode(G7Cryptor.convertToByte(text))\n                    return outputText\n                except:\n                    return b''\n        else:\n            return b''\n\n    def base64Decode(text):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            try:\n                outputText = base64.b64decode(text)\n                return outputText\n            except:\n                try:\n                    outputText = base64.b64decode(G7Cryptor.convertToByte(text))\n                    return outputText\n                except:\n                    return b''\n        else:\n            return b''\n\n    def urlEncode(text):\n        if len(text) > 0:\n            return urlparse(text)\n        else:\n            return \"\"\n\n    def urlDecode(text):\n        if len(text) > 0:\n            return unquote(text)\n        else:\n            return \"\"\n\n    def desBase64_B64EncodeText(text, key):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            outputText = G7Cryptor.desEncode(G7Cryptor.base64Decode(G7Cryptor.convertToByte(text)), key)\n            return outputText\n        else:\n            return b''\n\n    def desBase64_B64DecodeText(text, key):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            outputText = G7Cryptor.desDecode(G7Cryptor.base64Decode(text), key)\n            return outputText\n        else:\n            return b''\n\n    def desBase64_TextEncodeB64(text, key):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            desEncodeText = G7Cryptor.desEncode(G7Cryptor.convertToByte(text), key)\n            outputText = G7Cryptor.base64Encode(desEncodeText)\n            return outputText\n        else:\n            return b''\n\n    def desBase64_TextDecodeB64(text, key):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            desDecodeText = G7Cryptor.desDecode(G7Cryptor.convertToByte(text), key)\n            outputText = G7Cryptor.base64Encode(desDecodeText)\n            return outputText\n        else:\n            return b''\n\n    def desBase64_B64EncodeB64(text, key):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            desEncodeText = G7Cryptor.desEncode(G7Cryptor.base64Decode(G7Cryptor.convertToByte(text)), key)\n            outputText = G7Cryptor.base64Encode(desEncodeText)\n            return outputText\n        else:\n            return b''\n\n    def desBase64_B64DecodeB64(text, key):\n\n        if type(text) == type(''):\n            text = text.encode('utf-8')\n\n        if len(text) > 0:\n            desDecodeText = G7Cryptor.desDecode(G7Cryptor.base64Decode(G7Cryptor.convertToByte(text)), key)\n            outputText = G7Cryptor.base64Encode(desDecodeText)\n            return outputText\n        else:\n            return b''\n\n    def md5Encrypt(text):\n        m = hashlib.md5()\n        m.update(G7Cryptor.convertToByte(text))\n        outputText = m.hexdigest()\n        return outputText\n\n    def convertToByte(text):\n        if type(text) == type(\"\"):\n            try:\n                return text.encode(\"utf-8\")\n            except:\n                return b''\n        return text\n\n    def convertToString(text):\n        if type(text) == type(b''):\n            try:\n                return text.decode(\"utf-8\")\n            except:\n                return str(text)[2:-1]\n        return text\n",
+			"file": "G7Platform/G7Platform/core/tool/cryptor/G7Cryptor.py",
+			"file_size": 6285,
+			"file_write_time": 131097410780000000,
+			"settings":
+			{
+				"buffer_size": 6069,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"contents": "html, body{\n    font-family: 'Maven Pro', sans-serif;\n	font-size: 100%;\n	background: #FFf;\n}\nbody a {\n	transition:0.5s all;\n	-webkit-transition:0.5s all;\n	-moz-transition:0.5s all;\n	-o-transition:0.5s all;\n	-ms-transition:0.5s all;\n}\na:hover{\n text-decoration:none;\n}\ninput[type=\"button\"],input[type=\"submit\"],li.parallelogram{\n	transition:0.5s all;\n	-webkit-transition:0.5s all;\n	-moz-transition:0.5s all;\n	-o-transition:0.5s all;\n	-ms-transition:0.5s all;\n}\nh1,h2,h3,h4,h5,h6{\n	margin:0;			   \n}	\np{\n	margin:0;\n}\nul{\n	margin:0;\n	padding:0;\n}\nlabel{\n	margin:0;\n}\n.logo {\n	  text-align: left;\n	  margin-top: 3em;\n}\n.copyrights{\n	text-indent:-9999px;\n	height:0;\n	line-height:0;\n	font-size:0;\n	overflow:hidden;\n}\n.logo a h1 {\n   font-size: 3.5em;\n  color: #fff;\n}\n.logo a h1:hover{\ntext-decoration:none;\n}\n.banner{\n  background: url(../images/banner.jpg) no-repeat 0px 0px;\n  background-size: cover;\n  -webkit-background-size: cover;\n  -o-background-size: cover;\n  -moz-background-size: cover;\n  -ms-background-size: cover;\n  min-height:900px;\n}\nul.banner-imgs {\n    margin: 4% auto 0;\n  text-align: center;\n}\nul.banner-imgs li {\n  display: inline-block;\n   margin-right: 2%;\n}\nul.banner-imgs li:nth-child(2) {\n margin:0;\n}\n.header-top h2 {\n text-align: center;\n  font-size: 1.3em;\n  color: #fff;\n  margin: 2% auto 0;\n  width: 64%;\n  line-height: 1.6em;\n}\n.header-top  h2 span{\ncolor: #1abc9c;\n}\n.header-top  h2 lable{\ncolor: #3498db;\n}\n.top-menu {\n  float: left;\n  margin-top: 0.9em;\n}\n.top-menu ul{\n	padding:0;\n}\n.top-menu ul li{\n	display:inline-block;\n	list-style:none;\n	margin-right: 1em;\n}\n.top-menu ul li a{\n   display: inline-block;\n  color: #fff;\n  text-decoration: none;\n  font-size: 1em;\n  padding:0;\n  font-weight: 600;\n  text-transform: uppercase;\n}\n.top-menu ul li a.active,.top-menu ul li a:hover{\n	color:#34495e;\n     transition:0.5s all;\n	-webkit-transition:0.5s all;\n	-moz-transition:0.5s all;\n	-o-transition:0.5s all;\n	-ms-transition:0.5s all;\n}\n/*-- sticky-nav --*/\n@media screen and (max-width: 768px) {\n    span.menu{\n		width:35px;\n		height:35px;\n		background:url('../images/nav.png') no-repeat;\n		display: inline-block;\n		float:left;\n		cursor: pointer;\n		margin-top: 4px;\n	}\n	.header-bottom {\n  		padding: 1em 0;\n	}\n	.top-menu {\n  		   width: 100%;\n		  display: none;\n		  text-align: center;\n		  background: rgba(151, 192, 165, 1);\n		  padding: 0;\n		  margin-top: 4px;\n	}\n	.top-menu ul{\n		float:none;\n		width:100%;\n	}\n	.top-menu ul li{\n		display:block;\n		float: none;\n	}\n	.top-menu ul li a {\n  		color: #fff;\n  		display: block;\n  		padding: 10px 0px;\n  		margin: 5px 0;\n	}\n}\n/*--welcome--*/\n.about-section {\n  padding: 4em 0;\n  text-align: center;\n}\n.ab-text h3{\n    color: #1abc9c;\n  font-size: 3em;\n}\n.ab-text p {\n  font-size: 0.95em;\n  margin: 0.8em 0;\n  line-height:1.7em;\n  color: #777;\n}\n.ab-text h4 {\n  font-size: 1.4em;\n  color: #3498db;\n  margin-top: 1em;\n}\n/*---slider-css--*/\n.slider{\n	position:relative;\n}\n.rslides {\n  position: relative;\n  list-style: none;\n  overflow: hidden;\n  width: 100%;\n  padding: 0;\n  margin: 0;\n  }\n.rslides li {\n  -webkit-backface-visibility: hidden;\n  position: absolute;\n  display: none;\n  width: 100%;\n  left: 0;\n  top: 0;\n  }\n.rslides li:first-child {\n  position: relative;\n  display: block;\n  float: left;\n  }\n.rslides li{\n  display: block;\n  height: auto;\n  float: left;\n  width: 100%;\n  border: 0;\n  color:#7D878B;\n  font-size: 1.5em;\n  line-height: 1.8em;\n  }\n.rslides_tabs{\n	background: none !important;\n	border: none;\n	box-shadow: none;\n	position: relative;\n	top: -90px;\n	z-index: 999;\n}\n.callbacks_tabs a:after {\n	content: \"\\f111\";\n	font-size: 0;\n	font-family: FontAwesome;\n	visibility: visible;\n	display: block;\n	height: 12px;\n	width: 12px;\n	background:#fff;\n	border-radius:5px;\n	-webkit-border-radius: 5px;\n	-moz-border-radius: 5px;\n	-ms-border-radius: 5px;\n	-o-border-radius: 5px;\n}\n.callbacks_here a:after{\n	background:#369ee4;\n}\n.callbacks_tabs a{\n	visibility:hidden;\n}\n.callbacks_tabs li{\n	display:block;\n}\nul.callbacks_tabs.callbacks1_tabs {\n  position: absolute;\n  bottom: 14px;\n  z-index: 999;\n  left: 63%;\n  top: 41%;\n}\n.features{\n  background:#F7F7F7;\n}\n.features-right {\n  background-color:#F7F7F7;\n    padding: 3em 2em 3em 4em;\n}\n.slid {\n  background-color:#1abc9c;\n padding: 4.4em 0em 4.4em 11em;\n  float: right;\n}\n.features-right h4 { \n  font-size:3em;\n  margin-top: 0.5em;\n  font-weight:400;\n  color: #1abc9c;\n}\n.features-right-grids {\n	  margin-top: 2em;\n}\n.features-right-grid {\n    margin-bottom: 0.9em;\n}\n.design-right {\n  width: 88%;\n  float: right;\n    margin-top: 0.5em;\n}\n.design-right h5 {\n  font-size: 1.2em;\n  text-transform: uppercase;\n  font-weight: 700;\n  color:#1abc9c;\n}\n.design-left{\n	float:left;\n	background:url(../images/icons.png) no-repeat 5px 0px;\n	width:60px;\n	height:60px;\n}\n.design-right p {\n  font-size: 0.95em;\n    margin: 0.5em 0;\n    color: #777;\n}\n.easy{\n	background: url(../images/icons.png) no-repeat -57px 0px;\n}\n.developer{\n	background: url(../images/icons.png) no-repeat -117px 0px;\n}\n.fully{\n	background:url(../images/icons.png) no-repeat -177px -0px;\n}\n/*--screen-shots--*/\n.screen-shots{\n  background: url(../images/s2-bg.jpg) no-repeat 0px 0px;\n  background-size: cover;\n  -webkit-background-size: cover;\n  -o-background-size: cover;\n  -moz-background-size: cover;\n  -ms-background-size: cover;\n  min-height: 700px;\n  padding-top: 1em;\n}\n.review-slider {\n  margin-top: 4em;\n}\n.screen-shots h4 { \n  margin-top: 0.5em;\n     font-size: 3em;\n  color: #fff;\n  text-align:center;\n}\n.screen-shots span {\n  color: #1abc9c;\n  font-size: 2em;\n  font-weight: bold;\n}\n#flexiselDemo1,#flexiselDemo2,#flexiselDemo3 {\n	display: none;\n}\n.nbs-flexisel-container {\n	position: relative;\n	max-width: 100%;\n}\n.nbs-flexisel-ul {\n	position: relative;\n	width: 9999px;\n	margin: 0px;\n	padding: 0px;\n	list-style-type: none;\n	text-align: center;\n}\n.nbs-flexisel-inner {\n	overflow: hidden;\n}\n.nbs-flexisel-item {\n	float: left;\n	margin: 0px;\n	padding: 0px;\n	cursor: pointer;\n	position: relative;\n	line-height: 0px;\n}\n.nbs-flexisel-item > img {	\n	cursor: pointer;\n	position: relative;\n	  width: 80%;\n  margin: 0 5%;\n}\n.nbs-flexisel-nav-left, .nbs-flexisel-nav-right {\n	width:40px;\n	height:80px;\n	position: absolute;\n	cursor: pointer;\n	z-index: 100;\n	margin-top:-1em;\n}\n.nbs-flexisel-nav-left {\n  right: -4%;\n  background: url(../images/arrows.png) no-repeat -55px -0px;\n}\n.nbs-flexisel-nav-right {\n left: -4%;\n  background: url(../images/arrows.png) no-repeat -1px -0px;\n}\n/*--gallery--*/\n#gallery {\n  padding: 4em 0;\n}\n.gallery-left {\n  padding: 0;\n}\n.gallery-bottom {\n  margin-top: 3em;\n}\n#gallery  h3{\n  font-size: 3em;\n  margin-top: 0.5em;\n  font-weight: 400;\n  color: #1abc9c;\n  text-align: center;\n}\n.gallery-left img{\n  width:100%;\n}\n/*--testimonials--*/\n#testimonials h3 {\n  font-size: 3em;\n  margin-top: 1.5em;\n  font-weight: 400;\n  color: #1abc9c;\n  text-align: center;\n}\narticle > div {\n	text-align: center;\n}\n.wmuSlider {\n	position: relative;\n	overflow: hidden;\n	min-height: 400px;\n	text-align: center;\n}\n.wmuSlider .wmuSliderWrapper article {\n	position: relative;\n	text-align: center;\n}\n.wmuGallery .wmuGalleryImage {\n	position: relative;\n	text-align: center;\n}\n.wmuGallery .wmuGalleryImage img {\n	max-width: 100%;\n	width: auto;\n	height: auto;\n}\n/* Default Skin */\n.wmuGallery .wmuGalleryImage {\n	margin-bottom: 10px;\n}\n.wmuSliderPrev {\n	background-position: 19px 9px;\n	left: 40px;\n}\n.wmuSliderPrev, .wmuSliderNext {\n	position: absolute;\n	width:40px;\n	height:80px;\n	text-indent: -9999px;\n	background: url(../images/a-r.png) no-repeat;\n	top:29%;\n	z-index: 2;\n	cursor: pointer;\n}\n.wmuSliderPrev {\n	background-position: -1px -0px;\n	left:239px;\n}\n.wmuSliderNext {\n	background-position: -51px -0px;\n	right: 242px;\n}\n.client-main{\n	margin:0 auto;\n	width: 80%;\n	padding:4em 0;\n}\n.client{\n	text-align:center;\n}\n.client-main  h4{\n	  color: #1ABC9C;\n	font-size: 2em;\n}\n.client-main p {\n  color: #777;\n  font-size: 0.95em;\n  line-height: 1.8em;\n  width:82%;\n  margin: 1em auto;\n}\n.client img{\n	border-radius: 50%;\n	-webkit-border-radius: 50%;\n	-moz-border-radius: 50%;\n	-o-border-radius: 50%;\n	margin-bottom:1em;\n}\narticle > div > span{\n	text-align: center;\n	padding: 1em 0 0 0;\n	display:block;\n}\n article:nth-child(2) > div > span > a {\n	color:#585C67;\n	cursor: pointer;\n	font-size:1.2em;\n}\narticle:nth-child(2) > div > span > a:hover{\ncolor:#C0B9CD;\n}\n/*--some-members--*/\n.members{\n	background: #1abc9c;\n	padding:8em 0;\n	position:relative;\n}\n.member-grid-left{\n	float: left;\n	width: 25%;\n	margin-top: 2em;\n}\n.member-grid-right{\n	float:right;\n	width:75%;\n}\n.member-grid-left h3{\n  color: #fff;\n  font-weight: 400;\n  margin: 0;\n  font-size: 2.5em;\n}\n.member-grid-left h3 p{\n	font-weight:400;\n	margin:0;\n}\n.member-grid-right-grid span{\n	width:64px;\n	height:64px;\n	display:inline-block;\n	background:url(../images/icons.png) no-repeat 0px -0px;\n}\n.member-grid-right-grid h4{\n	color:#FFF;\n	font-size:1.7em;\n	font-weight: 400;\n	margin:0.3em 0;\n	padding:0;\n}\n.member-grid-right-grid label{\n	  width: 74%;\n  background: #FFF;\n  height: 1px;\n  display: inline-block;\n}\n.member-grid-right-grid p{\n	color:#FFF;\n	font-weight:400;\n	font-size:1.2em;\n	margin:0;\n}\n.member-grid-right-grid span.m-icon1{\n	background-position:0px -64px;\n}\n.member-grid-right-grid span.m-icon2{\n	background-position:-64px -64px;\n}\n.member-grid-right-grid span.m-icon3{\n	background-position:-128px -64px;\n}\n/* Contact-start */\n.contact{\n	  background: #1abc9c;\n	  padding: 4em 0;\n}\n.contact h3 {\n  font-size: 3em;\n  margin-top: 0.5em;\n  font-weight:400;\n  color: #fff;\n  text-align: center;\n}\n.contact-row{\n	padding:50px 0px;\n}\n.contact-row-left h3{\n	 font-size: 2em;\n  font-weight: 400;\n  color:#3498DB;\n  margin-bottom: 0.5em;  \n    text-align: left;\n}\n.contact-row-left p{\n	  color: #fff;\n  line-height: 1.7em;\n    padding-top: 6px;\n  font-weight: 400;\n  font-size: 0.95em;	\n}\n.contact-row-left p.add-mark{\n	  color: #fff;\n	 padding:1em 0 0.5em;\n}\n.contact-row-left p.cel-mark{\n	 padding:0px;\n	   color: #fff;\n	 padding:0.5em 0;\n  \n}\n.contact-row-left p.ema-mark a{\n	 padding:0px;\n	 color:#fff;\n	 text-decoration:none;\n	 padding:0.5em 0;\n}\n.contact-row-left p.ema-mark span,.contact-row-left p.add-mark span,.contact-row-left p.cel-mark span{\n	margin-right:10px;\n			\n}\n.contact input[type=\"text\"]{\n   width: 100%;\n  margin-bottom: 2%;\n  border: 0px;\n  padding: 15px 10px;\n  background: #F7F7F7;\n  outline: none;\n  -webkit-appearance: none;\n  color:#999;\n}\ntextarea{\n	border: 0px;\n	outline:none;\n	margin-right: 1em;\n	  padding: 15px 10px;\n	background: #F7F7F7;\n	  width: 100%;\n	resize: none;\n	height:158px;\n	outline:none;\n	-webkit-appearance:none;\n	color:#999;\n}\n.contact input[type=\"submit\"]{\n	 padding:0.6em 1em;\n	 background:#3498DB;\n	 color: rgba(255, 255, 255, 0.86);\n	 border:0px;\n	 outline:none;\n	 margin:10px 2px;\n	 font-weight: 400;\n	 font-size:18px;\n	 -webkit-appearance:none;\n \n}\n.contact input[type=\"submit\"]:hover,.contact input[type=\"reset\"]:hover{\n	 background:#ffffff;\n	 color: #000;\n	 transition:0.5s all;\n	-webkit-transition:0.5s all;\n	-moz-transition:0.5s all;\n	-ms-transition:0.5s all;\n	-o-transition:0.5s all;\n}\n.contact-row-left p.ema-mark a:hover{\n	color:#3498DB;\n	transition:0.5s all;\n	-webkit-transition:0.5s all;\n	-moz-transition:0.5s all;\n	-ms-transition:0.5s all;\n	-o-transition:0.5s all;\n}\n.contact input[type=\"reset\"]{\n padding: 0.6em 1em;\n  background:#24806D;\n  color: rgba(255, 255, 255, 0.86);\n  border: 0px;\n  outline: none;\n  margin: 10px 3px;\n  font-weight: 400;\n  font-size: 18px;\n  -webkit-appearance:none;\n}\n.map iframe {\n  width: 100%;\n  height:400px;\n  border: none;\n}\n.footer{\n	  padding: 4em 0;\n	background: #222;\n}\n.footer-main {\n	width: 42%;\n	margin: 0 auto;\n}\n.social-icons {\n	  padding-top: 3em;\n}\nul.top-social-icons {\n	padding: 0;\n}\n.footer-left h6{\n	color:#3498db;\n	font-size: 2em;\n	font-weight:600;\n	float:left;\n}\n.footer-left h6 span {\n  color:#1abc9c;\n  font-size: 2em;\n  font-weight: bold;\n}\n.footer-right{\n	float:right;\n	width:50%;\n}\n.footer-button{\n	text-align:center;\n	padding-top: 1em;\n}\n.footer-button a {\n	padding: 0.9em 3em;\n	font-size: 1.2em;\n	background:#3498DB;\n	color: #FFF;\n	transition: 0.5s all;\n	-webkit-transition: 0.5s all;\n	-moz-transition: 0.5s all;\n	-o-transition: 0.5s all;\n	text-decoration: none;\n	 font-weight: 400;\n	text-transform: uppercase;\n	border-radius: 0.3em;\n	-webkit-border-radius: 0.3em;\n	-o-border-radius: 0.3em;\n	-moz-border-radius: 0.3em;\n}\n.footer-button a:hover{\n	background:#1abc9c;\n	text-decoration:none;\n	color:#fff;\n}\n/*--//tip-info--*/\n.logo.two {\n  margin: 0;\n  margin-top: 1em;\n}\n.social-icons{\n	margin: 0 auto;\n	text-align: center;\n}\n.top-social-icons li{\n	display: inline-block;\n	margin: 1.2em 0.3em;\n}\n.top-social-icons li a{\n	width:35px;\n	height:35px;\n	display:block;\n}\n.facebook{\n	background: url(../images/social-icons.png) no-repeat 1px 3px;\n}\n.twitter{\n	background: url(../images/social-icons.png) no-repeat -48px 3px;\n}\n.pin{\n	background: url(../images/social-icons.png) no-repeat -91px 3px;\n}\n.youtube{\n	background: url(../images/social-icons.png) no-repeat -144px 3px;\n}\n.vimeo{\n	background: url(../images/social-icons.png) no-repeat -192px 3px;\n}\n/*--social-simptip--*/\n[data-tooltip] {\n	position: relative;\n	display: inline-block;\n}\n[data-tooltip].simptip-position-bottom:before {\n	border-bottom-color:#319AE0;\n}\n[data-tooltip].simptip-position-bottom:after {\n	background-color:#319AE0;\n	color: #fff;\n}\n[data-tooltip]:before {\n	content: '';\n	position: absolute;\n	border-width: 6px;\n	border-style: solid;\n	border-color: rgba(0, 0, 0, 0);\n}\n[data-tooltip]:before, [data-tooltip]:after {\n	position: absolute;\n	visibility: hidden;\n	opacity: 0;\n	z-index: 999999;\n}\n[data-tooltip]:after {\n	height: 32px;\n	padding: 16px 12px 0;\n	font-size: 15px;\n	line-height: 0px;\n	content: attr(data-tooltip);\n	white-space: nowrap;\n	font-weight:500;\n	border-radius: 0.2em;\n	-moz-border-radius: 0.2em;\n	-o-border-radius: 0.2em;\n	-webkit-border-radius: 0.2em; \n}\n[data-tooltip]:hover, [data-tooltip]:focus {\n	background-color: rgba(0, 0, 0, 0);\n}\n[data-tooltip]:hover:before, [data-tooltip]:hover:after, [data-tooltip]:focus:before, [data-tooltip]:focus:after {\n	visibility: visible;\n	opacity: 1;\n}\n.simptip-position-bottom.simptip-movable:before {\n	margin-top: -15px;\n}\n.simptip-position-bottom.simptip-movable:after {\n	margin-top: -3px;\n}\n.simptip-position-bottom:before, .simptip-position-bottom:after, .simptip-position-top:before, .simptip-position-top:after {\n	left: 32%;\n}\n.simptip-position-bottom:before, .simptip-position-bottom:after {\n	top: 110%;\n}\n.simptip-position-bottom:after, .simptip-position-top:after {\n	margin-left: -18px;\n}\n.simptip-position-right.simptip-movable:before, .simptip-position-right.simptip-movable:after, .simptip-position-left.simptip-movable:before, .simptip-position-left.simptip-movable:after, .simptip-position-top.simptip-movable:before, .simptip-position-top.simptip-movable:after, .simptip-position-bottom.simptip-movable:before, .simptip-position-bottom.simptip-movable:after {\n	-webkit-transition: all .1s linear;\n	-moz-transition: all .1s linear;\n	-o-transition: all .1s linear;\n	-ms-transition: all .1s linear;\n	transition: all .1s linear;\n}\n.simptip-position-bottom.simptip-movable:hover:before, .simptip-position-bottom.simptip-movable:hover:after {\n	-webkit-transform: translateY(10px);\n	-moz-transform: translateY(10px);\n	-ms-transform: translateY(10px);\n	-o-transform: translateY(10px);\n	transform: translateY(10px);\n}\n.logo.two a h3 {\n  font-size: 3em;\n  color: #fff;\n  display: inline-block;\n  vertical-align: middle;\n}\n/*--copy-right--*/\n.copy-right{\n	text-align:center;\n	padding: 1em;\n	background: #222;\n}\n.copy-right  p{\n	color:#fff;\n	font-size:1em;\n	font-weight:400;\n}\n.copy-right p a{\n	color:#1abc9c;\n}\n.copy-right a:hover{\n	color:#fff;\n	text-decoration: none;\n}\n/*--top-move--*/\n#toTop {\n  display: none;\n  text-decoration: none;\n  position: fixed;\n  bottom: 10px;\n  right: 10px;\n  overflow: hidden;\n  width: 40px;\n  height: 22px;\n  border: none;\n  text-indent: 100%;\n  background: url(../images/move-top.png) no-repeat 0px 0px;\n}\n/*--Responsive*--*/\n@media (max-width:1440px){\n  .wmuSlider.example1{\n    height: 546px;\n  }\n}\n@media (max-width:1366px){\n	.banner {\n	  background: url(../images/banner.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 796px;\n	}\n	ul.banner-imgs img {\n	    width: 90%;\n	}\n	.header-top  h2 {\n	  font-size: 1.4em;\n	  margin: 2% auto 0;\n	  width: 66%;\n	 }\n	.wmuSlider.example1\n        min-height: 300px;\n  }\n  .logo {\n  margin-top: 2em;\n}\n}\n@media (max-width:1280px){\n.banner {\n	  background: url(../images/banner.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 796px;\n	}\n	ul.banner-imgs img {\n	  width: 80%;\n	}\n	.header-top  h2 {\n	  font-size: 1.4em;\n	  margin: 2% auto 0;\n	  width: 66%;\n	 }\n	 ul.banner-imgs {\n     margin: 13% auto 0;\n    }\n	ul.banner-imgs li {\n	  display: inline-block;\n	  margin-right: 0em;\n	}\n	.design-right {\n	  width: 85%;\n	  }\n}\n@media (max-width:1024px){\n	.banner {\n	  background: url(../images/banner.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 687px;\n	}\n	ul.banner-imgs img {\n	  width: 72%;\n	}\n	.header-top  h2 {\n	  font-size: 1.2em;\n	  margin: 2% auto 0;\n	  width: 66%;\n	}\n	.about-section {\n	  padding: 3em 0;\n	  }\n	  .slid {\n	  padding: 6.2em 0em 6.3em 7em;\n	  float: right;\n	}\n	.design-right {\n	  width: 83%;\n	  float: right;\n	  margin-top: 0.5em;\n	}\n	.screen-shots {\n	  background: url(../images/s2-bg.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 601px;\n	  padding-top: 1em;\n	}\n	.nbs-flexisel-item > img {\n	  width: 74%;\n	  margin: 0 0%;\n	}\n	.nbs-flexisel-nav-right {\n	  left: -2%;\n	  background: url(../images/arrows.png) no-repeat -1px -0px;\n	}\n	.nbs-flexisel-nav-left {\n	  right: -2%;\n	  background: url(../images/arrows.png) no-repeat -55px -0px;\n	}\n	.client-main p {\n	  font-size: 0.95em;\n	  margin: 1em auto;\n	  width: 97%;\n	}\n   .members {\n    padding: 6em 0;\n   }\n   .contact {  \n	  padding: 3em 0;\n   }\n   .footer-button a {\n    padding: 0.9em 2.5em;\n    font-size: 1.2em;\n  }\n  .features-right {\n	  padding: 3em 2em 3em 3em;\n  }\n  .slid {\n	  padding: 5.2em 0em 5.3em 7em;\n  }\n  #gallery {\n	  padding: 3em 0;\n	}\n	.client-main {\n	  margin: 0 auto;\n	  width: 100%;\n	  padding: 3em 0;\n	}\n	.footer {\n  padding: 3em 0;\n  }\n}\n@media (max-width:768px){\n	ul.banner-imgs li {\n	  display: inline-block;\n	  margin-right: 0em;\n	  float: left;\n	  width: 31%;\n	}\n	.banner {\n	  background: url(../images/banner.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 513px;\n	}\n	.banner-grids h2 {\n	  font-size: 1.1em;\n	  margin: 4% auto 0;\n	  width: 75%;\n	}\n	.logo a h1 {\n    font-size: 3em;\n   }\n   .logo {\n	  margin-top: 1em;\n	}\n	.ab-text h3,.features-right h4 ,.screen-shots h4,#testimonials h3,#gallery h3 {\n	  font-size: 2.7em;\n	}\n	.banner-grids {\n	  margin: 0 auto;\n	  width: %;\n	}\n	ul.banner-imgs li {\n	     display: inline-block;\n		  margin-right: 4%;\n		  float: left;\n		  width: 48%;\n	}\n	ul.banner-imgs img {\n	  width: 100%;\n	}\n	.header-top h2 {\n	   font-size: 1em;\n		  margin: 3% auto 0;\n		  width: 69%;\n	}\n	.slid {\n	  padding: 5em 0em 2em 0em;\n	  float: none;\n	  text-align: center;\n	}\n	.features-right {\n	     padding: 2em 5em 3em 4em;\n	}\n	ul.callbacks_tabs.callbacks1_tabs {\n	  bottom: 14px;\n	  left: 33%;\n	  top: 41%;\n	}\n	.mobile-device img {\n	  width: 22%;\n	}\n	.gallery-left {\n	  padding: 0;\n	  float: left;\n	  width: 33.3%;\n	}\n	.member-grids {\n	  text-align: center;\n	}\n	.member-grid-left {\n	  float: none;\n	  width: 100%;\n	  margin-top: 0em;\n	}\n	.members {\n	  padding: 3em 0;	\n	}\n	.member-grid-right {\n	  float: none;\n	  width: 100%;\n	  margin-top: 5%;\n	}\n	.member-grid-right-grid {\n	  float: left;\n	  width: 33.3%;\n	}\n	.client-main {\n	  margin: 0 auto;\n	  width: 100%;\n	  padding: 3em 0 1em 0;\n	}\n	#testimonials h3 {\n	  font-size: 2.5em;\n	  margin-top: 1.2em;\n	}\n	.wmuSliderPrev {\n	  background-position: -1px -0px;\n	  left: 147px;\n	}\n	.wmuSliderNext {\n	  background-position: -51px -0px;\n	  right: 142px;\n	}\n	.wmuSliderPrev, .wmuSliderNext {\n     top: 22%;\n    }\n	.contact-row {\n	  padding: 1em 13px;\n	}\n	.contact-row-right {\n	  margin-top: 2em;\n	}\n	.contact {\n	  padding: 2em 0;\n	}\n	.map iframe {\n	  width: 100%;\n	  height: 300px;\n	  }\n	  .footer {\n	  padding: 2em 0;\n	}\n	.footer-logo {\n	  float: left;\n	}\n	.footer-button {\n	  float: right;\n	}\n	.footer-main {\n	  width: 60%;\n	}\n	.nbs-flexisel-nav-left, .nbs-flexisel-nav-right {\n	  width: 40px;\n	  height: 80px;\n	  margin-top: 3em;\n	}\n	.features-right-grid {\n	    margin-bottom: 0.5em;\n	}\n	.screen-shots {\n	  background: url(../images/s2-bg.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 556px;\n	  padding-top: 0em;\n	}\n	#gallery h3 {\n    margin-top: 0em;\n   }\n   .gallery-bottom {\n	  margin-top: 1.5em;\n	}\n	.nbs-flexisel-nav-left, .nbs-flexisel-nav-right {\n	  width:40px;\n	  height:40px;\n	  margin-top: 3em;\n	}\n	.nbs-flexisel-nav-right {\n    left:-2%;\n	background: url(../images/arrows.png) no-repeat 24px -0px;\n	 background-size: 100%;\n	}\n   .nbs-flexisel-nav-left {\n	  right: -2%;\n	  background: url(../images/arrows.png) no-repeat -24px -0px;\n	  background-size: 100%;\n	}\n}\n@media (max-width:640px){\n	.logo a h1 {\n	  font-size: 2.8em;\n	}\n	ul.banner-imgs {\n     margin: 10% auto 0;\n    }\n	.banner {\n	  background: url(../images/banner.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 467px;\n	}\n	.header-top h2 {\n	  font-size: 1em;\n	  margin: 4% auto 0;\n	  width: 76%;\n	}\n	.screen-shots {\n	  background: url(../images/s2-bg.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	   min-height: 402px;\n	  }\n	  .review-slider {\n	  margin-top: 2em;\n	}\n	.ab-text h3, .features-right h4, .screen-shots h4, #testimonials h3, #gallery h3 {\n	  font-size: 2.5em;\n	}\n	.nbs-flexisel-nav-left, .nbs-flexisel-nav-right {\n	    width: 40px;\n  height: 40px;\n  margin-top: 0em;\n	}\n	.nbs-flexisel-item > img {\n	  width: 66%;\n	  margin: 0 0%;\n	}\n	.member-grid-left h3 {\n	  font-size: 2.3em;\n	}\n	.member-grid-right-grid h4 {\n	  font-size: 1.4em;\n	  margin: 0em 0;\n	}\n	.member-grid-right-grid p {\n	  font-size: 1em;\n	  margin: 0;\n	  }\n	.contact-row-left h3 {\n	  font-size: 1.8em;\n	  margin: 0.3em 0;\n	}\n	.slid {\n	  padding: 2em 0em 2em 0em;\n	  float: none;\n	  text-align: center;\n	}\n\n}\n@media (max-width:480px){\n	.features-right {\n	  padding: 1em 1em 2em 1em;\n	}\n	.design-right h5 {\n     font-size: 1.1em;\n   }\n   .callbacks_tabs a:after {\n	  height: 8px;\n	  width: 8px;\n	}\n	  .slid {\n	  padding: 2em 0em 2em 2em;\n	  float: none;\n	}\n	.ab-text h3, .features-right h4, .screen-shots h4, #testimonials h3, #gallery h3 {\n	  font-size: 2.3em;\n	}\n	.screen-shots {\n	  background: url(../images/s2-bg.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 418px;\n	}\n	.gallery-left {\n	  width: 50%;\n	}\n	.member-grid-right-grid label {\n	  width: 16%;\n	  background: #FFF;\n	  height: 1px;\n	  display: inline-block;\n	}\n	  .member-grid-right-grid {\n	  float: left;\n	  width: 100%;\n	  padding: 0;\n	  margin-bottom:2em;\n	}\n	.members {\n	  padding: 2em 0;\n	}\n	.member-grid-right-grid.lost{\n	 margin:0;\n	}\n	.client-main h4 {\n	  font-size: 1.5em;\n	}\n	.wmuSliderNext {\n	  background-position: -51px -0px;\n	  right: 79px;\n	}\n	.wmuSliderPrev {\n	 background-position: 11px -0px;\n     left: 72px;\n	}\n	.contact {\n	  padding: 1em 0;\n	}\n	.contact-row {\n	  padding: 0.5em 3px;\n	}\n	.footer-main {\n	  width: 100%;\n	}\n	.footer {\n	  padding: 1em 0;\n	}\n	.copy-right p,.ab-text p,.design-right p,.client-main p,.contact-row-left p {\n     font-size: 0.9em;\n   }\n   .about-section {\n	  padding: 2em 0;\n	}\n	.ab-text h4 {\n	  font-size: 1.3em;\n	  margin-top: 0.6em;\n	  line-height: 1.5em;\n	}\n	.social-icons {\n	  padding-top: 2em;\n	}\n	.footer-button a {\n	  padding: 0.9em 2em;\n	  font-size: 1.1em;\n	}\n	.logo.two a h3 {\n	  font-size: 2.5em;\n	  }\n	  .banner {\n	  background: url(../images/banner.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 354px;\n	}\n	.header-top h2 {\n	    font-size: 0.9em;\n		  margin: 2% auto 0;\n		  width: 100%;\n	}\n		.nbs-flexisel-nav-left, .nbs-flexisel-nav-right {\n	  width:40px;\n	  height:40px;\n	  margin-top: 4em;\n	}\n	.nbs-flexisel-nav-left {\n	    right: -3%;\n	  background: url(../images/arrows.png) no-repeat -29px -0px;\n	  background-size: 100%;\n	}\n	.nbs-flexisel-nav-right {\n	  left: -3%;\n	  background: url(../images/arrows.png) no-repeat 29px -0px;\n	  background-size: 100%;\n	}\n	.member-grid-left h3 {\n	  font-size: 2.1em;\n	  padding-bottom: 0.5em;\n	}\n	textarea {\n  margin-right: 0em;\n   padding: 10px 10px;\n  height: 140px;\n  font-size:0.9em;\n  outline: none;\n  }\n  .contact input[type=\"text\"] {\n   padding: 10px 10px;\n  font-size:0.9em;\n  }\n  ul.callbacks_tabs.callbacks1_tabs {\n	  bottom: 14px;\n	  left: 33%;\n	  top: 32%;\n }\n  .wmuSliderPrev, .wmuSliderNext {\n		width: 30px;\n  height: 50px;\n  top: 29%;\n  background-size: 176%;\n	}\n		.wmuSliderNext {\n	  background-position: -34px -0px;\n	  right: 79px;\n	}\n}\n@media (max-width:384px){\n	ul.banner-imgs li {\n	  display: inline-block;\n	  margin-right:2%;\n	  float: left;\n	  width: 48%;\n	}\n	.design-right {\n	  width: 77%;\n	  float: right;\n	  margin-top: 0.5em;\n	}\n}\n@media (max-width:375px){\n	ul.banner-imgs li {\n	  display: inline-block;\n	  margin-right: 1em;\n	  float: left;\n	  width: 44%;\n	}\n	.design-right {\n	  width: 80%;\n	  float: right;\n	  margin-top: 0.5em;\n	}\n}\n@media (max-width:320px){\n	ul.banner-imgs li {\n	   display: inline-block;\n  margin-right: 4%;\n  float: left;\n  width: 48%\n	}\n	.banner {\n	  background: url(../images/banner.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	  min-height: 286px;\n	}\n	.ab-text h4 {\n	  font-size: 1.2em;\n	  margin-top: 0.3em;\n	  line-height: 1.5em;\n	}\n	.design-right {\n	  width: 73%;\n	  float: right;\n	  margin-top: 0.5em;\n	}\n	.features-right-grids {\n	  margin-top: 1em;\n	}\n	.header-top h2 {\n     font-size: 0.9em;\n   }\n   .logo a h1 {\n	  font-size: 2.2em;\n	}\n	.about-section {\n	  padding: 1.2em 0;\n	}\n	.copy-right p, .ab-text p, .design-right p, .client-main p, .contact-row-left p {\n	  font-size: 0.9em;\n	  margin: 0.3em 0;\n	}\n	.features-right {\n		padding: 0.5em 0em 1em 0em;\n	}\n	.screen-shots {\n	  background: url(../images/s2-bg.jpg) no-repeat 0px 0px;\n	  background-size: cover;\n	  -webkit-background-size: cover;\n	  -o-background-size: cover;\n	  -moz-background-size: cover;\n	  -ms-background-size: cover;\n	   min-height: 224px;\n	}\n	.nbs-flexisel-nav-left, .nbs-flexisel-nav-right {\n	  width: 40px;\n	  height: 40px;\n	  margin-top:2em;\n	}\n	.nbs-flexisel-nav-right {\n	  left: -6%;\n	  background: url(../images/arrows.png) no-repeat 30px -0px;\n	   background-size:96%;\n	}\n	.nbs-flexisel-nav-left {\n	  right: -3%;\n	  background: url(../images/arrows.png) no-repeat -23px -0px;\n	   background-size:83%;\n	}\n	ul.banner-imgs {\n	  margin: 14% auto 0;\n	}\n	.features-right h4 {\n	  padding-left: 0.5em;\n	}\n	.ab-text h3, .features-right h4, .screen-shots h4, #testimonials h3, #gallery h3 {\n	  font-size: 2.2em;\n	}\n	.slid {\n	  padding: 1em 0em 1em 1em;\n	  float: none;\n	}\n	ul.callbacks_tabs.callbacks1_tabs {\n	   left: 29%;\n  top: 22%;\n	}\n	.nbs-flexisel-item > img {\n	  width: 47%;\n	  margin: 0 0%;\n	}\n	#gallery {\n	  padding: 1.2em 0;\n	}\n	.gallery-bottom {\n	  margin-top: 0.7em;\n	}\n	.member-grid-left h3 {\n	  font-size: 2.1em;\n	}\n	.member-grid-right-grid label {\n	  width: 33%;\n	}\n	.review-slider {\n	  margin-top: 1em;\n	}\n	.client-main {\n	  margin: 0 auto;\n	  width: 100%;\n	  padding: 1.5em 0 0em 0;\n	}\n	.wmuSliderPrev, .wmuSliderNext {\n	  top: 20%;\n	}\n	.wmuSliderPrev {\n	  background-position: 8px -0px;\n	  left: 20px;\n	}\n	.wmuSliderNext {\n	 background-position: -31px -0px;\n     right: 19px;\n	}\n	#testimonials h3 {\n	  margin-top: 0.7em;\n	}\n	.contact h3 {\n	  font-size: 2.2em;\n	  }\n	  .contact-row {\n	  padding: 0em 0px;\n	}\n	.contact-row-left h3 {\n	  font-size: 1.5em;\n	  margin: 0.2em 0;\n	}\n	.contact-row-left p.add-mark {\n	  padding: 0.5em 0 0.3em;\n	}\n	.contact-row-left {\n	  padding: 0 10px;\n	}\n	.contact-row-right {\n	  margin-top: 1em;\n	  padding: 0 10px;\n	}\n	.contact input[type=\"text\"] {\n	  margin-bottom: 2%;\n	  padding: 10px 10px;\n	  }\n	  .logo.two a h3 {\n	  font-size: 2em;\n	}\n	.footer-button a {\n	  padding: 0.9em 1em;\n	  font-size: 1em;\n	}\n	.copy-right {\n	  padding: 0.5em 0.5em;\n	}\n	.social-icons {\n	  padding-top: 1em;\n	}\n	.map iframe {\n	  width: 100%;\n	  height: 200px;\n	}\n	.contact-row-left p.cel-mark ,.contact-row-left p.add-mark{\n	  font-size: 0.8em;\n	}\n	.member-grid-right-grid {\n	  float: left;\n	  width: 33.3%;\n	  padding: 0;\n	}\n}\n	",
 			"file": "G7Platform/static/appindex/css/style.css",
 			"file_size": 31415,
@@ -82,7 +141,7 @@
 			"file": "G7Platform/G7Platform/main/site/Index/G7IndexReqHandlers.py",
 			"settings":
 			{
-				"buffer_size": 1035,
+				"buffer_size": 1012,
 				"line_ending": "Unix"
 			}
 		}
@@ -125,32 +184,24 @@
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/__pycache__",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/migrations",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Feedback",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Feedback/migrations",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/MyTest",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/MyTest/migrations",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/migrations",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Index",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/profile/settings",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/static",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/static/appindex",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/static/appindex/css",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/template",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/g7platform",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/php",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/uwsgi",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/shell/platforms/Linux",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/test"
 	],
 	"file_history":
 	[
+		"/Users/yuyang/Downloads/3dpartpricelib-0.1.4/index.php",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/models.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/models.py",
+		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ProductReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/static/appindex/css/bootstrap.css",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/static/appindex/css/index.css",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/static/appindex/js/index.js",
@@ -158,7 +209,6 @@
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/log/supervisor/out.log",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/g7platform/g7platform.conf.template",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application/models.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ProductReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin/wsgi.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Application/G7AppInstallReqHandlers.py",
@@ -173,10 +223,8 @@
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/g7admin/urls.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/log/G7Platform.log",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/admin.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Push/models.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Home/G7HomeReqHandlers.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Home/__init__.py",
-		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Account/models.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/workspace/profile/nginx/ssl/server/serial",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Push/G7PushManager.py",
 		"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/site/Common/G7APIReqHandlers.py",
@@ -227,6 +275,7 @@
 		"height": 93.0,
 		"where_history":
 		[
+			"",
 			"<current file>",
 			"",
 			"/Users/yuyang/workspace/gao7/gao7git/Tools/G7Platform/G7Platform/Web/G7Platform/G7Platform/main/g7admin/Application",
@@ -247,6 +296,7 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"g7log",
 			"banner-imgs",
 			"banner-grids",
 			"banner-imgs",
@@ -336,7 +386,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -364,7 +414,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 279.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
@@ -383,8 +433,8 @@
 						"selection":
 						[
 							[
-								1466,
-								1466
+								1526,
+								1540
 							]
 						],
 						"settings":
@@ -394,14 +444,230 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 12.0,
+						"translation.y": 8.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "G7Platform/G7Platform/main/g7admin/Push/admin.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4054,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3790,
+								3790
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 815.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "G7Platform/G7Platform/main/site/Application/G7ApplicationReqHandlers.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 25006,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18089,
+								18089
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 33.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "G7Platform/G7Platform/main/g7admin/Account/models.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 6674,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1533.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 5,
+					"file": "G7Platform/G7Platform/main/site/Push/G7PushReqHandlers.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1672,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								265,
+								265
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"open_with_edit": true,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "G7Platform/template/push/push.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 469,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								396,
+								396
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"open_with_edit": true,
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "G7Platform/G7Platform/core/tool/cryptor/G7CryptorTool.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4646,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1232,
+								1232
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 407.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "G7Platform/G7Platform/core/tool/cryptor/G7Cryptor.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6069,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1555,
+								1555
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 392.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
 					"file": "G7Platform/static/appindex/css/style.css",
 					"semi_transient": false,
 					"settings":
@@ -425,11 +691,11 @@
 						"translation.y": 15417.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 10,
 					"file": "G7Platform/G7Platform/profile/settings/G7Settings.py",
 					"semi_transient": false,
 					"settings":
@@ -455,11 +721,11 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 11,
 					"file": "G7Platform/workspace/profile/nginx/g7platform/g7platform.conf.template",
 					"semi_transient": false,
 					"settings":
@@ -485,24 +751,24 @@
 						"translation.y": 544.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 12,
 					"file": "G7Platform/G7Platform/main/site/Index/G7IndexReqHandlers.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1035,
+						"buffer_size": 1012,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								863,
-								863
+								0,
+								1012
 							]
 						],
 						"settings":
@@ -515,7 +781,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
