@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin, Group, Permission,GroupManager
 from django.conf import settings
+import pytz
 
 class G7UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):

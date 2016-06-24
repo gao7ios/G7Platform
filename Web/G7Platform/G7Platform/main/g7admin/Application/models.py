@@ -7,6 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 import time, datetime
 import random
+import pytz
 # Create your models here.
 
 class G7Product(models.Model):
@@ -125,6 +126,8 @@ class G7Product(models.Model):
         if "http://" in host:
             installHost = host.split("http://")[1]
 
+        tz = pytz.timezone(pytz.country_timezones('cn')[0])
+
         createAtString = str(self.create_at.fromtimestamp(self.create_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
         if createAtString == None:
             createAtString = ""
@@ -204,10 +207,11 @@ class G7Application(models.Model):
         if "http://" in host:
             installHost = host.split("http://")[1]
 
+        tz = pytz.timezone(pytz.country_timezones('cn')[0])
         createAtString = str(self.create_at.fromtimestamp(self.create_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
         if createAtString == None:
             createAtString = ""
-
+        
         modifiedAtString = str(self.modified_at.fromtimestamp(self.modified_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
         if modifiedAtString == None:
             modifiedAtString = ""
