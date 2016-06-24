@@ -305,10 +305,6 @@ function pyOpenSSLIns() {
 }
 g7Install pyOpenSSL pyOpenSSLIns "python3 -c \"import OpenSSL\""
 
-function pytzIns() {
-  sudo pip3 install pytz;
-}
-g7Install pytz pytzIns "python3 -c \"import pytz\""
 
 echo "初始化环境完成, 重置服务"
 sh $dirPath/G7PlatformStop.command;
