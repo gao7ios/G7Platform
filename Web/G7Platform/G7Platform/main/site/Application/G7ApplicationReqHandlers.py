@@ -520,7 +520,7 @@ class G7MyApplicationListReqHandler(G7ListReqHandler):
             pageIndex = 0
             if self.paramsJson.get("pageIndex") != None and self.paramsJson.get("pageIndex") != "":
                 pageIndex = int(self.paramsJson.get("pageIndex"))
-            allApplications = G7Application.objects.all()
+            allApplications = G7Application.objects.order_by("-modified_at")
             allApplications = [application.toJsonDict("http://"+self.request.host) for application in allApplications if application.user != None and userid == application.user.userid]
             isLastPage = self.isLastPage(allList=allApplications, pageIndex=pageIndex)
             applications = self.sourceList(allList=allApplications, pageIndex=pageIndex)
@@ -550,7 +550,7 @@ class G7ApplicationListReqHandler(G7ListReqHandler):
                 pageIndex = 0
                 if self.paramsJson.get("pageIndex") != None:
                     pageIndex = int(self.paramsJson.get("pageIndex"))
-                applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all()]
+                applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.order_by("-modified_at")]
                 isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
                 applications = self.sourceList(allList=applications, pageIndex=pageIndex)
                 self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
@@ -561,7 +561,7 @@ class G7ApplicationListReqHandler(G7ListReqHandler):
                     pageIndex = 0
                     if self.paramsJson.get("pageIndex") != None:
                         pageIndex = int(self.paramsJson.get("pageIndex"))
-                    applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.all() if application.product_id==product.product_id]
+                    applications = [application.toJsonDict("http://"+self.request.host) for application in G7Application.objects.order_by("-modified_at") if application.product_id==product.product_id]
                     isLastPage = self.isLastPage(allList=applications, pageIndex=pageIndex)
                     applications = self.sourceList(allList=applications, pageIndex=pageIndex)
                     self.responseWrite(0, "获取成功", data={"list":applications, "isLastPage":isLastPage})
