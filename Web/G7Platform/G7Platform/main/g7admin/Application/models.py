@@ -125,6 +125,13 @@ class G7Product(models.Model):
         if "http://" in host:
             installHost = host.split("http://")[1]
 
+        createAtString = str(self.create_at.fromtimestamp(self.create_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
+        if createAtString == None:
+            createAtString = ""
+
+        modifiedAtString = str(self.modified_at.fromtimestamp(self.modified_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
+        if modifiedAtString == None:
+            modifiedAtString = ""
 
 
         retJsonDict = {
@@ -132,8 +139,8 @@ class G7Product(models.Model):
                     "latestAppInstallUrl":"itms-services://?action=download-manifest&url="+"https://"+installHost+"/application/info/"+self.applications.last().identifier+".plist",
                     "identifier":self.identifier,
                     "bundleId":self.bundleID,
-                    "createAt":str(self.create_at.fromtimestamp(self.create_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S")),
-                    "modifiedAt":str(self.modified_at.fromtimestamp(self.modified_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S")),
+                    "createAt":createAtString,
+                    "modifiedAt":modifiedAtString,
                     "iconUrl":host+self.icon.url,
                     "productDescription":self.description,
                     "latestVersion":self.latest_version,
@@ -197,12 +204,20 @@ class G7Application(models.Model):
         if "http://" in host:
             installHost = host.split("http://")[1]
 
+        createAtString = str(self.create_at.fromtimestamp(self.create_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
+        if createAtString == None:
+            createAtString = ""
+
+        modifiedAtString = str(self.modified_at.fromtimestamp(self.modified_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
+        if modifiedAtString == None:
+            modifiedAtString = ""
+
         jsonDict = {
                     "appInstallUrl":"itms-services://?action=download-manifest&url="+"https://"+installHost+"/application/info/"+self.identifier+".plist",
                     "identifier":self.identifier,
                     "bundleId":self.bundleID,
-                    "createAt":str(self.create_at.fromtimestamp(self.create_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S")),
-                    "modifiedAt":str(self.modified_at.fromtimestamp(self.modified_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S")),
+                    "createAt":createAtString,
+                    "modifiedAt":modifiedAtString,
                     "iconUrl":host+self.icon.url,
                     "appDescription":self.description,
                     "channel":self.channel,
