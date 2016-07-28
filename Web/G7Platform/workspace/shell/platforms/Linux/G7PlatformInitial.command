@@ -109,7 +109,8 @@ function pythonIns() {
   sudo make && sudo make install;
   cd $dirPath;
   sudo rm -rf $dirPath/packages/Python-3.5.2;
-  
+  sudo ln -sv /usr/local/nginx/sbin/python3 /usr/bin/python3;
+  sudo ln -sv /usr/local/nginx/sbin/python3 /usr/local/bin/python3;
 }
 # 安装Python3.5.2
 g7Install Python3.5.2 pythonIns "python3 -V";
@@ -132,7 +133,7 @@ g7Install MySQL5.6 mysqlIns "mysql --help";
 # nginx安装函数
 function nginxIns() {
   # http://nginx.org/download/nginx-1.11.3.tar.gz
-  
+
   if [ ! -f $dirPath/packages/nginx-1.11.3.tar.gz ]
   then
     wget http://nginx.org/download/nginx-1.11.3.tar.gz -P $dirPath/packages;
@@ -143,6 +144,8 @@ function nginxIns() {
   sudo make && sudo make install;
   cd $dirPath;
   sudo rm -rf $dirPath/packages/nginx-1.11.3;
+  sudo ln -sv /usr/local/nginx/sbin/nginx /usr/local/bin/nginx;
+  sudo ln -sv /usr/local/nginx/sbin/nginx /usr/bin/nginx;
 }
 # 安装nginx
 g7Install NginX nginxIns "nginx -v";
