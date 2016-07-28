@@ -89,18 +89,30 @@ function pythonIns() {
 	$osinstaller python2-pip;
 	$osinstaller python2-easyinstall;
 }
-# 安装Python3.4.3
+# 安装Python3.5.2
 g7Install Python2 pythonIns "python2 -V";
 
 # python3安装函数
 function pythonIns() {
-  $osinstaller python3;
-	$osinstaller python3-pip;
-	$osinstaller python3-easyinstall;
-  $osinstaller zlib-devel bzip2-devel openssl-devel ncurses-devel;
+ #  $osinstaller python3;
+	# $osinstaller python3-pip;
+	# $osinstaller python3-easyinstall;
+ #  $osinstaller zlib-devel bzip2-devel openssl-devel ncurses-devel;
+
+ if [ ! -f $dirPath/packages/Python-3.5.2.tgz ]
+    then
+      wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz -P $dirPath/packages;
+    fi
+    tar xvf $dirPath/packages/Python-3.5.2.tgz -C $dirPath/packages;
+    cd $dirPath/packages/Python-3.5.2;
+    CFLAGS="$CFLAGS -O3 -fPIC" CXXFLAGS="$CXXFLAGS -fPIC" ./configure;
+    sudo make && sudo make install;
+    cd $dirPath;
+    sudo rm -rf $dirPath/packages/Python-3.5.2;
+  fi
 }
-# 安装Python3.4.3
-g7Install Python3.4.3 pythonIns "python3 -V";
+# 安装Python3.5.2
+g7Install Python3.5.2 pythonIns "python3 -V";
 
 # mysql安装函数
 function mysqlIns() {
@@ -221,7 +233,7 @@ g7Install django djangoIns "python3 -c \"import django\"";
 # django安装函数
 function djangoAdminIns() {
 
-  sudo sed -e 's/python/python3/' /usr/local/lib/python3.4/site-packages/django/bin/django-admin.py > /usr/local/bin/django-admin;
+  sudo sed -e 's/python/python3/' /usr/local/lib/python3.5/site-packages/django/bin/django-admin.py > /usr/local/bin/django-admin;
 }
 # 安装django
 g7Install django-admin djangoAdminIns "django-admin";
@@ -235,10 +247,10 @@ function torndbIns() {
 
 torndbOrg=" use_unicode=True,";
 torndbTgt="";
-sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/lib/python3.4/site-packages/torndb.py 2>/dev/null 1>/dev/null;
-sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.4/site-packages/torndb.py 2>/dev/null 1>/dev/null;
-sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/lib/python3.4/dist-packages/torndb.py 2>/dev/null 1>/dev/null;
-sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.4/dist-packages/torndb.py 2>/dev/null 1>/dev/null;
+sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/lib/python3.5/site-packages/torndb.py 2>/dev/null 1>/dev/null;
+sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.5/site-packages/torndb.py 2>/dev/null 1>/dev/null;
+sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/lib/python3.5/dist-packages/torndb.py 2>/dev/null 1>/dev/null;
+sudo sed -i -e "s/$torndbOrg/$torndbTgt/g" /usr/local/lib/python3.5/dist-packages/torndb.py 2>/dev/null 1>/dev/null;
 # 安装torndb
 g7Install torndb torndbIns "python3 -c 'import torndb'";
 

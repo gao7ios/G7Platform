@@ -154,15 +154,6 @@ function uwsgiIns() {
 # 安装uwsgi
 g7Install uwsgi uwsgiIns "uwsgi --version";
 
-
-# bpython安装函数
-function bPythonIns() {
-
-	sudo pip3 install bpython;
-}
-# 安装bPython
-g7Install bPython bPythonIns "bpython -h";
-
 # iPython安装函数
 function iPythonIns() {
 
