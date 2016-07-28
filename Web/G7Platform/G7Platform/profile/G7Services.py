@@ -118,7 +118,7 @@ class G7ReleaseServer(G7Server):
             host = "127.0.0.1"
             port = release_django_port
             listen = 80
-            pythonpath0 = "/usr/local/lib/python3.4/site-packages"
+            pythonpath0 = "/usr/local/lib/python3.5/site-packages"
             pythonpath1 = project_path  # G7Platform
             pythonpath2 = subproject_path
             pythonpath3 = subproject_path+"/main/"+django_project_name+"/"+django_project_name+"/"
@@ -135,7 +135,7 @@ class G7ReleaseServer(G7Server):
                 "master":"true",
                 "pidfile":pidfile,
                 "processes":"8",
-		        "plugin":"/usr/local/lib/uwsgi/py34_plugin.so",
+		        "plugin":"/usr/local/lib/uwsgi/py35_plugin.so",
                 "pythonpath0":pythonpath0,
                 "pythonpath1":pythonpath1,
                 "pythonpath2":pythonpath2,

@@ -175,9 +175,9 @@ function uwsgiIns() {
   tar xvf $dirPath/packages/uwsgi-2.0.12.tar.gz -C $dirPath/packages;
   cd $dirPath/packages/uwsgi-2.0.12/
   sudo CFLAGS="-O3 -fPIC" CC=gcc /usr/local/bin/python3 ./uwsgiconfig.py --build;
-  sudo CFLAGS="-O3 -fPIC" CC=gcc /usr/local/bin/python3 ./uwsgiconfig.py --plugin plugins/python core py34;
+  sudo CFLAGS="-O3 -fPIC" CC=gcc /usr/local/bin/python3 ./uwsgiconfig.py --plugin plugins/python core py35;
   sudo mkdir -p /usr/local/lib/uwsgi 2>/dev/null;
-  sudo cp -rf ./py34_plugin.so /usr/local/lib/uwsgi;
+  sudo cp -rf ./py35_plugin.so /usr/local/lib/uwsgi;
   sudo cp -rf uwsgi /usr/local/bin;
   cd ../;
   sudo rm -rf $dirPath/packages/uwsgi*/;
@@ -255,7 +255,7 @@ $mysqlCommand start;
 
 # MySQLdb安装函数
 function mySQLdbIns() {
-  sudo /usr/local/bin/easy_install-3.4 $dirPath/packages/MySQL-for-Python-3.zip;
+  sudo /usr/local/bin/easy_install-3.5 $dirPath/packages/MySQL-for-Python-3.zip;
 }
 # 安装MySQLdb
 g7Install MySQLdb mySQLdbIns "python3 -c \"import MySQLdb\"";
