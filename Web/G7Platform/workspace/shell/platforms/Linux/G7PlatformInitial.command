@@ -109,8 +109,7 @@ function pythonIns() {
   sudo make && sudo make install;
   cd $dirPath;
   sudo rm -rf $dirPath/packages/Python-3.5.2;
-  sudo ln -sv /usr/local/nginx/sbin/python3 /usr/bin/python3;
-  sudo ln -sv /usr/local/nginx/sbin/python3 /usr/local/bin/python3;
+  sudo ln -sv /usr/local/bin/python3 /usr/bin/python3;
 }
 # 安装Python3.5.2
 g7Install Python3.5.2 pythonIns "python3 -V";
