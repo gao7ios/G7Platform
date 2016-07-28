@@ -131,8 +131,18 @@ g7Install MySQL5.6 mysqlIns "mysql --help";
 
 # nginx安装函数
 function nginxIns() {
-
-  $osinstaller nginx;
+  # http://nginx.org/download/nginx-1.11.3.tar.gz
+  
+  if [ ! -f $dirPath/packages/nginx-1.11.3.tar.gz ]
+  then
+    wget http://nginx.org/download/nginx-1.11.3.tar.gz -P $dirPath/packages;
+  fi
+  tar xvf $dirPath/packages/nginx-1.11.3.tar.gz -C $dirPath/packages;
+  cd $dirPath/packages/nginx-1.11.3;
+  ./configure;
+  sudo make && sudo make install;
+  cd $dirPath;
+  sudo rm -rf $dirPath/packages/nginx-1.11.3;
 }
 # 安装nginx
 g7Install NginX nginxIns "nginx -v";
