@@ -140,7 +140,7 @@ function nginxIns() {
   fi
   tar xvf $dirPath/packages/nginx-1.11.3.tar.gz -C $dirPath/packages;
   cd $dirPath/packages/nginx-1.11.3;
-  ./configure;
+  ./configure --with-http_ssl_module;
   sudo make && sudo make install;
   cd $dirPath;
   sudo rm -rf $dirPath/packages/nginx-1.11.3;
