@@ -99,17 +99,17 @@ function pythonIns() {
 	# $osinstaller python3-easyinstall;
  #  $osinstaller zlib-devel bzip2-devel openssl-devel ncurses-devel;
 
- if [ ! -f $dirPath/packages/Python-3.5.2.tgz ]
-    then
-      wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz -P $dirPath/packages;
-    fi
-    tar xvf $dirPath/packages/Python-3.5.2.tgz -C $dirPath/packages;
-    cd $dirPath/packages/Python-3.5.2;
-    CFLAGS="$CFLAGS -O3 -fPIC" CXXFLAGS="$CXXFLAGS -fPIC" ./configure;
-    sudo make && sudo make install;
-    cd $dirPath;
-    sudo rm -rf $dirPath/packages/Python-3.5.2;
+  if [ ! -f $dirPath/packages/Python-3.5.2.tgz ]
+  then
+    wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tgz -P $dirPath/packages;
   fi
+  tar xvf $dirPath/packages/Python-3.5.2.tgz -C $dirPath/packages;
+  cd $dirPath/packages/Python-3.5.2;
+  CFLAGS="$CFLAGS -O3 -fPIC" CXXFLAGS="$CXXFLAGS -fPIC" ./configure;
+  sudo make && sudo make install;
+  cd $dirPath;
+  sudo rm -rf $dirPath/packages/Python-3.5.2;
+  
 }
 # 安装Python3.5.2
 g7Install Python3.5.2 pythonIns "python3 -V";
