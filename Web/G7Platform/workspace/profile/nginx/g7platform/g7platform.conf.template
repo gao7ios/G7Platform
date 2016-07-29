@@ -56,7 +56,7 @@ server {
 	index index.html index.htm index.php;
 
 	ssl on;
-    ssl_certificate ssl/server/ipa.cer;
+    ssl_certificate ssl/server/ipa.crt;
     ssl_certificate_key ssl/server/ipa.key;
 
     location ^~ /application/install {
