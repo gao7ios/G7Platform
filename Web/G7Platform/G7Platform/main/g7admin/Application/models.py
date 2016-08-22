@@ -95,8 +95,7 @@ class G7Product(models.Model):
         default="",
         blank=False,
         null=False,
-        verbose_name=_(u"标识符(BundleID)"),
-        unique=True)
+        verbose_name=_(u"标识符(BundleID)"))
 
     create_at = models.DateTimeField(verbose_name=_(u"创建时间"), auto_now_add=timezone.now())
     modified_at = models.DateTimeField(verbose_name=_(u"更新时间"), auto_now=timezone.now())

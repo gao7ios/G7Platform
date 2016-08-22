@@ -342,15 +342,18 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             #     if pgyer_uKey == None or pgyer_uKey == "" or pgyer_apiKey == None or pgyer_apiKey == "":
             #         # 请填写该用户所拥有的蒲公英uKey和apiKey
             #         return self.responseWrite(10008)
-
-        fileBody = self.request.files["file"][0]["body"]
-        if fileBody == None:
-            return self.write("无法获取提交的IPA包文件")
+        fileBody = None
+        try:
+            fileBody = self.request.files.get("file")[0].get("body")
+            if fileBody == None:
+                return self.write({"message":"IPA打包失败，请检查jenkins配置"})
+        except:
+            return self.write({"message":"IPA打包失败，请检查jenkins配置"})
 
         data = self.dataFromFile(fileBody)
 
         # Info.plist
-        info = data["InfoPlist"]
+        info = data.get("InfoPlist")
 
         # G7CommonSetting.plist
         # g7CommonSetting = data["G7CommonSettingPlist"]
@@ -358,7 +361,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         # 获取BundleID 必须
         bundleID = ""
         if "CFBundleIdentifier" in list(info.keys()):
-            bundleID = info["CFBundleIdentifier"]
+            bundleID = info.get("CFBundleIdentifier")
 
         if bundleID == None or len(bundleID) == 0 or type(bundleID) != type(""):
             # 返回失败
@@ -401,22 +404,22 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
         # 获取应用名
         appName = product_name
         if "CFBundleDisplayName" in list(info.keys()) and (appName == None or appName == ""):
-            appName = info["CFBundleDisplayName"]
+            appName = info.get("CFBundleDisplayName")
 
         # 应用版本
         appVersion = "1.0"
         if "CFBundleShortVersionString" in list(info.keys()):
-            appVersion = info["CFBundleShortVersionString"]
+            appVersion = info.get("CFBundleShortVersionString")
 
         localTime = time.localtime()
         timeNow = time.strftime("%Y%m%d%H%M%S", localTime)
         # 编译版本
         buildVersion = "{timeNow}".format(timeNow=timeNow)  # 默认获取当前时间
         if "CFBundleVersion" in list(info.keys()):
-            buildVersion = info["CFBundleVersion"]
+            buildVersion = info.get("CFBundleVersion")
 
         # 获取图标 若无, 取默认值
-        icon = data["Icon"]
+        icon = data.get("Icon")
 
         # 判断当前产品中是否使用了接收到的Project_id
         products = G7Product.objects.filter(product_id = TDPID)
