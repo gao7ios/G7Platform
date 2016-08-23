@@ -343,12 +343,20 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             #         # 请填写该用户所拥有的蒲公英uKey和apiKey
             #         return self.responseWrite(10008)
         fileBody = None
+        dsymBody = None
         try:
             fileBody = self.request.files.get("file")[0].get("body")
             if fileBody == None:
-                return self.write({"message":"IPA打包失败，请检查jenkins配置"})
+                return self.write({"message":"没有收到IPA包，请重新打包"})
         except:
-            return self.write({"message":"IPA打包失败，请检查jenkins配置"})
+            return self.write({"message":"没有收到IPA包，请重新打包"})
+
+        try:
+            dsymBody = self.request.files.get('dSYM_file')[0].get('body')
+            if dsymBody == None:
+                return self.write({"message":"没有收到dSYM包，请重新提交"})
+        except:
+            return self.write({"message":"没有收到dSYM包，请重新提交"})
 
         data = self.dataFromFile(fileBody)
 
@@ -439,7 +447,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
             ipaFileDir = time.strftime("%Y%m%d",localTime)
             ipaFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}.ipa".format(appName=appName,
                 appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
-            dsymFile = ContentFile(fileBody)
+            dsymFile = ContentFile(dsymBody)
             dsymFileDir = time.strftime("%Y%m%d",localTime)
             dsymFileName = "{appName}_V{appVersion}_Build{build_version}_{timeNow}-dSYM.zip".format(appName=appName,
                 appVersion=appVersion, build_version=buildVersion, timeNow=timeNow)
