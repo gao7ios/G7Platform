@@ -127,7 +127,7 @@ class G7ApplicationAdmin(admin.ModelAdmin):
 
 
     filter_horizontal = ("frameworks",)
-    readonly_fields = ['icon_preview',"identifier", "build_version"]
+    readonly_fields = ['icon_preview',"identifier"]
 
 
     # exclude = ("applications",)
