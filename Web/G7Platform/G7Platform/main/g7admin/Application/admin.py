@@ -1,7 +1,7 @@
 from django.contrib import admin
 # Register your models here.
 from Application.models import G7Application,G7Product
-
+from Push.models import *
 from django import forms
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper,FilteredSelectMultiple
 from django.utils.translation import ugettext_lazy as _
@@ -9,6 +9,7 @@ from django.db.models.fields import FieldDoesNotExist
 from django.utils import timezone
 import uuid,time
 from django.db.models import Q
+from G7Platform.G7Globals import *
 
 class G7ProductForm(forms.ModelForm):
 
@@ -97,6 +98,23 @@ class G7ApplicationForm(forms.ModelForm):
             self.instance.save()
             for product in self.cleaned_data["products"]:
                 product.applications.add(self.instance)
+            from apns import APNs, Frame, Payload
+            pushProfiles = G7PushProfile.objects.filter(using=True)
+            if len(pushProfiles) > 0 and pushProfiles[0].public_pem_file != None and pushProfiles[0].public_pem_file != "" and pushProfiles[0].private_pem_file != None and pushProfiles[0].private_pem_file != "":
+                pushTokens = G7PushNotificatinToken.objects.all()
+                for pushToken in pushTokens:
+                    apns = APNs(use_sandbox=pushProfiles[0].use_sandbox, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
+                    name = ""
+                    if self.instance.user != None:
+                        name = self.instance.user.realname
+                        if name == None or name == "":
+                            name = self.instance.user.username
+                    if name != "" and name != None:
+                        name = name + ":"
+                    custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=self.instance.identifier)}
+                    payload = Payload(alert="👉 {username}{appName} 打包成功".format(username=name, appName=self.instance.name), sound="default", badge=1, custom=custom)
+                    apns.gateway_server.send_notification(pushToken.token, payload)
+
         if commit:
             instance.save()
 

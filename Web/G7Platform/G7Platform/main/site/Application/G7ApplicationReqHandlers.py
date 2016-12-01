@@ -475,41 +475,17 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                 pushTokens = G7PushNotificatinToken.objects.all()
                 for pushToken in pushTokens:
                     apns = APNs(use_sandbox=pushProfiles[0].use_sandbox, cert_file=pushProfiles[0].public_pem_file.path, key_file=pushProfiles[0].private_pem_file.path)
-                    name = application.user.realname
-                    if name == None or name == "":
-                        name = application.user.username
+                    name = ""
+                    if application.user != None:
+                        name = application.user.realname
+                        if name == None or name == "":
+                            name = application.user.username
+                    if name != "" and name != None:
+                        name = name + ":"
                     custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
                     payload = Payload(alert="👉 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
                     apns.gateway_server.send_notification(pushToken.token, payload)
-
-        #     # buff = io.BufferedReader(ipaFile.file)
-        #     # # 上传到蒲公英
-        #     uploader = G7ApplicationPgyerUploader()
-        # #    #蒲公英应用上传地址
-
-        #     uploader.domain = 'www.pgyer.com'
-        #     uploader.urlPath = "/apiv1/app/upload"
-        #     uploader.uKey = pgyer_uKey
-        #     uploader.api_key = pgyer_apiKey
-        #     uploader.ipaFile = open(application.file.path, "rb")
-        #     uploader.installPassword = installPassword
-        #     uploader.product_name = appName
-        #     uploader.currentG7User = currentG7User
-        #     uploader.plist = {'G7PID':g7PID, 'G7VER':g7VER, 'G7CH':g7CH, 'G7PT':g7PT}
-
-        #     users = list(G7User.objects.filter(email_vip=True))+list(product.members.all())
-
-        #     try:
-        #         if type(int(product_group_id)) == type(0) and int(product_group_id) > 0:
-        #             users = list(G7User.objects.filter(email_vip=True))+list(product.members.all())+[user for user in G7User.objects.all() if len([group for group in list(user.groups.all()) if group.id == int(product_group_id)])>0]
-        #     except:
-        #         pass
-
-        #     emails = [user.email for user in users]
-        #     uploader.mail_receiver = list({}.fromkeys(emails).keys())
-        #     uploader.build_version = buildVersion
-        #     uploader.product_version = appVersion
-        #     uploader.g7CommonSetting = g7CommonSetting
+                    
             return self.write({"message":"提交成功"})
         except:
             # ipa包备份失败, 储存资料失败!!!
