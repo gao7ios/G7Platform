@@ -201,7 +201,7 @@ class G7Application(models.Model):
 
     def toJsonDict(self, host="127.0.0.1"):
 
-        
+
         installHost = host
         if "http://" in host:
             installHost = host.split("http://")[1]
@@ -210,7 +210,7 @@ class G7Application(models.Model):
         createAtString = str(self.create_at.fromtimestamp(self.create_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
         if createAtString == None:
             createAtString = ""
-        
+
         modifiedAtString = str(self.modified_at.fromtimestamp(self.modified_at.timestamp(), tz).strftime("%Y-%m-%d %H:%M:%S"))
         if modifiedAtString == None:
             modifiedAtString = ""

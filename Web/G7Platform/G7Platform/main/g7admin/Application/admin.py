@@ -65,7 +65,7 @@ class G7ApplicationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(G7ApplicationForm, self).__init__(*args, **kwargs)
-        self.instance.appid = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
+        self.instance.identifier = str(uuid.uuid3(uuid.uuid4(),str(time.time())).hex)
 
         if self.instance.pk:
             self.fields['products'].initial = self.instance.products.all()
