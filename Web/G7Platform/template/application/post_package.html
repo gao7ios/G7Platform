@@ -32,6 +32,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         margin-top: 40px;
       }
 
+      
 
       label {
         font-size: 14px; 
@@ -41,7 +42,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         line-height: 60px;
         margin: 0px;
       }
-
       
       ul li label {
         float: left;
@@ -90,6 +90,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         padding: 20px;
       }
 
+      ul li:first-child .input_wrapper {
+        height: 40px;
+        margin-top: 0px;
+      }
+      ul li:first-child #product_name {
+        line-height: 30px;
+        margin-top: 5px;
+        text-align: center;
+      }
+
     </style>
     <script type="text/javascript">
     function post_package() {
@@ -98,7 +108,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           alert("请填写产品名称");
           return;
         }
-        
+
         if ($("#ipa_package")[0].files[0] == undefined || $("#ipa_package")[0].files[0] == "") {
           alert("请提交ipa包");
           return;
@@ -143,7 +153,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       <ul>
         <li>
           <label for="product_name">产品名称:</label>
-          <p class="input_wrapper" id="dSYM_wrapper">
+          <p class="input_wrapper" id="product_name_wrapper">
             <input id="product_name" type="text" name="product_name" placeholder="产品名称" />
           </p>
         </li>
