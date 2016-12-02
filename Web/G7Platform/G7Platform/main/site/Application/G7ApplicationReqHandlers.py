@@ -318,7 +318,6 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
     @tornado.web.asynchronous
     @tornado.gen.coroutine
     def post(self):
-
         product_name = self.get_argument('product_name')
         uid = self.get_argument("uid")
         installPassword = self.get_argument("installPassword")

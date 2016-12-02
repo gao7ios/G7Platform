@@ -13,22 +13,13 @@ from django.conf import settings
 
 from Application.models import *
 
-class G7ApplicationInstallReqHandler(G7WebReqHandler):
+class G7ApplicationPackagePostWebReqHandler(G7WebReqHandler):
     """
     应用包
     """
     
-    def get(self, app_id=""):
-        ''' 应用安装主页 '''
-        
-        try:
-            app = G7Application.objects.get(identifier=app_id)
-            if app == None:
-                return self.write("包不存在"+str(app_id));
-            else:
-                return self.render("application/app_install.html", title=app.name, plist_info_url="https://"+self.request.host+"/application/info/"+app.identifier+".plist");
-        except:
-            self.write("包不存在");
+    def get(self):
+        return self.render("application/post_package.html", title="Mars-应用提交", users=G7User.objects.all());
 
     def post(self):
         pass

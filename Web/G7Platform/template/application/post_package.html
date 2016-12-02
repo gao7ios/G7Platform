@@ -1,0 +1,164 @@
+<!--
+Author: MarsPlat
+Author URL: http://MarsPlat.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <script src="/static/appindex/js/jquery-1.11.1.min.js"></script>
+  
+  </head>
+  <body>
+    
+    <style type="text/css">
+      
+      ul {
+        padding: 10px 0px 20px 10px;
+        margin: 0px;
+      }
+
+      ul li {
+        list-style: none;
+        line-height: 40px;
+        width: 500px;
+        height: 50px;
+      }
+
+      ul li:last-child {
+        line-height: 50px;
+        margin-top: 40px;
+      }
+
+
+      label {
+        font-size: 14px; 
+      }
+      
+      h2 {
+        line-height: 60px;
+        margin: 0px;
+      }
+
+      
+      ul li label {
+        float: left;
+        font-weight: bold;
+      }
+
+      ul li input, ul li select {
+        float: right;
+        width: 250px;
+        line-height: 100%;
+      }
+
+      ul li select {
+        width: 250px;
+        line-height: 40px;
+        display: block;
+        height: 20px;
+        margin-top: 10px;
+      }
+
+      .input_wrapper {
+        height: 20px;
+        float: right;
+        width: 250px;
+        margin: 0px;
+        margin-top: 10px;
+      }
+
+      #submit {
+        width: 200px;
+        height: 50px;
+        border-style: none;
+        border-width: 0px;
+        background: #2cb19e;
+        color: white;
+        font-size: 20px;
+        margin: 0px;
+      }
+
+      .post-zone {
+        width: 80%;
+        height: 100%;
+        background: #efefef;
+        margin: 0px auto;
+        margin-top: 50px;
+        padding: 20px;
+      }
+
+    </style>
+    <script type="text/javascript">
+    function post_package() {
+
+        if ($("#ipa_package")[0].files[0] == undefined || $("#ipa_package")[0].files[0] == "") {
+          alert("请提交ipa包");
+          return;
+        }
+
+        if ($("#dSYM")[0].files[0] == undefined || $("#dSYM")[0].files[0] == "") {
+          alert("请提交dSYM包");
+          return;
+        }
+
+        var formData = new FormData($("form")[0]);
+        formData.append('uid', $("#operator").val());
+        formData.append("product_name", "产品");
+        formData.append("installPassword", "gao7.com");
+        formData.append("product_group_id", "0");
+        console.log(formData);
+        $.ajax({
+          url:"/api/1.0/application/upload",
+          type:"POST",
+          data:formData,
+          cache: false,
+          processData: false,
+          contentType: false,
+          success:function(data) {
+            message = data["message"];
+            alert(message);
+          },
+          error: function(e) {
+            console.log(e);
+          },
+        });
+    }
+    </script>
+    <div class="post-zone">
+      <h2>Mars-应用包提交</h2>
+      <form action="javascript:post_package();" method="post" enctype="multipart/form-data" >
+      <ul>
+        <li>
+          <label for="operator">操作人:</label>
+          <select name="操作人" id="operator">
+            {% for user in users %}
+              {% if user.userid %}
+                <option value ="{{ user.userid }}">{{ user.id }} - {% if user.realname %}{{ user.realname }}{% else %}{{ user.username }}{% end %}</option>
+              {% end %}
+            {% end %}
+          </select>
+        </li>
+        <li>
+          <label for="ipa_package">ipa包:</label> 
+          <p class="input_wrapper" id="ipa_package_wrapper">
+          <input id="ipa_package" type="file" name="file" placeholder="ipa包" />
+          </p>
+        </li>
+        <li>
+          <label for="dSYM">dSYM:</label>
+          <p class="input_wrapper" id="dSYM_wrapper">
+            <input id="dSYM" type="file" name="dSYM_file" placeholder="dSYM" />
+          </p>
+        </li>
+        <li>
+          <input id="submit" type="submit" value="提交" />
+        </li>
+      </ul>
+    </form>
+    </div>
+    
+  </body>
+</html>

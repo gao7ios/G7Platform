@@ -12,6 +12,7 @@ from G7Platform.main.site.Feedback.G7FeedbackReqHandlers import *
 from G7Platform.main.site.Account.G7AccountReqHandlers import *
 from G7Platform.main.site.Application.G7ProductReqHandlers import *
 from G7Platform.main.site.Home.G7HomeReqHandlers import *
+from G7Platform.main.site.Application.G7ApplicationWebReqHandlers import *
 # 接口url配置方法
 def G7ApiPathURL(channel, path, className, version=None):
 
@@ -33,6 +34,7 @@ webURLList = [
         (r"/contact", G7ContactReqHandler),
         (r"/single", G7SingleReqHandler),
         (r"/app", G7AppIndexReqHandler),
+        (r"/post_package", G7ApplicationPackagePostWebReqHandler),
 ]
 
 # 配置接口列表
