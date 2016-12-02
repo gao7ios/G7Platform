@@ -94,6 +94,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script type="text/javascript">
     function post_package() {
 
+        if ($("#product_name").val() == undefined || $("#product_name").val() == "") {
+          alert("请填写产品名称");
+          return;
+        }
+        
         if ($("#ipa_package")[0].files[0] == undefined || $("#ipa_package")[0].files[0] == "") {
           alert("请提交ipa包");
           return;
@@ -106,10 +111,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
         var formData = new FormData($("form")[0]);
         formData.append('uid', $("#operator").val());
-        formData.append("product_name", "产品");
         formData.append("installPassword", "gao7.com");
         formData.append("product_group_id", "0");
-        console.log(formData);
+        $("#submit").attr("value","正在提交...")
+        $("#submit").attr("disabled","false")
+
         $.ajax({
           url:"/api/1.0/application/upload",
           type:"POST",
@@ -120,9 +126,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           success:function(data) {
             message = data["message"];
             alert(message);
+            $("#submit").attr("value","提交")
+            $("#submit").attr("disabled","true")
           },
           error: function(e) {
             console.log(e);
+            $("#submit").attr("value","提交")
+            $("#submit").attr("disabled","true")
           },
         });
     }
@@ -131,6 +141,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       <h2>Mars-应用包提交</h2>
       <form action="javascript:post_package();" method="post" enctype="multipart/form-data" >
       <ul>
+        <li>
+          <label for="product_name">产品名称:</label>
+          <p class="input_wrapper" id="dSYM_wrapper">
+            <input id="product_name" type="text" name="product_name" placeholder="产品名称" />
+          </p>
+        </li>
         <li>
           <label for="operator">操作人:</label>
           <select name="操作人" id="operator">
@@ -153,6 +169,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <input id="dSYM" type="file" name="dSYM_file" placeholder="dSYM" />
           </p>
         </li>
+        
         <li>
           <input id="submit" type="submit" value="提交" />
         </li>

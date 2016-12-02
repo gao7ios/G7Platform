@@ -482,7 +482,7 @@ class G7ApplicationUploadReqHandler(G7APIReqHandler):
                     if name != "" and name != None:
                         name = name + ":"
                     custom= {"url":"http://marsplat.tk/pushNotification?appid={identifier}&tp=4".format(identifier=application.identifier)}
-                    payload = Payload(alert="👉 {username}:{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
+                    payload = Payload(alert="👉 {username}{appName} 打包成功".format(username=name, appName=application.name), sound="default", badge=1, custom=custom)
                     apns.gateway_server.send_notification(pushToken.token, payload)
                     
             return self.write({"message":"提交成功"})
