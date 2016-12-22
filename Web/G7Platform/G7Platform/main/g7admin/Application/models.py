@@ -137,8 +137,6 @@ class G7Product(models.Model):
 
 
         retJsonDict = {
-                    "latestAppIdentifier":self.applications.last().identifier,
-                    "latestAppInstallUrl":"itms-services://?action=download-manifest&url="+"https://"+installHost+"/application/info/"+self.applications.last().identifier+".plist",
                     "identifier":self.identifier,
                     "bundleId":self.bundleID,
                     "createAt":createAtString,
@@ -156,6 +154,10 @@ class G7Product(models.Model):
                 }
         if self.owner != None:
             retJsonDict["ownner"] = self.owner.toJsonDict(host)
+        if self.applications.count() > 0:
+            retJsonDict["latestAppIdentifier"]=self.applications.last().identifier
+            retJsonDict["latestAppInstallUrl"]="itms-services://?action=download-manifest&url="+"https://"+installHost+"/application/info/"+self.applications.last().identifier+".plist"
+
 
         return retJsonDict
 

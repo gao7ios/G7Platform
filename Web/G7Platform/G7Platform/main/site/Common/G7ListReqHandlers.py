@@ -6,6 +6,54 @@ from G7Platform.main.site.Common.G7WebReqHandlers import G7WebReqHandler
 
 class G7ListReqHandler(G7APIReqHandler):
 
+    def list(self, modelAllObjects=None, allCount=0, pageCount=10):
+        if modelAllObjects == None:
+            return None
+
+        
+        pageIndex = self.paramsJson.get('pageIndex')
+        
+        encrypt = True
+        try:
+            if self.get_argument("encrypt") == "0":
+                encrypt = False
+            else:
+                encrypt = True
+        except:
+            encrypt = True
+
+        if encrypt==False:
+            pageIndex = 0
+            try:
+                pageIndex = int(self.get_argument("pageIndex"))
+            except:
+                pageIndex = 0
+
+        if pageIndex == None:
+            pageIndex = 0
+        if type(pageIndex) != type(0):
+            try:
+                pageIndex = int(pageIndex)
+            except:
+                pageIndex = 0
+        try:
+            isLastPage = 0
+            if (pageIndex+1)*pageCount >= allCount:
+                isLastPage = 1
+            else:
+                isLastPage = 0
+            modelList = modelAllObjects[pageIndex*pageCount:(pageIndex+1)*pageCount]
+            modelList = [model.toJsonDict(host="http://"+self.request.host) for model in modelList if model != None]
+                
+            if modelList == None:
+                modelList = []
+            return {
+                "isLastPage":isLastPage,
+                "list":modelList
+            }
+        except:
+            return {}
+
     def isLastPage(self, allList=[], pageIndex=0, pageCount=10):
 
         isLastPage = 0
@@ -40,9 +88,9 @@ class G7ListReqHandler(G7APIReqHandler):
                 sourceList = []
             else:
                 if len(allList) <= currentPageCount+pageCount:
-                    sourceList = allList[len(allList)-currentPageCount]
+                    sourceList = allList[len(allList)-currentPageCount:]
                 else:
-                    sourceList = allList[currentPageCount:currentPageCount+pageCount]
+                    sourceList = allList[currentPageCount:currentPageCount+pageCount:]
         if type(sourceList) != type([]):
             sourceList = [sourceList]
 
