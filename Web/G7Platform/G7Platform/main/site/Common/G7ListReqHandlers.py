@@ -12,7 +12,6 @@ class G7ListReqHandler(G7APIReqHandler):
 
         
         pageIndex = self.paramsJson.get('pageIndex')
-        
         encrypt = True
         try:
             if self.get_argument("encrypt") == "0":
@@ -38,6 +37,8 @@ class G7ListReqHandler(G7APIReqHandler):
                 pageIndex = 0
         try:
             isLastPage = 0
+            allCount = modelAllObjects.count()
+            print("allCount:",allCount,"pageIndex:",pageIndex, "pageCount:",pageCount)
             if (pageIndex+1)*pageCount >= allCount:
                 isLastPage = 1
             else:

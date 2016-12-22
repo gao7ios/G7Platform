@@ -17,6 +17,7 @@ class G7ProductListReqHandler(G7ListReqHandler):
         
         try:
             retDict = self.list(modelAllObjects=G7Product.objects.all().distinct())
+            return self.write(str(retDict))
             return self.responseWrite(0, "获取成功", data=retDict)
         except:
             return self.responseWrite(1, "获取失败", data=[])
