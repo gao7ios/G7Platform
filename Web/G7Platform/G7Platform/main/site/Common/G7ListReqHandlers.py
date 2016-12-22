@@ -38,7 +38,6 @@ class G7ListReqHandler(G7APIReqHandler):
         try:
             isLastPage = 0
             allCount = modelAllObjects.count()
-            print("allCount:",allCount,"pageIndex:",pageIndex, "pageCount:",pageCount)
             if (pageIndex+1)*pageCount >= allCount:
                 isLastPage = 1
             else:
